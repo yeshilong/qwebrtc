@@ -1,7 +1,7 @@
 #ifndef RTCCERTIFICATE_H
 #define RTCCERTIFICATE_H
 
-#include "qwebrtc_global.h"
+#include "qwebrtcglobal.h"
 
 #include <QObject>
 #include <QString>

@@ -82,7 +82,7 @@ if (APPLE)
 
     if (NOT DEFINED DICTBOX_DEPLOYMENT_TARGET OR DICTBOX_DEPLOYMENT_TARGET STREQUAL "")
         if (OS_MACOS)
-            set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
+            set(CMAKE_OSX_DEPLOYMENT_TARGET 10.15)
         elseif (OS_IOS)
             set(DICTBOX_DEPLOYMENT_TARGET 13.0)
         endif ()
@@ -97,7 +97,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Multimedia)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Multimedia)
 
 add_library(qwebrtc SHARED
-  qwebrtc_global.h
+  qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
   rtctypes.h
@@ -198,7 +198,10 @@ add_library(qwebrtc SHARED
   rtcpeerconnectiondelegate.h
   rtcpeerconnectionfactory.h rtcpeerconnectionfactory.cpp
   rtcpeerconnection.h rtcpeerconnection.cpp
-  .gitignore
+
+  rtcicecandidate_p.h
+  rtciceserver_p.h
+  rtcdtmfsender_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h
@@ -213,10 +216,10 @@ elseif(AARCH64)
 endif()
 
 find_library(WEBRTC_LIBRARY_DEBUG NAMES libwebrtc.a
-             HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/lib/$ARCH_STRING/debug
+             HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/lib/${ARCH_STRING}/debug
              PATHS ${CMAKE_SYSTEM_LIBRARY_DIRS})
 find_library(WEBRTC_LIBRARY_RELEASE NAMES libwebrtc.a
-          HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/lib/$ARCH_STRING/release
+          HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/lib/${ARCH_STRING}/release
           PATHS ${CMAKE_SYSTEM_LIBRARY_DIRS})
 
 message(STATUS "WEBRTC_INCLUDE_DIR: ${WEBRTC_INCLUDE_DIR}")

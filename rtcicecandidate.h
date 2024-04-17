@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 
+class RTCIceCandidatePrivate;
+
 /**
  * @brief The RTCIceCandidate class.
  */
@@ -46,10 +48,8 @@ class RTCIceCandidate : public QObject
     QString serverUrl() const;
 
   private:
-    QString sdpMid_;
-    int sdpMLineIndex_;
-    QString sdp_;
-    QString serverUrl_;
+    Q_DECLARE_PRIVATE(RTCIceCandidate)
+    RTCIceCandidatePrivate* const d_ptr;
 };
 
 #endif // RTCICECANDIDATE_H

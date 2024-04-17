@@ -7,6 +7,8 @@
 
 #include "rtctypes.h"
 
+class RTCIceServerPrivate;
+
 /**
  * @brief The RTCIceServer class represents an ICE server.
  */
@@ -101,13 +103,8 @@ class RTCIceServer : public QObject
     QVector<QString> tlsEllipticCurves() const;
 
   private:
-    QVector<QString> urlStrings_;
-    QString username_;
-    QString credential_;
-    RTCTlsCertPolicy tlsCertPolicy_;
-    QString hostname_;
-    QVector<QString> tlsAlpnProtocols_;
-    QVector<QString> tlsEllipticCurves_;
+    Q_DECLARE_PRIVATE(RTCIceServer)
+    RTCIceServerPrivate *d_ptr;
 };
 
 #endif // RTCICESERVER_H
