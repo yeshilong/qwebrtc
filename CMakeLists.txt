@@ -206,6 +206,7 @@ add_library(qwebrtc SHARED
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h
          HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/include)
+list(APPEND WEBRTC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/extern/libwebrtc/include/third_party/libyuv/include)
 
 if(X86_64)
     set(ARCH_STRING "x64")
