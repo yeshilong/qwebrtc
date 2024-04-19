@@ -5,6 +5,8 @@
 
 #include "rtcmediasource.h"
 
+class RTCAudioSourcePrivate;
+
 /**
  * @brief Represents an audio source with a volume property.
  */
@@ -26,6 +28,12 @@ class RTCAudioSource : public RTCMediaSource
      */
     double volume() const;
     void setVolume(double volume);
+
+  protected:
+    RTCAudioSource(RTCAudioSourcePrivate &d, QObject *parent = nullptr);
+
+  private:
+    double volume_;
 };
 
 #endif // RTCAUDIOSOURCE_H

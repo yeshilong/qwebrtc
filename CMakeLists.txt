@@ -202,6 +202,8 @@ add_library(qwebrtc SHARED
   rtcicecandidate_p.h
   rtciceserver_p.h
   rtcdtmfsender_p.h
+  rtcmediasource_p.h
+  rtcaudiosource_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h
