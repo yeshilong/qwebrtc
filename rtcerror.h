@@ -13,7 +13,7 @@
  */
 class RTCError : public QObject
 {
-public:
+  public:
     explicit RTCError(QObject *parent = nullptr);
 
     /**

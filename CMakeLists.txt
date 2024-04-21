@@ -100,6 +100,7 @@ add_library(qwebrtc SHARED
   qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
+  media_constraints.h media_constraints.cc
   rtctypes.h
   rtcerror.h rtcerror.cpp
   rtccertificate.h rtccertificate.cpp
@@ -204,6 +205,7 @@ add_library(qwebrtc SHARED
   rtcdtmfsender_p.h
   rtcmediasource_p.h
   rtcaudiosource_p.h
+  rtcmediaconstraints_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h
@@ -290,8 +292,8 @@ if(WEBRTC_INCLUDE_DIR AND (WEBRTC_LIBRARY_DEBUG OR WEBRTC_LIBRARY_RELEASE))
   add_library(WebRTC STATIC IMPORTED)
   set_target_properties(WebRTC PROPERTIES
       IMPORTED_LOCATION "${WEBRTC_LIBRARY}"
-      IMPORTED_LOCATION_RELEASE "${WEBRTC_LIBRARY_DEBUG}"
-      IMPORTED_LOCATION_DEBUG "${WEBRTC_LIBRARY_RELEASE}"
+      IMPORTED_LOCATION_DEBUG "${WEBRTC_LIBRARY_DEBUG}"
+      IMPORTED_LOCATION_RELEASE "${WEBRTC_LIBRARY_RELEASE}"
       IMPORTED_INCLUDE_DIRECTORIES "${WEBRTC_INCLUDE_DIR}")
 else()
   message(WARNING "WebRTC library not found. Communication features might be disabled.")

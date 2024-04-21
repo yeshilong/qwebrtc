@@ -49,7 +49,7 @@ class RTCIceCandidate : public QObject
 
   private:
     Q_DECLARE_PRIVATE(RTCIceCandidate)
-    RTCIceCandidatePrivate* const d_ptr;
+    RTCIceCandidatePrivate *const d_ptr;
 };
 
 #endif // RTCICECANDIDATE_H

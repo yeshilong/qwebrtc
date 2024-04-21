@@ -5,7 +5,7 @@
 
 class QWEBRTC_EXPORT QWebRtc
 {
-public:
+  public:
     QWebRtc();
 };
 

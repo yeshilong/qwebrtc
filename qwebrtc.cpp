@@ -1,3 +1,5 @@
 #include "qwebrtc.h"
 
-QWebRtc::QWebRtc() {}
+QWebRtc::QWebRtc()
+{
+}

@@ -41,8 +41,11 @@ std::unique_ptr<webrtc::IceCandidateInterface> RTCIceCandidatePrivate::getNative
     return std::unique_ptr<webrtc::IceCandidateInterface>(candidate);
 }
 
-RTCIceCandidate::RTCIceCandidate(const QString &sdp, int sdpMLineIndex, const QString &sdpMid, QObject *parent)
-    : QObject(parent), d_ptr(new RTCIceCandidatePrivate(sdp, sdpMLineIndex, sdpMid)) {}
+RTCIceCandidate::RTCIceCandidate(const QString &sdp, int sdpMLineIndex, const QString &sdpMid,
+                                 QObject *parent)
+    : QObject(parent), d_ptr(new RTCIceCandidatePrivate(sdp, sdpMLineIndex, sdpMid))
+{
+}
 
 QString RTCIceCandidate::sdpMid() const
 {

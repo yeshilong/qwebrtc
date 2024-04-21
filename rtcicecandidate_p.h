@@ -7,7 +7,8 @@
 
 #include "api/jsep.h"
 
-class QWEBRTC_EXPORT RTCIceCandidatePrivate {
+class QWEBRTC_EXPORT RTCIceCandidatePrivate
+{
   public:
     RTCIceCandidatePrivate(const QString &sdp, int sdpMLineIndex, const QString &sdpMid);
     RTCIceCandidatePrivate(const webrtc::IceCandidateInterface *candidate);

@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QString>
 
+class RTCMediaConstraintsPrivate;
 /**
  * @brief The RTCMediaConstraints class.
  */
@@ -41,6 +42,10 @@ class RTCMediaConstraints : public QObject
      */
     static QString RTCMediaConstraintsValueTrue();
     static QString RTCMediaConstraintsValueFalse();
+
+  private:
+    Q_DECLARE_PRIVATE(RTCMediaConstraints)
+    RTCMediaConstraintsPrivate *d_ptr;
 };
 
 #endif // RTCMEDIACONSTRAINTS_H
