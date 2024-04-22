@@ -2,13 +2,12 @@
 #define RTCAUDIORENDERER_H
 
 #include <QObject>
-
 #include <QAudioBuffer>
 
 /**
  * @brief Represents a renderer for audio sample buffers.
  */
-class RTCAudioRenderer : public QObject
+class IRTCAudioRenderer : public QObject
 {
     Q_OBJECT
 

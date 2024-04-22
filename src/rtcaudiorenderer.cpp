@@ -1,5 +1,5 @@
 #include "rtcaudiorenderer.h"
 
-RTCAudioRenderer::RTCAudioRenderer(QObject *parent) : QObject{parent}
+IRTCAudioRenderer::IRTCAudioRenderer(QObject *parent) : QObject{parent}
 {
 }

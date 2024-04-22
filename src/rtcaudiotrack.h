@@ -32,13 +32,13 @@ class RTCAudioTrack : public RTCMediaStreamTrack
      * @brief Registers a renderer that will receive all audio sample buffers on this track.
      * @param renderer The renderer.
      */
-    void addRenderer(RTCAudioRenderer *renderer);
+    void addRenderer(IRTCAudioRenderer *renderer);
 
     /**
      * @brief Deregisters a renderer.
      * @param renderer The renderer.
      */
-    void removeRenderer(RTCAudioRenderer *renderer);
+    void removeRenderer(IRTCAudioRenderer *renderer);
 };
 
 #endif // RTCAUDIOTRACK_H
