@@ -109,6 +109,9 @@ add_library(qwebrtc SHARED
   rtcmediasource_p.h
   rtcaudiosource_p.h
   rtcmediaconstraints_p.h
+  rtcmediastreamtrack_p.h
+  rtcaudiotrack_p.h
+  rtcvideotrack_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h

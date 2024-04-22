@@ -1,5 +1,7 @@
 #include "rtcvideotrack.h"
+#include "rtcvideotrack_p.h"
 
-RTCVideoTrack::RTCVideoTrack(QObject *parent) : RTCMediaStreamTrack{parent}
+RTCVideoTrack::RTCVideoTrack(RTCVideoTrackPrivate &d, QObject *parent)
+    : RTCMediaStreamTrack{d, parent}
 {
 }

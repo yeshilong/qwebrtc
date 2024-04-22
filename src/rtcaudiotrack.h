@@ -7,6 +7,7 @@
 #include "rtcaudiosource.h"
 #include "rtcmediastreamtrack.h"
 
+class RTCAudioTrackPrivate;
 /**
  * @brief Represents an audio track with a source and methods to add and remove renderers.
  */
@@ -19,7 +20,7 @@ class RTCAudioTrack : public RTCMediaStreamTrack
      * @brief Creates a new instance.
      * @param parent The parent object.
      */
-    explicit RTCAudioTrack(QObject *parent = nullptr);
+    explicit RTCAudioTrack(RTCAudioTrackPrivate &d, QObject *parent = nullptr);
 
     /**
      * @brief Returns the audio source for this audio track.

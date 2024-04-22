@@ -7,6 +7,8 @@
 #include "rtcvideorenderer.h"
 #include "rtcvideosource.h"
 
+class RTCVideoTrackPrivate;
+
 /**
  * @brief Represents a video track with a source and methods to add and remove renderers.
  */
@@ -18,7 +20,7 @@ class RTCVideoTrack : public RTCMediaStreamTrack
     /**
      * @brief Initializes a new instance of the RTCVideoTrack class.
      */
-    explicit RTCVideoTrack(QObject *parent = nullptr);
+    explicit RTCVideoTrack(RTCVideoTrackPrivate &d, QObject *parent = nullptr);
 
     /**
      * @brief Returns the video source for this video track.

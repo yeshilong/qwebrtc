@@ -6,6 +6,8 @@
 
 #include "rtctypes.h"
 
+class RTCMediaStreamTrackPrivate;
+
 /**
  * @brief Represents a media stream track with multiple properties.
  */
@@ -14,12 +16,6 @@ class RTCMediaStreamTrack : public QObject
     Q_OBJECT
 
   public:
-    /**
-     * @brief Creates a new instance.
-     * @param parent The parent object.
-     */
-    explicit RTCMediaStreamTrack(QObject *parent = nullptr);
-
     /**
      * @brief Returns the kind of track. For example, "audio" if this track represents an audio track and "video" if this track represents a video track.
      * @return The kind of track.
@@ -56,6 +52,17 @@ class RTCMediaStreamTrack : public QObject
      * @return The kind of video track.
      */
     static QString RTCMediaStreamTrackKindVideo();
+
+  protected:
+    /**
+     * @brief Initializes a new instance of the RTCMediaSource class.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCMediaStreamTrack(RTCMediaStreamTrackPrivate &nativeMediaStreamTrack,
+                        QObject *parent = nullptr);
+    Q_DECLARE_PRIVATE(RTCMediaStreamTrack)
+    RTCMediaStreamTrackPrivate *d_ptr;
 };
 
 #endif // RTCMEDIASTREAMTRACK_H
