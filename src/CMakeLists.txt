@@ -112,6 +112,7 @@ add_library(qwebrtc SHARED
   rtcmediastreamtrack_p.h
   rtcaudiotrack_p.h
   rtcvideotrack_p.h
+  rtccodecspecificinfoh264_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h

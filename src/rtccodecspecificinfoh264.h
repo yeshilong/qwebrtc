@@ -6,6 +6,7 @@
 #include "rtctypes.h"
 #include "rtccodecspecificinfo.h"
 
+class RTCCodecSpecificInfoH264Private;
 /**
  * @brief The RTCCodecSpecificInfoH264 class.
  */
@@ -30,6 +31,10 @@ class RTCCodecSpecificInfoH264 : public IRTCCodecSpecificInfo
      * @param packetizationMode The packetization mode for H264 codec.
      */
     void setPacketizationMode(RTCH264PacketizationMode packetizationMode);
+
+  private:
+    Q_DECLARE_PRIVATE(RTCCodecSpecificInfoH264)
+    RTCCodecSpecificInfoH264Private *const d_ptr;
 };
 
 #endif // RTCCODECSPECIFICINFOH264_H
