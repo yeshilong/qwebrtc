@@ -12,7 +12,7 @@ class QWEBRTC_EXPORT RTCIceCandidatePrivate
   public:
     RTCIceCandidatePrivate(const QString &sdp, int sdpMLineIndex, const QString &sdpMid);
     RTCIceCandidatePrivate(const webrtc::IceCandidateInterface *candidate);
-    std::unique_ptr<webrtc::IceCandidateInterface> getNativeCandidate() const;
+    std::unique_ptr<webrtc::IceCandidateInterface> nativeIceCandidate() const;
 
     QString sdpMid_;
     int sdpMLineIndex_;

@@ -12,7 +12,7 @@ class RTCMediaConstraintsPrivate
     explicit RTCMediaConstraintsPrivate(QMap<QString, QString> mandatory,
                                         QMap<QString, QString> optional);
     std::unique_ptr<webrtc::MediaConstraints> nativeMediaConstraints();
-    webrtc::MediaConstraints::Constraints nativeConstraintsForConstraints(
+    webrtc::MediaConstraints::Constraints nativeMediaConstraintsForConstraints(
         QMap<QString, QString> constraints);
 
   private:

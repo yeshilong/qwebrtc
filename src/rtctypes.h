@@ -492,5 +492,4 @@ enum class RTCMediaStreamTrackType
     RTCMediaStreamTrackTypeVideo,
 };
 
-
 #endif // RTCTYPES_H

@@ -13,7 +13,7 @@ class RTCAudioSourcePrivate : public RTCMediaSourcePrivate
                           rtc::scoped_refptr<webrtc::MediaSourceInterface> nativeMediaSource,
                           RTCMediaSourceType type);
 
-    rtc::scoped_refptr<webrtc::AudioSourceInterface> getNativeAudioSource();
+    rtc::scoped_refptr<webrtc::AudioSourceInterface> nativeAudioSource();
 
     rtc::scoped_refptr<webrtc::AudioSourceInterface> nativeAudioSource_;
 };

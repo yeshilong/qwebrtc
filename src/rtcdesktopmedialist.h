@@ -36,7 +36,7 @@ class RTCDesktopMediaList : public QObject
      * @brief Gets the sources.
      * @return The sources.
      */
-    QVector<RTCDesktopSource *> getSources();
+    QVector<RTCDesktopSource *> sources();
 
   Q_SIGNALS:
     void desktopSourceAdded(RTCDesktopSource *source);

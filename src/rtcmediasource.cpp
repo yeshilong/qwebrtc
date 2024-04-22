@@ -16,7 +16,7 @@ RTCMediaSourcePrivate::RTCMediaSourcePrivate(
     type_ = type;
 }
 
-rtc::scoped_refptr<webrtc::MediaSourceInterface> RTCMediaSourcePrivate::getNativeMediaSource()
+rtc::scoped_refptr<webrtc::MediaSourceInterface> RTCMediaSourcePrivate::nativeMediaSource()
 {
     return nativeMediaSource_;
 }

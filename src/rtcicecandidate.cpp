@@ -25,7 +25,7 @@ RTCIceCandidatePrivate::RTCIceCandidatePrivate(const webrtc::IceCandidateInterfa
     serverUrl_ = QString::fromStdString(candidate->server_url());
 }
 
-std::unique_ptr<webrtc::IceCandidateInterface> RTCIceCandidatePrivate::getNativeCandidate() const
+std::unique_ptr<webrtc::IceCandidateInterface> RTCIceCandidatePrivate::nativeIceCandidate() const
 {
     webrtc::SdpParseError error;
 

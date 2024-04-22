@@ -15,7 +15,7 @@ class RTCMediaSourcePrivate
                           rtc::scoped_refptr<webrtc::MediaSourceInterface> nativeMediaSource,
                           RTCMediaSourceType type);
 
-    rtc::scoped_refptr<webrtc::MediaSourceInterface> getNativeMediaSource();
+    rtc::scoped_refptr<webrtc::MediaSourceInterface> nativeMediaSource();
 
     RTCPeerConnectionFactory *factory_;
     rtc::scoped_refptr<webrtc::MediaSourceInterface> nativeMediaSource_;

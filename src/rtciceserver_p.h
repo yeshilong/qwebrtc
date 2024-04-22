@@ -12,8 +12,8 @@ class RTCIceServerPrivate
 {
   public:
     RTCIceServerPrivate();
-    RTCIceServerPrivate(webrtc::PeerConnectionInterface::IceServer nativeServer);
-    webrtc::PeerConnectionInterface::IceServer getNativeServer() const;
+    RTCIceServerPrivate(webrtc::PeerConnectionInterface::IceServer nativeIceServer);
+    webrtc::PeerConnectionInterface::IceServer nativeIceServer() const;
 
     QVector<QString> urlStrings_;
     QString username_;

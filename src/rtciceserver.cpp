@@ -14,31 +14,31 @@ RTCIceServerPrivate::RTCIceServerPrivate()
     tlsEllipticCurves_ = QVector<QString>();
 }
 
-RTCIceServerPrivate::RTCIceServerPrivate(webrtc::PeerConnectionInterface::IceServer nativeServer)
+RTCIceServerPrivate::RTCIceServerPrivate(webrtc::PeerConnectionInterface::IceServer nativeIceServer)
 {
-    username_ = QString::fromStdString(nativeServer.username);
-    credential_ = QString::fromStdString(nativeServer.password);
-    hostname_ = QString::fromStdString(nativeServer.hostname);
+    username_ = QString::fromStdString(nativeIceServer.username);
+    credential_ = QString::fromStdString(nativeIceServer.password);
+    hostname_ = QString::fromStdString(nativeIceServer.hostname);
 
-    for (const auto &protocol : nativeServer.tls_alpn_protocols)
+    for (const auto &protocol : nativeIceServer.tls_alpn_protocols)
     {
         tlsAlpnProtocols_.append(QString::fromStdString(protocol));
     }
 
-    for (const auto &curve : nativeServer.tls_elliptic_curves)
+    for (const auto &curve : nativeIceServer.tls_elliptic_curves)
     {
         tlsEllipticCurves_.append(QString::fromStdString(curve));
     }
 
-    for (const auto &url : nativeServer.urls)
+    for (const auto &url : nativeIceServer.urls)
     {
         urlStrings_.append(QString::fromStdString(url));
     }
 
-    tlsCertPolicy_ = static_cast<RTCTlsCertPolicy>(nativeServer.tls_cert_policy);
+    tlsCertPolicy_ = static_cast<RTCTlsCertPolicy>(nativeIceServer.tls_cert_policy);
 }
 
-webrtc::PeerConnectionInterface::IceServer RTCIceServerPrivate::getNativeServer() const
+webrtc::PeerConnectionInterface::IceServer RTCIceServerPrivate::nativeIceServer() const
 {
     __block webrtc::PeerConnectionInterface::IceServer iceServer;
     iceServer.username = username_.toStdString();

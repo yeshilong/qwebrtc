@@ -10,15 +10,15 @@ RTCMediaConstraintsPrivate::RTCMediaConstraintsPrivate(QMap<QString, QString> ma
 std::unique_ptr<webrtc::MediaConstraints> RTCMediaConstraintsPrivate::nativeMediaConstraints()
 {
     webrtc::MediaConstraints::Constraints nativeMandatory =
-        nativeConstraintsForConstraints(mandatory_);
+        nativeMediaConstraintsForConstraints(mandatory_);
     webrtc::MediaConstraints::Constraints nativeOptional =
-        nativeConstraintsForConstraints(optional_);
+        nativeMediaConstraintsForConstraints(optional_);
 
     return std::make_unique<webrtc::MediaConstraints>(nativeMandatory, nativeOptional);
 }
 
-webrtc::MediaConstraints::Constraints RTCMediaConstraintsPrivate::nativeConstraintsForConstraints(
-    QMap<QString, QString> constraints)
+webrtc::MediaConstraints::Constraints RTCMediaConstraintsPrivate::
+    nativeMediaConstraintsForConstraints(QMap<QString, QString> constraints)
 {
     webrtc::MediaConstraints::Constraints nativeConstraints;
     for (auto it = constraints.begin(); it != constraints.end(); ++it)

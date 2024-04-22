@@ -11,7 +11,7 @@ RTCDtmfSender::RTCDtmfSender(QObject *parent)
 bool RTCDtmfSender::canInsertDtmf() const
 {
     Q_D(const RTCDtmfSender);
-    return d_ptr->nativeDtmfSender->CanInsertDtmf();
+    return d_ptr->nativeDtmfSender_->CanInsertDtmf();
 }
 
 bool RTCDtmfSender::insertDtmf(const QString &tones, const QTime &duration,
@@ -20,20 +20,20 @@ bool RTCDtmfSender::insertDtmf(const QString &tones, const QTime &duration,
     Q_D(RTCDtmfSender);
     int durationMs = static_cast<int>(duration.second() * rtc::kNumMillisecsPerSec);
     int interToneGapMs = static_cast<int>(interToneGap.second() * rtc::kNumMillisecsPerSec);
-    return d_ptr->nativeDtmfSender->InsertDtmf(tones.toStdString(), durationMs, interToneGapMs);
+    return d_ptr->nativeDtmfSender_->InsertDtmf(tones.toStdString(), durationMs, interToneGapMs);
 }
 
 QString RTCDtmfSender::remainingTones() const
 {
     Q_D(const RTCDtmfSender);
-    return QString::fromStdString(d_ptr->nativeDtmfSender->tones());
+    return QString::fromStdString(d_ptr->nativeDtmfSender_->tones());
 }
 
 QTime RTCDtmfSender::duration() const
 {
     Q_D(const RTCDtmfSender);
     QTime duration(0, 0);
-    duration = duration.addSecs(d_ptr->nativeDtmfSender->duration());
+    duration = duration.addSecs(d_ptr->nativeDtmfSender_->duration());
     return duration;
 }
 
@@ -41,6 +41,6 @@ QTime RTCDtmfSender::interToneGap() const
 {
     Q_D(const RTCDtmfSender);
     QTime interToneGap(0, 0);
-    interToneGap = interToneGap.addSecs(d_ptr->nativeDtmfSender->inter_tone_gap());
+    interToneGap = interToneGap.addSecs(d_ptr->nativeDtmfSender_->inter_tone_gap());
     return interToneGap;
 }
