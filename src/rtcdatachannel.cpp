@@ -1,74 +1,164 @@
 #include "rtcdatachannel.h"
+#include "rtcdatachannel_p.h"
 
-RTCDataChannel::RTCDataChannel(QObject *parent) : QObject{parent}
+RTCDataChannelPrivate::RTCDataChannelPrivate(
+    RTCPeerConnectionFactory *factory,
+    rtc::scoped_refptr<webrtc::DataChannelInterface> nativeDataChannel)
 {
+    Q_ASSERT(factory);
+    Q_ASSERT(nativeDataChannel);
+
+    factory_ = factory;
+    nativeDataChannel_ = nativeDataChannel;
+    observer_.reset(new webrtc::DataChannelDelegateAdapter(this->q_ptr.get()));
 }
 
-QString RTCDataChannel::label() const
+RTCDataChannelPrivate::~RTCDataChannelPrivate()
 {
-    return label_;
+    nativeDataChannel_->UnregisterObserver();
 }
 
-bool RTCDataChannel::isReliable() const
+QString RTCDataChannelPrivate::label() const
 {
-    return isReliable_;
+    return QString::fromStdString(nativeDataChannel_->label());
 }
 
-bool RTCDataChannel::isOrdered() const
+bool RTCDataChannelPrivate::isReliable() const
 {
-    return isOrdered_;
+    return nativeDataChannel_->reliable();
 }
 
-unsigned int RTCDataChannel::maxRetransmitTime() const
+bool RTCDataChannelPrivate::isOrdered() const
+{
+    return nativeDataChannel_->ordered();
+}
+
+unsigned int RTCDataChannelPrivate::maxRetransmitTime() const
 {
     return maxPacketLifeTime_;
 }
 
-unsigned short RTCDataChannel::maxPacketLifeTime() const
+unsigned short RTCDataChannelPrivate::maxPacketLifeTime() const
 {
-    return maxPacketLifeTime_;
+    return nativeDataChannel_->maxRetransmitTime();
 }
 
-unsigned short RTCDataChannel::maxRetransmits() const
+unsigned short RTCDataChannelPrivate::maxRetransmits() const
 {
-    return maxRetransmits_;
+    return nativeDataChannel_->maxRetransmits();
 }
 
-QString RTCDataChannel::protocol() const
+QString RTCDataChannelPrivate::protocol() const
 {
-    return protocol_;
+    return QString::fromStdString(nativeDataChannel_->protocol());
 }
 
-bool RTCDataChannel::isNegotiated() const
+bool RTCDataChannelPrivate::isNegotiated() const
 {
-    return isNegotiated_;
+    return nativeDataChannel_->negotiated();
 }
 
-int RTCDataChannel::streamId() const
-{
-    return streamId_;
-}
-
-int RTCDataChannel::channelId() const
+int RTCDataChannelPrivate::streamId() const
 {
     return channelId_;
 }
 
+int RTCDataChannelPrivate::channelId() const
+{
+    return nativeDataChannel_->id();
+}
+
+RTCDataChannelState RTCDataChannelPrivate::readyState() const
+{
+    return static_cast<RTCDataChannelState>(nativeDataChannel_->state());
+}
+
+unsigned long long RTCDataChannelPrivate::bufferedAmount() const
+{
+    return nativeDataChannel_->buffered_amount();
+}
+
+void RTCDataChannelPrivate::close()
+{
+    nativeDataChannel_->Close();
+}
+
+bool RTCDataChannelPrivate::sendData(const webrtc::DataBuffer *data)
+{
+    return nativeDataChannel_->Send(*data);
+}
+
+RTCDataChannel::~RTCDataChannel()
+{
+    delete d_ptr;
+}
+
+QString RTCDataChannel::label() const
+{
+    return d_ptr->label();
+}
+
+bool RTCDataChannel::isReliable() const
+{
+    return d_ptr->isReliable();
+}
+
+bool RTCDataChannel::isOrdered() const
+{
+    return d_ptr->isOrdered();
+}
+
+unsigned int RTCDataChannel::maxRetransmitTime() const
+{
+    return d_ptr->maxRetransmitTime();
+}
+
+unsigned short RTCDataChannel::maxPacketLifeTime() const
+{
+    return d_ptr->maxPacketLifeTime();
+}
+
+unsigned short RTCDataChannel::maxRetransmits() const
+{
+    return d_ptr->maxRetransmits();
+}
+
+QString RTCDataChannel::protocol() const
+{
+    return d_ptr->protocol();
+}
+
+bool RTCDataChannel::isNegotiated() const
+{
+    return d_ptr->isNegotiated();
+}
+
+int RTCDataChannel::streamId() const
+{
+    return d_ptr->streamId();
+}
+
+int RTCDataChannel::channelId() const
+{
+    return d_ptr->channelId();
+}
+
 RTCDataChannelState RTCDataChannel::readyState() const
 {
-    return readyState_;
+    return d_ptr->readyState();
 }
 
 unsigned long long RTCDataChannel::bufferedAmount() const
 {
-    return bufferedAmount_;
+    return d_ptr->bufferedAmount();
 }
 
 void RTCDataChannel::close()
 {
+    d_ptr->close();
 }
 
-bool RTCDataChannel::sendData(const QByteArray &data)
+bool RTCDataChannel::sendData(const RTCDataBuffer *data)
 {
-    return false;
+    return d_ptr->sendData(data->d_ptr->nativeDataBuffer());
 }

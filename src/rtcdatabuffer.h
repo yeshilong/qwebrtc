@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QByteArray>
 
+class RTCDataBufferPrivate;
 /**
  * @brief The RTCDataBuffer class represents a buffer of data to be sent through a data channel.
  */
@@ -11,15 +12,15 @@ class RTCDataBuffer : public QObject
 {
     Q_OBJECT
   public:
-    explicit RTCDataBuffer(QObject *parent = nullptr);
-    RTCDataBuffer(const QByteArray &data, bool isBinary, QObject *parent = nullptr);
+    explicit RTCDataBuffer(const QByteArray &data, bool isBinary, QObject *parent = nullptr);
 
     QByteArray data() const;
     bool isBinary() const;
+    friend class RTCDataChannel;
 
-  private:
-    QByteArray data_;
-    bool isBinary_;
+  protected:
+    Q_DECLARE_PRIVATE(RTCDataBuffer)
+    RTCDataBufferPrivate *const d_ptr;
 };
 
 #endif // RTCDATABUFFER_H

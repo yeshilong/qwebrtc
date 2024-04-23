@@ -6,7 +6,9 @@
 #include <QByteArray>
 
 #include "rtctypes.h"
+#include "rtcdatabuffer.h"
 
+class RTCDataChannelPrivate;
 /**
  * @brief The RTCDataChannel class represents a data channel with various properties and methods.
  */
@@ -14,8 +16,7 @@ class RTCDataChannel : public QObject
 {
     Q_OBJECT
   public:
-    explicit RTCDataChannel(QObject *parent = nullptr);
-
+    ~RTCDataChannel();
     QString label() const;
     bool isReliable() const;
     bool isOrdered() const;
@@ -30,7 +31,7 @@ class RTCDataChannel : public QObject
     unsigned long long bufferedAmount() const;
 
     void close();
-    bool sendData(const QByteArray &data);
+    bool sendData(const RTCDataBuffer *data);
 
   Q_SIGNALS:
     void dataChannelDidChangeState();
@@ -38,19 +39,8 @@ class RTCDataChannel : public QObject
     void dataChannelDidChangeBufferedAmount(unsigned long long amount);
 
   private:
-    QString label_;
-    bool isReliable_;
-    bool isOrdered_;
-    unsigned int maxRetransmitTime_;
-    unsigned short maxPacketLifeTime_;
-    unsigned short maxRetransmits_;
-    QString protocol_;
-    bool isNegotiated_;
-    int streamId_;
-    int channelId_;
-    RTCDataChannelState readyState_;
-    unsigned long long bufferedAmount_;
-    QByteArray buffer_;
+    Q_DECLARE_PRIVATE(RTCDataChannel)
+    RTCDataChannelPrivate *const d_ptr = nullptr;
 };
 
 #endif // RTCDATACHANNEL_H
