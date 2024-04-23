@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QString>
 
+class RTCMetricsSampleInfoPrivate;
 /**
  * @brief Represents information about a single RTCMetrics sample.
  */
@@ -17,7 +18,7 @@ class RTCMetricsSampleInfo : public QObject
      * @brief Constructs an RTCMetricsSampleInfo object.
      * @note This constructor is unavailable and will throw a PlatformNotSupportedException if called.
      */
-    explicit RTCMetricsSampleInfo(QObject *parent = nullptr);
+    RTCMetricsSampleInfo(QObject *parent = nullptr);
 
     /**
      * @brief Gets the name of the histogram.
@@ -49,12 +50,19 @@ class RTCMetricsSampleInfo : public QObject
      */
     QMap<int, int> samples() const;
 
+  protected:
+    /**
+     * @brief Constructs an RTCMetricsSampleInfo object.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCMetricsSampleInfo(RTCMetricsSampleInfoPrivate &d, QObject *parent = nullptr);
+
   private:
-    QString name_;
-    int min_;
-    int max_;
-    int bucketCount_;
-    QMap<int, int> samples_;
+    friend class RTCMetrics;
+
+    Q_DECLARE_PRIVATE(RTCMetricsSampleInfo)
+    RTCMetricsSampleInfoPrivate *const d_ptr;
 };
 
 #endif // RTCMETRICSSAMPLEINFO_H

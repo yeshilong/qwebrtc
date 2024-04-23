@@ -24,10 +24,7 @@ class RTCMetrics : public QObject
      * @brief Gets and clears native histograms.
      * @return An array of RTCMetricsSampleInfo objects.
      */
-    static QVector<RTCMetricsSampleInfo> getAndResetMetrics();
-
-  private:
-    static QVector<RTCMetricsSampleInfo> metrics_;
+    static QVector<RTCMetricsSampleInfo *> getAndResetMetrics();
 };
 
 #endif // RTCMETRICS_H

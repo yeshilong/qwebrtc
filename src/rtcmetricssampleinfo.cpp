@@ -1,30 +1,57 @@
 #include "rtcmetricssampleinfo.h"
+#include "rtcmetricssampleinfo_p.h"
 
-RTCMetricsSampleInfo::RTCMetricsSampleInfo(QObject *parent) : QObject{parent}
+RTCMetricsSampleInfoPrivate::RTCMetricsSampleInfoPrivate()
+    : name_{}, min_{0}, max_{0}, bucketCount_{0}, samples_{}
+{
+}
+
+RTCMetricsSampleInfoPrivate::RTCMetricsSampleInfoPrivate(const webrtc::metrics::SampleInfo &info)
+    : name_(QString::fromStdString(info.name)), min_(info.min), max_(info.max),
+      bucketCount_(info.bucket_count)
+{
+    for (const auto &sample : info.samples)
+    {
+        samples_.insert(sample.first, sample.second);
+    }
+}
+
+RTCMetricsSampleInfo::RTCMetricsSampleInfo(QObject *parent)
+    : QObject{parent}, d_ptr{new RTCMetricsSampleInfoPrivate()}
+{
+}
+
+RTCMetricsSampleInfo::RTCMetricsSampleInfo(RTCMetricsSampleInfoPrivate &d, QObject *parent)
+    : QObject{parent}, d_ptr{&d}
 {
 }
 
 QString RTCMetricsSampleInfo::name() const
 {
-    return name_;
+    Q_D(const RTCMetricsSampleInfo);
+    return d->name_;
 }
 
 int RTCMetricsSampleInfo::min() const
 {
-    return min_;
+    Q_D(const RTCMetricsSampleInfo);
+    return d->min_;
 }
 
 int RTCMetricsSampleInfo::max() const
 {
-    return max_;
+    Q_D(const RTCMetricsSampleInfo);
+    return d->max_;
 }
 
 int RTCMetricsSampleInfo::bucketCount() const
 {
-    return bucketCount_;
+    Q_D(const RTCMetricsSampleInfo);
+    return d->bucketCount_;
 }
 
 QMap<int, int> RTCMetricsSampleInfo::samples() const
 {
-    return samples_;
+    Q_D(const RTCMetricsSampleInfo);
+    return d->samples_;
 }
