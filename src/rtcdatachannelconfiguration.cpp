@@ -1,85 +1,103 @@
 #include "rtcdatachannelconfiguration.h"
+#include "rtcdatachannelconfiguration_p.h"
 
-RTCDataChannelConfiguration::RTCDataChannelConfiguration(QObject *parent) : QObject{parent}
+RTCDataChannelConfigurationPrivate::RTCDataChannelConfigurationPrivate()
+{
+}
+
+webrtc::DataChannelInit RTCDataChannelConfigurationPrivate::nativeDataChannelInit() const
+{
+    return nativeDataChannelInit_;
+}
+
+RTCDataChannelConfiguration::RTCDataChannelConfiguration(QObject *parent)
+    : QObject{parent}, d_ptr{new RTCDataChannelConfigurationPrivate}
 {
 }
 
 bool RTCDataChannelConfiguration::isOrdered() const
 {
-    return isOrdered_;
+    return d_ptr->nativeDataChannelInit_.ordered;
 }
 
 void RTCDataChannelConfiguration::setIsOrdered(bool ordered)
 {
-    isOrdered_ = ordered;
+    d_ptr->nativeDataChannelInit_.ordered = ordered;
 }
 
 int RTCDataChannelConfiguration::maxRetransmitTimeMs() const
 {
-    return maxRetransmitTimeMs_;
+    return d_ptr->maxPacketLifeTime_;
 }
 
 void RTCDataChannelConfiguration::setMaxRetransmitTimeMs(int time)
 {
-    maxRetransmitTimeMs_ = time;
+    d_ptr->maxPacketLifeTime_ = time;
 }
 
 int RTCDataChannelConfiguration::maxPacketLifeTime() const
 {
-    return maxPacketLifeTime_;
+    return *d_ptr->nativeDataChannelInit_.maxRetransmitTime;
 }
 
 void RTCDataChannelConfiguration::setMaxPacketLifeTime(int time)
 {
-    maxPacketLifeTime_ = time;
+    d_ptr->nativeDataChannelInit_.maxRetransmitTime = time;
 }
 
 int RTCDataChannelConfiguration::maxRetransmits() const
 {
-    return maxRetransmits_;
+    if (d_ptr->nativeDataChannelInit_.maxRetransmits)
+    {
+        return *d_ptr->nativeDataChannelInit_.maxRetransmits;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 void RTCDataChannelConfiguration::setMaxRetransmits(int retransmits)
 {
-    maxRetransmits_ = retransmits;
+    d_ptr->nativeDataChannelInit_.maxRetransmits = retransmits;
 }
 
 bool RTCDataChannelConfiguration::isNegotiated() const
 {
-    return isNegotiated_;
+    return d_ptr->nativeDataChannelInit_.negotiated;
 }
 
 void RTCDataChannelConfiguration::setIsNegotiated(bool negotiated)
 {
-    isNegotiated_ = negotiated;
+    d_ptr->nativeDataChannelInit_.negotiated = negotiated;
 }
 
 int RTCDataChannelConfiguration::streamId() const
 {
-    return streamId_;
+    return d_ptr->channelId_;
 }
 
 void RTCDataChannelConfiguration::setStreamId(int id)
 {
-    streamId_ = id;
+    d_ptr->channelId_ = id;
 }
 
 int RTCDataChannelConfiguration::channelId() const
 {
-    return channelId_;
+    return d_ptr->nativeDataChannelInit_.id;
 }
 
 void RTCDataChannelConfiguration::setChannelId(int id)
 {
-    channelId_ = id;
+    d_ptr->nativeDataChannelInit_.id = id;
 }
 
 QString RTCDataChannelConfiguration::protocol() const
 {
-    return protocol_;
+    return QString::fromStdString(d_ptr->nativeDataChannelInit_.protocol);
 }
 
 void RTCDataChannelConfiguration::setProtocol(const QString &protocol)
 {
-    protocol_ = protocol;
+    d_ptr->nativeDataChannelInit_.protocol = protocol.toStdString();
 }

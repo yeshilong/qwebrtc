@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 
+class RTCDataChannelConfigurationPrivate;
 /**
  * @brief The RTCDataChannelConfiguration class represents a configuration for a data channel with various properties.
  */
@@ -39,14 +40,8 @@ class RTCDataChannelConfiguration : public QObject
     void setProtocol(const QString &protocol);
 
   private:
-    bool isOrdered_;
-    int maxRetransmitTimeMs_;
-    int maxPacketLifeTime_;
-    int maxRetransmits_;
-    bool isNegotiated_;
-    int streamId_;
-    int channelId_;
-    QString protocol_;
+    Q_DECLARE_PRIVATE(RTCDataChannelConfiguration)
+    RTCDataChannelConfigurationPrivate *d_ptr;
 };
 
 #endif // RTCDATACHANNELCONFIGURATION_H
