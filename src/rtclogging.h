@@ -34,4 +34,37 @@ class RTCLogging : public QObject
     static QString rtcFileName(const QString &filePath);
 };
 
+#define RTCLogString(format, ...)                                                                  \
+    QString("(%1:%2 %3): " format)                                                                 \
+        .arg(RTCFileName(__FILE__))                                                                \
+        .arg(__LINE__)                                                                             \
+        .arg(__FUNCTION__)                                                                         \
+        .arg(__VA_ARGS__)
+
+#define RTCLogFormat(severity, format, ...)                                                        \
+    do                                                                                             \
+    {                                                                                              \
+        QString log_string = RTCLogString(format, ##__VA_ARGS__);                                  \
+        RTCLogEx(severity, log_string);                                                            \
+    } while (false)
+
+#define RTCLogVerbose(format, ...) RTCLogFormat(RTCLoggingSeverityVerbose, format, ##__VA_ARGS__)
+
+#define RTCLogInfo(format, ...) RTCLogFormat(RTCLoggingSeverityInfo, format, ##__VA_ARGS__)
+
+#define RTCLogWarning(format, ...) RTCLogFormat(RTCLoggingSeverityWarning, format, ##__VA_ARGS__)
+
+#define RTCLogError(format, ...) RTCLogFormat(RTCLoggingSeverityError, format, ##__VA_ARGS__)
+
+#if !defined(NDEBUG)
+#define RTCLogDebug(format, ...) RTCLogInfo(format, ##__VA_ARGS__)
+#else
+#define RTCLogDebug(format, ...)                                                                   \
+    do                                                                                             \
+    {                                                                                              \
+    } while (false)
+#endif
+
+#define RTCLog(format, ...) RTCLogInfo(format, ##__VA_ARGS__)
+
 #endif // RTCLOGGING_H
