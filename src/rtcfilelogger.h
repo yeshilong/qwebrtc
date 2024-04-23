@@ -17,7 +17,12 @@ class RTCFileLogger : public QObject
     /**
      * @brief Constructs an RTCFileLogger object with default settings for dir path, file size and rotation type.
      */
-    explicit RTCFileLogger(QObject *parent = nullptr);
+    RTCFileLogger(QObject *parent = nullptr);
+
+    /**
+     * @brief Destructs the RTCFileLogger object.
+     */
+    ~RTCFileLogger();
 
     /**
      * @brief Constructs an RTCFileLogger object with the specified dir path and file size and default rotation type.
@@ -32,8 +37,17 @@ class RTCFileLogger : public QObject
      * @param maxFileSize The max file size.
      * @param rotationType The rotation type.
      */
-    RTCFileLogger(const QString &dirPath, quint32 maxFileSize,
-                  RTCFileLoggerRotationType rotationType, QObject *parent = nullptr);
+    explicit RTCFileLogger(const QString &dirPath, quint32 maxFileSize,
+                           RTCFileLoggerRotationType rotationType, QObject *parent = nullptr);
+
+    /**
+     * @brief Initializes the file logger with the specified dir path, max file size and rotation type.
+     * @param dirPath The dir path.
+     * @param maxFileSize The max file size.
+     * @param rotationType The rotation type.
+     */
+    void init(const QString &dirPath, quint64 maxFileSize,
+              RTCFileLoggerRotationType rotationType = RTCFileLoggerRotationType::Call);
 
     /**
      * @brief Gets the severity level to capture.
@@ -80,6 +94,14 @@ class RTCFileLogger : public QObject
      * @return The current contents of the logs.
      */
     QByteArray logData() const;
+
+  private:
+    QString dirPath_;
+    quint64 maxFileSize_;
+    RTCFileLoggerRotationType rotationType_;
+    RTCFileLoggerSeverity severity_;
+    bool shouldDisableBuffering_;
+    bool hasStarted_;
 };
 
 #endif // RTCFILELOGGER_H
