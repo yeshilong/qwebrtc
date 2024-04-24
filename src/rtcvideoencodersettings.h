@@ -126,5 +126,16 @@ class RTCVideoEncoderSettings : public QObject
      * @param mode The mode.
      */
     void setMode(RTCVideoCodecMode mode);
+
+  private:
+    QString name_;
+    quint16 width_;
+    quint16 height_;
+    quint32 startBitrate_;
+    quint32 maxBitrate_;
+    quint32 minBitrate_;
+    quint32 maxFramerate_;
+    quint32 qpMax_;
+    RTCVideoCodecMode mode_;
 };
 #endif // RTCVIDEOENCODERSETTINGS_H
