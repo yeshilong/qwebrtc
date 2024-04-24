@@ -103,6 +103,10 @@ class RTCIceServer : public QObject
     QVector<QString> tlsEllipticCurves() const;
 
   private:
+    void init(QVector<QString> urlStrings, QString username, QString credential,
+              RTCTlsCertPolicy tlsCertPolicy, QString hostname, QVector<QString> tlsAlpnProtocols,
+              QVector<QString> tlsEllipticCurves);
+
     Q_DECLARE_PRIVATE(RTCIceServer)
     RTCIceServerPrivate *d_ptr;
 };

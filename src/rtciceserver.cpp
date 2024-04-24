@@ -66,63 +66,12 @@ webrtc::PeerConnectionInterface::IceServer RTCIceServerPrivate::nativeIceServer(
     return iceServer;
 }
 
-// MARK: - Public
+void RTCIceServer::init(QVector<QString> urlStrings, QString username, QString credential,
+                        RTCTlsCertPolicy tlsCertPolicy, QString hostname,
+                        QVector<QString> tlsAlpnProtocols, QVector<QString> tlsEllipticCurves)
 
-RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QObject *parent)
-    : QObject{parent}, d_ptr{new RTCIceServerPrivate()}
 {
-    d_ptr->urlStrings_ = urlStrings;
-}
-
-RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
-                           QObject *parent)
-    : QObject{parent}, d_ptr{new RTCIceServerPrivate()}
-{
-    d_ptr->urlStrings_ = urlStrings;
-    d_ptr->username_ = username;
-    d_ptr->credential_ = credential;
-}
-
-RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
-                           RTCTlsCertPolicy tlsCertPolicy, QObject *parent)
-    : QObject{parent}, d_ptr{new RTCIceServerPrivate()}
-{
-    d_ptr->urlStrings_ = urlStrings;
-    d_ptr->username_ = username;
-    d_ptr->credential_ = credential;
-    d_ptr->tlsCertPolicy_ = tlsCertPolicy;
-}
-
-RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
-                           RTCTlsCertPolicy tlsCertPolicy, QString hostname, QObject *parent)
-    : QObject{parent}, d_ptr{new RTCIceServerPrivate()}
-{
-    d_ptr->urlStrings_ = urlStrings;
-    d_ptr->username_ = username;
-    d_ptr->credential_ = credential;
-    d_ptr->tlsCertPolicy_ = tlsCertPolicy;
-    d_ptr->hostname_ = hostname;
-}
-
-RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
-                           RTCTlsCertPolicy tlsCertPolicy, QString hostname,
-                           QVector<QString> tlsAlpnProtocols, QObject *parent)
-    : QObject{parent}, d_ptr{new RTCIceServerPrivate()}
-{
-    d_ptr->urlStrings_ = urlStrings;
-    d_ptr->username_ = username;
-    d_ptr->credential_ = credential;
-    d_ptr->tlsCertPolicy_ = tlsCertPolicy;
-    d_ptr->hostname_ = hostname;
-    d_ptr->tlsAlpnProtocols_ = tlsAlpnProtocols;
-}
-
-RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
-                           RTCTlsCertPolicy tlsCertPolicy, QString hostname,
-                           QVector<QString> tlsAlpnProtocols, QVector<QString> tlsEllipticCurves,
-                           QObject *parent)
-    : QObject{parent}, d_ptr{new RTCIceServerPrivate()}
-{
+    d_ptr = new RTCIceServerPrivate();
     d_ptr->urlStrings_ = urlStrings;
     d_ptr->username_ = username;
     d_ptr->credential_ = credential;
@@ -130,6 +79,51 @@ RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QStrin
     d_ptr->hostname_ = hostname;
     d_ptr->tlsAlpnProtocols_ = tlsAlpnProtocols;
     d_ptr->tlsEllipticCurves_ = tlsEllipticCurves;
+}
+
+RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QObject *parent)
+    : QObject{parent}, d_ptr{new RTCIceServerPrivate()}
+{
+    init(urlStrings, QString(), QString(), RTCTlsCertPolicy::TlsCertPolicySecure, {}, {}, {});
+}
+
+RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
+                           QObject *parent)
+    : QObject{parent}, d_ptr{new RTCIceServerPrivate()}
+{
+    init(urlStrings, username, credential, RTCTlsCertPolicy::TlsCertPolicySecure, {}, {}, {});
+}
+
+RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
+                           RTCTlsCertPolicy tlsCertPolicy, QObject *parent)
+    : QObject{parent}
+{
+    init(urlStrings, username, credential, tlsCertPolicy, QString(), {}, {});
+}
+
+RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
+                           RTCTlsCertPolicy tlsCertPolicy, QString hostname, QObject *parent)
+    : QObject{parent}
+{
+    init(urlStrings, username, credential, tlsCertPolicy, hostname, {}, {});
+}
+
+RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
+                           RTCTlsCertPolicy tlsCertPolicy, QString hostname,
+                           QVector<QString> tlsAlpnProtocols, QObject *parent)
+    : QObject{parent}
+{
+    init(urlStrings, username, credential, tlsCertPolicy, hostname, tlsAlpnProtocols, {});
+}
+
+RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QString credential,
+                           RTCTlsCertPolicy tlsCertPolicy, QString hostname,
+                           QVector<QString> tlsAlpnProtocols, QVector<QString> tlsEllipticCurves,
+                           QObject *parent)
+    : QObject{parent}
+{
+    init(urlStrings, username, credential, tlsCertPolicy, hostname, tlsAlpnProtocols,
+         tlsEllipticCurves);
 }
 
 QVector<QString> RTCIceServer::urlStrings() const

@@ -95,70 +95,84 @@ RTCDataChannel::~RTCDataChannel()
 
 QString RTCDataChannel::label() const
 {
-    return d_ptr->label();
+    Q_D(const RTCDataChannel);
+    return d->label();
 }
 
 bool RTCDataChannel::isReliable() const
 {
-    return d_ptr->isReliable();
+    Q_D(const RTCDataChannel);
+    return d->isReliable();
 }
 
 bool RTCDataChannel::isOrdered() const
 {
-    return d_ptr->isOrdered();
+    Q_D(const RTCDataChannel);
+    return d->isOrdered();
 }
 
 unsigned int RTCDataChannel::maxRetransmitTime() const
 {
-    return d_ptr->maxRetransmitTime();
+    Q_D(const RTCDataChannel);
+    return d->maxRetransmitTime();
 }
 
 unsigned short RTCDataChannel::maxPacketLifeTime() const
 {
-    return d_ptr->maxPacketLifeTime();
+    Q_D(const RTCDataChannel);
+    return d->maxPacketLifeTime();
 }
 
 unsigned short RTCDataChannel::maxRetransmits() const
 {
-    return d_ptr->maxRetransmits();
+    Q_D(const RTCDataChannel);
+    return d->maxRetransmits();
 }
 
 QString RTCDataChannel::protocol() const
 {
-    return d_ptr->protocol();
+    Q_D(const RTCDataChannel);
+    return d->protocol();
 }
 
 bool RTCDataChannel::isNegotiated() const
 {
-    return d_ptr->isNegotiated();
+    Q_D(const RTCDataChannel);
+    return d->isNegotiated();
 }
 
 int RTCDataChannel::streamId() const
 {
-    return d_ptr->streamId();
+    Q_D(const RTCDataChannel);
+    return d->streamId();
 }
 
 int RTCDataChannel::channelId() const
 {
-    return d_ptr->channelId();
+    Q_D(const RTCDataChannel);
+    return d->channelId();
 }
 
 RTCDataChannelState RTCDataChannel::readyState() const
 {
-    return d_ptr->readyState();
+    Q_D(const RTCDataChannel);
+    return d->readyState();
 }
 
 unsigned long long RTCDataChannel::bufferedAmount() const
 {
-    return d_ptr->bufferedAmount();
+    Q_D(const RTCDataChannel);
+    return d->bufferedAmount();
 }
 
 void RTCDataChannel::close()
 {
-    d_ptr->close();
+    Q_D(RTCDataChannel);
+    d->close();
 }
 
 bool RTCDataChannel::sendData(const RTCDataBuffer *data)
 {
-    return d_ptr->sendData(data->d_ptr->nativeDataBuffer());
+    Q_D(RTCDataChannel);
+    return d->sendData(data->d_ptr->nativeDataBuffer());
 }

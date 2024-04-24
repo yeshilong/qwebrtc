@@ -79,29 +79,29 @@ RTCMediaStreamTrack::RTCMediaStreamTrack(RTCMediaStreamTrackPrivate &nativeMedia
 QString RTCMediaStreamTrack::kind() const
 {
     Q_D(const RTCMediaStreamTrack);
-    return QString::fromStdString(d_ptr->nativeMediaStreamTrack_->kind());
+    return QString::fromStdString(d->nativeMediaStreamTrack_->kind());
 }
 
 QString RTCMediaStreamTrack::trackId() const
 {
     Q_D(const RTCMediaStreamTrack);
-    return QString::fromStdString(d_ptr->nativeMediaStreamTrack_->id());
+    return QString::fromStdString(d->nativeMediaStreamTrack_->id());
 }
 
 bool RTCMediaStreamTrack::isEnabled() const
 {
     Q_D(const RTCMediaStreamTrack);
-    return d_ptr->nativeMediaStreamTrack_->enabled();
+    return d->nativeMediaStreamTrack_->enabled();
 }
 
 void RTCMediaStreamTrack::setIsEnabled(bool isEnabled)
 {
     Q_D(RTCMediaStreamTrack);
-    d_ptr->nativeMediaStreamTrack_->set_enabled(isEnabled);
+    d->nativeMediaStreamTrack_->set_enabled(isEnabled);
 }
 
 RTCMediaStreamTrackState RTCMediaStreamTrack::readyState() const
 {
     Q_D(const RTCMediaStreamTrack);
-    return static_cast<RTCMediaStreamTrackState>(d_ptr->nativeMediaStreamTrack_->state());
+    return static_cast<RTCMediaStreamTrackState>(d->nativeMediaStreamTrack_->state());
 }

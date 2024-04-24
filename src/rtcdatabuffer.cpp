@@ -25,11 +25,12 @@ RTCDataBuffer::RTCDataBuffer(const QByteArray &data, bool isBinary, QObject *par
 QByteArray RTCDataBuffer::data() const
 {
     Q_D(const RTCDataBuffer);
-    return QByteArray(reinterpret_cast<const char *>(d_ptr->nativeDataBuffer_->data.data()),
-                      d_ptr->nativeDataBuffer_->data.size());
+    return QByteArray(reinterpret_cast<const char *>(d->nativeDataBuffer_->data.data()),
+                      d->nativeDataBuffer_->data.size());
 }
 
 bool RTCDataBuffer::isBinary() const
 {
-    return d_ptr->nativeDataBuffer_->binary;
+    Q_D(const RTCDataBuffer);
+    return d->nativeDataBuffer_->binary;
 }

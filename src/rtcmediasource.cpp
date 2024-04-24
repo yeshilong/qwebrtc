@@ -33,5 +33,6 @@ RTCMediaSource::RTCMediaSource(RTCMediaSourcePrivate &d, QObject *parent)
 
 RTCSourceState RTCMediaSource::state() const
 {
-    return static_cast<RTCSourceState>(d_ptr->nativeMediaSource_->state());
+    Q_D(const RTCMediaSource);
+    return static_cast<RTCSourceState>(d->nativeMediaSource_->state());
 }
