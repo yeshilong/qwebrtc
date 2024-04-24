@@ -1,10 +1,11 @@
 #ifndef RTCRTPCAPABILITIES_H
 #define RTCRTPCAPABILITIES_H
 
-#include "rtcrtpcodeccapability.h"
 #include <QObject>
 #include <QVector>
 
+class RTCRtpCodecCapability;
+class RTCRtpCapabilitiesPrivate;
 /**
  * @brief The RTCRtpCapabilities class.
  */
@@ -29,6 +30,13 @@ class RTCRtpCapabilities : public QObject
 
     // Not implemented.
     // QVector<FecMechanism*> fec;
+
+  protected:
+    RTCRtpCapabilities(RTCRtpCapabilitiesPrivate &d, QObject *parent = nullptr);
+
+  private:
+    RTCRtpCapabilitiesPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtpCapabilities)
 };
 
 #endif // RTCRTPCAPABILITIES_H

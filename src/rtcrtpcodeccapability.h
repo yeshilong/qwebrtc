@@ -8,6 +8,7 @@
 
 #include "rtctypes.h"
 
+class RTCRtpCodecCapabilityPrivate;
 /**
  * @brief The RTCRtpCodecCapability class.
  */
@@ -98,6 +99,15 @@ class RTCRtpCodecCapability : public QObject
      * @param parameters The codec-specific parameters.
      */
     void setParameters(const QMap<QString, QString> &parameters);
+
+  protected:
+    RTCRtpCodecCapability(RTCRtpCodecCapabilityPrivate &d, QObject *parent = nullptr);
+
+  private:
+    friend class RTCRtpCapabilities;
+
+    RTCRtpCodecCapabilityPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtpCodecCapability)
 };
 
 #endif // RTCRTPCODECCAPABILITY_H
