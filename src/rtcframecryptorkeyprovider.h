@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QByteArray>
 
+class RTCFrameCryptorKeyProviderPrivate;
 /**
  * @brief The RTCFrameCryptorKeyProvider class provides keys for frame encryption/decryption.
  */
@@ -30,10 +31,27 @@ class RTCFrameCryptorKeyProvider : public QObject
      * @param sharedKeyMode Indicates whether to use shared key mode.
      * @param uncryptedMagicBytes Optional unencrypted magic bytes.
      * @param failureTolerance The number of consecutive ratchet failures to tolerate.
+     * @param keyRingSize The size of the key ring.
      * @param parent The parent QObject.
      */
     explicit RTCFrameCryptorKeyProvider(QByteArray salt, int windowSize, bool sharedKeyMode,
                                         QByteArray uncryptedMagicBytes, int failureTolerance,
+                                        int keyRingSize, QObject *parent = nullptr);
+
+    /**
+     * @brief Constructs a RTCFrameCryptorKeyProvider object with the specified parameters and failure tolerance.
+     * @param salt The ratchet salt data.
+     * @param windowSize The ratchet window size.
+     * @param sharedKeyMode Indicates whether to use shared key mode.
+     * @param uncryptedMagicBytes Optional unencrypted magic bytes.
+     * @param failureTolerance The number of consecutive ratchet failures to tolerate.
+     * @param keyRingSize The size of the key ring.
+     * @param discardFrameWhenCryptorNotReady Indicates whether to discard the frame when the cryptor is not ready.
+     * @param parent The parent QObject.
+     */
+    explicit RTCFrameCryptorKeyProvider(QByteArray salt, int windowSize, bool sharedKeyMode,
+                                        QByteArray uncryptedMagicBytes, int failureTolerance,
+                                        int keyRingSize, bool discardFrameWhenCryptorNotReady,
                                         QObject *parent = nullptr);
 
     /**
@@ -86,6 +104,13 @@ class RTCFrameCryptorKeyProvider : public QObject
      * @param trailer The SIV trailer data.
      */
     void setSifTrailer(QByteArray trailer);
+
+  private:
+    void init(QByteArray salt, int windowSize, bool sharedKeyMode, QByteArray uncryptedMagicBytes,
+              int failureTolerance, int keyRingSize, bool discardFrameWhenCryptorNotReady);
+
+    RTCFrameCryptorKeyProviderPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCFrameCryptorKeyProvider)
 };
 
 #endif // RTCFRAMECRYPTORKEYPROVIDER_H
