@@ -122,6 +122,7 @@ add_library(qwebrtc SHARED
   rtclegacystatsreport_p.h
   rtcrtpcodecparameters_p.h
   rtcrtpheaderextension_p.h
+  rtcrtpencodingparameters_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h

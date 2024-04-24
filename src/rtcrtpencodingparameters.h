@@ -7,6 +7,7 @@
 
 #include "rtctypes.h"
 
+class RTCRtpEncodingParametersPrivate;
 /**
  * @brief The RTCRtpEncodingParameters class.
  */
@@ -157,5 +158,9 @@ class RTCRtpEncodingParameters : public QObject
      * @param mode The scalability mode.
      */
     void setScalabilityMode(const QString &mode);
+
+  private:
+    Q_DECLARE_PRIVATE(RTCRtpEncodingParameters)
+    RTCRtpEncodingParametersPrivate *d_ptr;
 };
 #endif // RTCRTPENCODINGPARAMETERS_H
