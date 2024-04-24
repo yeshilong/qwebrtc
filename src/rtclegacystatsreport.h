@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMap>
 
+class RTCLegacyStatsReportPrivate;
 /**
  * @brief The RTCLegacyStatsReport class.
  */
@@ -40,6 +41,12 @@ class RTCLegacyStatsReport : public QObject
      * @return The dictionary holding the actual stats.
      */
     QMap<QString, QString> values() const;
+
+  private:
+    Q_DECLARE_PRIVATE(RTCLegacyStatsReport)
+    RTCLegacyStatsReportPrivate *const d_ptr;
+
+    RTCLegacyStatsReport(RTCLegacyStatsReportPrivate &dd, QObject *parent = nullptr);
 };
 
 #endif // RTCLEGACYSTATSREPORT_H
