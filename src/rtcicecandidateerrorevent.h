@@ -15,7 +15,7 @@ class RTCIceCandidateErrorEvent : public QObject
     /**
      * @brief Initializes an RTCIceCandidateErrorEvent.
      */
-    RTCIceCandidateErrorEvent(QObject *parent = nullptr);
+    explicit RTCIceCandidateErrorEvent(QObject *parent = nullptr);
 
     /**
      * @brief Initializes an RTCIceCandidateErrorEvent with the specified address, port, URL, error code, and error text.

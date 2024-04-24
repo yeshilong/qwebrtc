@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 
+class RTCRtcpParametersPrivate;
 /**
  * @brief The RTCRtcpParameters class.
  */
@@ -40,6 +41,10 @@ class RTCRtcpParameters : public QObject
      * @param isReducedSize True to configure reduced size RTCP, false to configure compound RTCP.
      */
     void setIsReducedSize(bool isReducedSize);
+
+  private:
+    RTCRtcpParametersPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtcpParameters)
 };
 
 #endif // RTCRTCPPARAMETERS_H

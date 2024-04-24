@@ -117,6 +117,7 @@ add_library(qwebrtc SHARED
   rtcdatachannel_p.h
   rtcdatachannelconfiguration_p.h
   rtcmetricssampleinfo_p.h
+  rtcrtcpparameters_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h
