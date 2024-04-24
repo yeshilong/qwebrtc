@@ -30,8 +30,8 @@ RTCLegacyStatsReport::RTCLegacyStatsReport(QObject *parent)
 {
 }
 
-RTCLegacyStatsReport::RTCLegacyStatsReport(RTCLegacyStatsReportPrivate &dd, QObject *parent)
-    : QObject{parent}, d_ptr{&dd}
+RTCLegacyStatsReport::RTCLegacyStatsReport(RTCLegacyStatsReportPrivate &d, QObject *parent)
+    : QObject{parent}, d_ptr{&d}
 {
 }
 

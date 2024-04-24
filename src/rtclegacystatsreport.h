@@ -42,11 +42,12 @@ class RTCLegacyStatsReport : public QObject
      */
     QMap<QString, QString> values() const;
 
-  private:
-    Q_DECLARE_PRIVATE(RTCLegacyStatsReport)
-    RTCLegacyStatsReportPrivate *const d_ptr;
+  protected:
+    RTCLegacyStatsReport(RTCLegacyStatsReportPrivate &d, QObject *parent = nullptr);
 
-    RTCLegacyStatsReport(RTCLegacyStatsReportPrivate &dd, QObject *parent = nullptr);
+  private:
+    RTCLegacyStatsReportPrivate *const d_ptr;
+    Q_DECLARE_PRIVATE(RTCLegacyStatsReport)
 };
 
 #endif // RTCLEGACYSTATSREPORT_H

@@ -42,7 +42,13 @@ class RTCRtcpParameters : public QObject
      */
     void setIsReducedSize(bool isReducedSize);
 
+  protected:
+    RTCRtcpParameters(RTCRtcpParametersPrivate *d, QObject *parent = nullptr);
+
   private:
+    friend class RTCRtpParametersPrivate;
+    friend class RTCRtpParameters;
+
     RTCRtcpParametersPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtcpParameters)
 };

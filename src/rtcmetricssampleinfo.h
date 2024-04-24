@@ -61,8 +61,8 @@ class RTCMetricsSampleInfo : public QObject
   private:
     friend class RTCMetrics;
 
-    Q_DECLARE_PRIVATE(RTCMetricsSampleInfo)
     RTCMetricsSampleInfoPrivate *const d_ptr;
+    Q_DECLARE_PRIVATE(RTCMetricsSampleInfo)
 };
 
 #endif // RTCMETRICSSAMPLEINFO_H

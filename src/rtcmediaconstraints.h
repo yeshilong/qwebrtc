@@ -44,8 +44,8 @@ class RTCMediaConstraints : public QObject
     static QString RTCMediaConstraintsValueFalse();
 
   private:
-    Q_DECLARE_PRIVATE(RTCMediaConstraints)
     RTCMediaConstraintsPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCMediaConstraints)
 };
 
 #endif // RTCMEDIACONSTRAINTS_H

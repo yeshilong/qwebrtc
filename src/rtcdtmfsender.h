@@ -96,7 +96,7 @@ class RTCDtmfSender : public QObject, public IRTCDtmfSender
     virtual QTime interToneGap() const;
 
   private:
-    Q_DECLARE_PRIVATE(RTCDtmfSender)
     RTCDtmfSenderPrivate *const d_ptr;
+    Q_DECLARE_PRIVATE(RTCDtmfSender)
 };
 #endif // RTCDTMFSENDER_H

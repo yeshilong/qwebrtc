@@ -1,17 +1,40 @@
 #include "rtcrtcpparameters.h"
 #include "rtcrtcpparameters_p.h"
 
+void RTCRtcpParametersPrivate::init(const webrtc::RtcpParameters &nativeRtcpParameters)
+{
+    cName_ = QString::fromStdString(nativeRtcpParameters.cname);
+    isReducedSize_ = nativeRtcpParameters.reduced_size;
+}
+
+RTCRtcpParametersPrivate::RTCRtcpParametersPrivate()
+{
+    webrtc::RtcpParameters nativeRtcpParameters;
+    init(nativeRtcpParameters);
+}
+
 RTCRtcpParametersPrivate::RTCRtcpParametersPrivate(
     const webrtc::RtcpParameters &nativeRtcpParameters)
-    : cName_{QString::fromStdString(nativeRtcpParameters.cname)},
-      isReducedSize_{nativeRtcpParameters.reduced_size}
+{
+    init(nativeRtcpParameters);
+}
+
+webrtc::RtcpParameters RTCRtcpParametersPrivate::nativeRtcpParameters() const
+{
+    webrtc::RtcpParameters nativeRtcpParameters;
+    nativeRtcpParameters.cname = cName_.toStdString();
+    nativeRtcpParameters.reduced_size = isReducedSize_;
+    return nativeRtcpParameters;
+}
+
+RTCRtcpParameters::RTCRtcpParameters(QObject *parent)
+    : QObject{parent}, d_ptr{new RTCRtcpParametersPrivate{}}
 {
 }
 
-RTCRtcpParameters::RTCRtcpParameters(QObject *parent) : QObject{parent}
+RTCRtcpParameters::RTCRtcpParameters(RTCRtcpParametersPrivate *d, QObject *parent)
+    : QObject{parent}, d_ptr{d}
 {
-    webrtc::RtcpParameters nativeRtcpParameters;
-    d_ptr = new RTCRtcpParametersPrivate(nativeRtcpParameters);
 }
 
 QString RTCRtcpParameters::cname() const

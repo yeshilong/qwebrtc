@@ -105,6 +105,12 @@ RTCRtpEncodingParameters::RTCRtpEncodingParameters(QObject *parent)
 {
 }
 
+RTCRtpEncodingParameters::RTCRtpEncodingParameters(RTCRtpEncodingParametersPrivate *d,
+                                                   QObject *parent)
+    : QObject{parent}, d_ptr{d}
+{
+}
+
 QString RTCRtpEncodingParameters::rid() const
 {
     Q_D(const RTCRtpEncodingParameters);

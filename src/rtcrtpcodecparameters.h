@@ -81,9 +81,15 @@ class RTCRtpCodecParameters : public QObject
      */
     QMap<QString, QString> parameters() const;
 
+  protected:
+    RTCRtpCodecParameters(RTCRtpCodecParametersPrivate *d, QObject *parent = nullptr);
+
   private:
-    Q_DECLARE_PRIVATE(RTCRtpCodecParameters)
+    friend class RTCRtpParametersPrivate;
+    friend class RTCRtpParameters;
+
     RTCRtpCodecParametersPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtpCodecParameters)
 };
 
 #endif // RTCRTPCODECPARAMETERS_H

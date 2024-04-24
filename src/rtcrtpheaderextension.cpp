@@ -29,7 +29,13 @@ webrtc::RtpExtension RTCRtpHeaderExtensionPrivate::nativeRtpExtension() const
     return nativeRtpExtension;
 }
 
-RTCRtpHeaderExtension::RTCRtpHeaderExtension(QObject *parent) : QObject{parent}
+RTCRtpHeaderExtension::RTCRtpHeaderExtension(QObject *parent)
+    : QObject{parent}, d_ptr{new RTCRtpHeaderExtensionPrivate}
+{
+}
+
+RTCRtpHeaderExtension::RTCRtpHeaderExtension(RTCRtpHeaderExtensionPrivate *d, QObject *parent)
+    : QObject{parent}, d_ptr{d}
 {
 }
 

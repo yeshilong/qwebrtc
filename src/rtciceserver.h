@@ -107,8 +107,8 @@ class RTCIceServer : public QObject
               RTCTlsCertPolicy tlsCertPolicy, QString hostname, QVector<QString> tlsAlpnProtocols,
               QVector<QString> tlsEllipticCurves);
 
-    Q_DECLARE_PRIVATE(RTCIceServer)
     RTCIceServerPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCIceServer)
 };
 
 #endif // RTCICESERVER_H

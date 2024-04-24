@@ -39,8 +39,8 @@ class RTCDataChannel : public QObject
     void dataChannelDidChangeBufferedAmount(unsigned long long amount);
 
   private:
-    Q_DECLARE_PRIVATE(RTCDataChannel)
     RTCDataChannelPrivate *const d_ptr = nullptr;
+    Q_DECLARE_PRIVATE(RTCDataChannel)
 };
 
 #endif // RTCDATACHANNEL_H

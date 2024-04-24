@@ -83,6 +83,11 @@ RTCRtpCodecParameters::RTCRtpCodecParameters(QObject *parent)
 {
 }
 
+RTCRtpCodecParameters::RTCRtpCodecParameters(RTCRtpCodecParametersPrivate *d, QObject *parent)
+    : QObject{parent}, d_ptr{d}
+{
+}
+
 int RTCRtpCodecParameters::payloadType() const
 {
     Q_D(const RTCRtpCodecParameters);

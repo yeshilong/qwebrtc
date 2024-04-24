@@ -36,9 +36,15 @@ class RTCRtpHeaderExtension : public QObject
      */
     bool encrypted() const;
 
-  private:
-    Q_DECLARE_PRIVATE(RTCRtpHeaderExtension)
+  protected:
+    RTCRtpHeaderExtension(RTCRtpHeaderExtensionPrivate *d, QObject *parent = nullptr);
+
     RTCRtpHeaderExtensionPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtpHeaderExtension)
+
+  private:
+    friend class RTCRtpParametersPrivate;
+    friend class RTCRtpParameters;
 };
 
 #endif // RTCRTPHEADEREXTENSION_H

@@ -61,8 +61,9 @@ class RTCMediaStreamTrack : public QObject
      */
     RTCMediaStreamTrack(RTCMediaStreamTrackPrivate &nativeMediaStreamTrack,
                         QObject *parent = nullptr);
-    Q_DECLARE_PRIVATE(RTCMediaStreamTrack)
+
     RTCMediaStreamTrackPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCMediaStreamTrack)
 };
 
 #endif // RTCMEDIASTREAMTRACK_H

@@ -40,8 +40,8 @@ class RTCDataChannelConfiguration : public QObject
     void setProtocol(const QString &protocol);
 
   private:
-    Q_DECLARE_PRIVATE(RTCDataChannelConfiguration)
     RTCDataChannelConfigurationPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCDataChannelConfiguration)
 };
 
 #endif // RTCDATACHANNELCONFIGURATION_H

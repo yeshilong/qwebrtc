@@ -27,14 +27,15 @@ class RTCMediaSource : public QObject
     RTCSourceState state() const;
 
   protected:
-    Q_DECLARE_PRIVATE(RTCMediaSource)
-    RTCMediaSourcePrivate *const d_ptr;
     /**
      * @brief Initializes a new instance of the RTCMediaSource class.
      * @param d The private implementation.
      * @param parent The parent object.
      */
     RTCMediaSource(RTCMediaSourcePrivate &d, QObject *parent = nullptr);
+
+    RTCMediaSourcePrivate *const d_ptr;
+    Q_DECLARE_PRIVATE(RTCMediaSource)
 };
 
 #endif // RTCMEDIASOURCE_H

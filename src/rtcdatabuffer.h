@@ -19,8 +19,8 @@ class RTCDataBuffer : public QObject
     friend class RTCDataChannel;
 
   protected:
-    Q_DECLARE_PRIVATE(RTCDataBuffer)
     RTCDataBufferPrivate *const d_ptr;
+    Q_DECLARE_PRIVATE(RTCDataBuffer)
 };
 
 #endif // RTCDATABUFFER_H

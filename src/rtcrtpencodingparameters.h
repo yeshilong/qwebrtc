@@ -159,8 +159,14 @@ class RTCRtpEncodingParameters : public QObject
      */
     void setScalabilityMode(const QString &mode);
 
-  private:
-    Q_DECLARE_PRIVATE(RTCRtpEncodingParameters)
+  protected:
+    RTCRtpEncodingParameters(RTCRtpEncodingParametersPrivate *d, QObject *parent = nullptr);
+
     RTCRtpEncodingParametersPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtpEncodingParameters)
+
+  private:
+    friend class RTCRtpParametersPrivate;
+    friend class RTCRtpParameters;
 };
 #endif // RTCRTPENCODINGPARAMETERS_H

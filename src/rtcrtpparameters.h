@@ -11,6 +11,7 @@
 #include "rtcrtpencodingparameters.h"
 #include "rtcrtpheaderextension.h"
 
+class RTCRtpParametersPrivate;
 /**
  * @brief The RTCRtpParameters class.
  */
@@ -40,37 +41,37 @@ class RTCRtpParameters : public QObject
      * @brief Gets the RTCP parameters.
      * @return The RTCP parameters.
      */
-    RTCRtcpParameters rtcp() const;
+    RTCRtcpParameters *rtcp() const;
 
     /**
      * @brief Gets the RTP header extensions.
      * @return The RTP header extensions.
      */
-    QVector<RTCRtpHeaderExtension> headerExtensions() const;
+    QVector<RTCRtpHeaderExtension *> headerExtensions() const;
 
     /**
      * @brief Gets the RTP encoding parameters.
      * @return The RTP encoding parameters.
      */
-    QVector<RTCRtpEncodingParameters> encodings() const;
+    QVector<RTCRtpEncodingParameters *> encodings() const;
 
     /**
      * @brief Sets the RTP encoding parameters.
      * @param encodings The RTP encoding parameters.
      */
-    void setEncodings(const QVector<RTCRtpEncodingParameters> &encodings);
+    void setEncodings(const QVector<RTCRtpEncodingParameters *> &encodings);
 
     /**
      * @brief Gets the RTP codec parameters.
      * @return The RTP codec parameters.
      */
-    QVector<RTCRtpCodecParameters> codecs() const;
+    QVector<RTCRtpCodecParameters *> codecs() const;
 
     /**
      * @brief Sets the RTP codec parameters.
      * @param codecs The RTP codec parameters.
      */
-    void setCodecs(const QVector<RTCRtpCodecParameters> &codecs);
+    void setCodecs(const QVector<RTCRtpCodecParameters *> &codecs);
 
     /**
      * @brief Gets the degradation preference.
@@ -83,6 +84,10 @@ class RTCRtpParameters : public QObject
      * @param preference The degradation preference.
      */
     void setDegradationPreference(const QVariant &preference);
+
+  private:
+    RTCRtpParametersPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtpParameters)
 };
 
 #endif // RTCRTPPARAMETERS_H

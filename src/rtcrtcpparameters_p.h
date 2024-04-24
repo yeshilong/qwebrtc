@@ -10,6 +10,7 @@ class RTCRtcpParametersPrivate
   public:
     explicit RTCRtcpParametersPrivate();
     RTCRtcpParametersPrivate(const webrtc::RtcpParameters &nativeRtcpParameters);
+    void init(const webrtc::RtcpParameters &nativeRtcpParameters);
     webrtc::RtcpParameters nativeRtcpParameters() const;
 
     QString cName_;

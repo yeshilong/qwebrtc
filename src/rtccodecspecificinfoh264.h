@@ -33,8 +33,8 @@ class RTCCodecSpecificInfoH264 : public IRTCCodecSpecificInfo
     void setPacketizationMode(RTCH264PacketizationMode packetizationMode);
 
   private:
-    Q_DECLARE_PRIVATE(RTCCodecSpecificInfoH264)
     RTCCodecSpecificInfoH264Private *const d_ptr;
+    Q_DECLARE_PRIVATE(RTCCodecSpecificInfoH264)
 };
 
 #endif // RTCCODECSPECIFICINFOH264_H

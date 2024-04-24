@@ -48,8 +48,8 @@ class RTCIceCandidate : public QObject
     QString serverUrl() const;
 
   private:
-    Q_DECLARE_PRIVATE(RTCIceCandidate)
     RTCIceCandidatePrivate *const d_ptr;
+    Q_DECLARE_PRIVATE(RTCIceCandidate)
 };
 
 #endif // RTCICECANDIDATE_H
