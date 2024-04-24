@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QVariant>
 
+class RTCRtpCodecParametersPrivate;
 /**
  * @brief The RTCRtpCodecParameters class.
  */
@@ -20,23 +21,23 @@ class RTCRtpCodecParameters : public QObject
     explicit RTCRtpCodecParameters(QObject *parent = nullptr);
 
     // Codec names
-    static QString RTCRtxCodecName;
-    static QString RTCRedCodecName;
-    static QString RTCUlpfecCodecName;
-    static QString RTCFlexfecCodecName;
-    static QString RTCOpusCodecName;
-    static QString RTCIsacCodecName;
-    static QString RTCL16CodecName;
-    static QString RTCG722CodecName;
-    static QString RTCIlbcCodecName;
-    static QString RTCPcmuCodecName;
-    static QString RTCPcmaCodecName;
-    static QString RTCDtmfCodecName;
-    static QString RTCComfortNoiseCodecName;
-    static QString RTCVp8CodecName;
-    static QString RTCVp9CodecName;
-    static QString RTCH264CodecName;
-    static QString RTCAv1CodecName;
+    static QString RTCRtxCodecName();
+    static QString RTCRedCodecName();
+    static QString RTCUlpfecCodecName();
+    static QString RTCFlexfecCodecName();
+    static QString RTCOpusCodecName();
+    static QString RTCIsacCodecName();
+    static QString RTCL16CodecName();
+    static QString RTCG722CodecName();
+    static QString RTCIlbcCodecName();
+    static QString RTCPcmuCodecName();
+    static QString RTCPcmaCodecName();
+    static QString RTCDtmfCodecName();
+    static QString RTCComfortNoiseCodecName();
+    static QString RTCVp8CodecName();
+    static QString RTCVp9CodecName();
+    static QString RTCH264CodecName();
+    static QString RTCAv1CodecName();
 
     /**
      * @brief Gets the RTP payload type.
@@ -79,6 +80,10 @@ class RTCRtpCodecParameters : public QObject
      * @return The "format specific parameters".
      */
     QMap<QString, QString> parameters() const;
+
+  private:
+    Q_DECLARE_PRIVATE(RTCRtpCodecParameters)
+    RTCRtpCodecParametersPrivate *d_ptr;
 };
 
 #endif // RTCRTPCODECPARAMETERS_H

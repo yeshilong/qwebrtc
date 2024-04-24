@@ -4,41 +4,6 @@
 
 #include "system_wrappers/include/field_trial.h"
 
-QString const& RTCFieldTrialAudioForceABWENoTWCCKey() {
-    static QString const key = "WebRTC-Audio-ABWENoTWCC";
-    return key;
-}
-
-QString const& RTCFieldTrialFlexFec03AdvertisedKey() {
-    static QString const key = "WebRTC-FlexFEC-03-Advertised";
-    return key;
-}
-
-QString const& RTCFieldTrialFlexFec03Key() {
-    static QString const key = "WebRTC-FlexFEC-03";
-    return key;
-}
-
-QString const& RTCFieldTrialH264HighProfileKey() {
-    static QString const key = "WebRTC-H264HighProfile";
-    return key;
-}
-
-QString const& RTCFieldTrialMinimizeResamplingOnMobileKey() {
-    static QString const key = "WebRTC-Audio-MinimizeResamplingOnMobile";
-    return key;
-}
-
-QString const& RTCFieldTrialUseNWPathMonitor() {
-    static QString const key = "WebRTC-Network-UseNWPathMonitor";
-    return key;
-}
-
-QString const& RTCFieldTrialEnabledValue() {
-    static QString const value = "Enabled";
-    return value;
-}
-
 // InitFieldTrialsFromString stores the char*, so the char array must outlive
 // the application.
 static char *gFieldTrialInitString = nullptr;
@@ -49,37 +14,37 @@ RTCFieldTrials::RTCFieldTrials(QObject *parent) : QObject{parent}
 
 QString RTCFieldTrials::RTCFieldTrialAudioForceABWENoTWCCKey()
 {
-    return RTCFieldTrialAudioForceABWENoTWCCKey();
+    return "WebRTC-Audio-ABWENoTWCC";
 }
 
 QString RTCFieldTrials::RTCFieldTrialFlexFec03AdvertisedKey()
 {
-    return RTCFieldTrialFlexFec03AdvertisedKey();
+    return "WebRTC-FlexFEC-03-Advertised";
 }
 
 QString RTCFieldTrials::RTCFieldTrialFlexFec03Key()
 {
-    return RTCFieldTrialFlexFec03Key();
+    return "WebRTC-FlexFEC-03";
 }
 
 QString RTCFieldTrials::RTCFieldTrialH264HighProfileKey()
 {
-    return RTCFieldTrialH264HighProfileKey();
+    return "WebRTC-H264HighProfile";
 }
 
 QString RTCFieldTrials::RTCFieldTrialMinimizeResamplingOnMobileKey()
 {
-    return RTCFieldTrialMinimizeResamplingOnMobileKey();
+    return "WebRTC-Audio-MinimizeResamplingOnMobile";
 }
 
 QString RTCFieldTrials::RTCFieldTrialUseNWPathMonitor()
 {
-    return RTCFieldTrialUseNWPathMonitor();
+    return "WebRTC-Network-UseNWPathMonitor";
 }
 
 QString RTCFieldTrials::RTCFieldTrialEnabledValue()
 {
-    return RTCFieldTrialEnabledValue();
+    return "Enabled";
 }
 
 void RTCFieldTrials::RTCInitFieldTrialDictionary(QMap<QString, QString> fieldTrials)

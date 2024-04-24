@@ -105,3 +105,13 @@ RTCMediaStreamTrackState RTCMediaStreamTrack::readyState() const
     Q_D(const RTCMediaStreamTrack);
     return static_cast<RTCMediaStreamTrackState>(d->nativeMediaStreamTrack_->state());
 }
+
+QString RTCMediaStreamTrack::RTCMediaStreamTrackKindAudio()
+{
+    return QString::fromStdString(webrtc::MediaStreamTrackInterface::kAudioKind);
+}
+
+QString RTCMediaStreamTrack::RTCMediaStreamTrackKindVideo()
+{
+    return QString::fromStdString(webrtc::MediaStreamTrackInterface::kVideoKind);
+}
