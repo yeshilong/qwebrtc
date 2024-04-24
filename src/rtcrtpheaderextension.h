@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 
+class RTCRtpHeaderExtensionPrivate;
 /**
  * @brief The RTCRtpHeaderExtension class.
  */
@@ -34,6 +35,10 @@ class RTCRtpHeaderExtension : public QObject
      * @return True if the header extension is encrypted, false otherwise.
      */
     bool encrypted() const;
+
+  private:
+    Q_DECLARE_PRIVATE(RTCRtpHeaderExtension)
+    RTCRtpHeaderExtensionPrivate *d_ptr;
 };
 
 #endif // RTCRTPHEADEREXTENSION_H
