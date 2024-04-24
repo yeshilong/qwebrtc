@@ -17,17 +17,6 @@ const webrtc::DataBuffer *RTCDataBufferPrivate::nativeDataBuffer() const
     return nativeDataBuffer_.get();
 }
 
-QByteArray RTCDataBufferPrivate::data() const
-{
-    return QByteArray(reinterpret_cast<const char *>(nativeDataBuffer_->data.data()),
-                      nativeDataBuffer_->data.size());
-}
-
-bool RTCDataBufferPrivate::isBinary() const
-{
-    return nativeDataBuffer_->binary;
-}
-
 RTCDataBuffer::RTCDataBuffer(const QByteArray &data, bool isBinary, QObject *parent)
     : QObject{parent}, d_ptr{new RTCDataBufferPrivate{data, isBinary}}
 {
@@ -35,10 +24,12 @@ RTCDataBuffer::RTCDataBuffer(const QByteArray &data, bool isBinary, QObject *par
 
 QByteArray RTCDataBuffer::data() const
 {
-    return d_ptr->data();
+    Q_D(const RTCDataBuffer);
+    return QByteArray(reinterpret_cast<const char *>(d_ptr->nativeDataBuffer_->data.data()),
+                      d_ptr->nativeDataBuffer_->data.size());
 }
 
 bool RTCDataBuffer::isBinary() const
 {
-    return d_ptr->isBinary();
+    return d_ptr->nativeDataBuffer_->binary;
 }

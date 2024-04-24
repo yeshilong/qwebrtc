@@ -31,7 +31,11 @@ class DataChannelDelegateAdapter : public DataChannelObserver
     void OnMessage(const DataBuffer &buffer) override
     {
         auto dataBuffer = new RTCDataBufferPrivate(buffer);
-        Q_EMIT channel_->dataChannelDidReceiveMessageWithBuffer(dataBuffer->data());
+        auto bytes =
+            QByteArray(reinterpret_cast<const char *>(dataBuffer->nativeDataBuffer_->data.data()),
+                       dataBuffer->nativeDataBuffer_->data.size());
+        Q_EMIT channel_->dataChannelDidReceiveMessageWithBuffer(bytes);
+        delete dataBuffer;
     }
 
     void OnBufferedAmountChange(uint64_t previousAmount) override

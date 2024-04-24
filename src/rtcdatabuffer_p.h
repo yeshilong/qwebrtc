@@ -12,10 +12,6 @@ class RTCDataBufferPrivate
     RTCDataBufferPrivate(const webrtc::DataBuffer &nativeDataBuffer);
     const webrtc::DataBuffer *nativeDataBuffer() const;
 
-    QByteArray data() const;
-    bool isBinary() const;
-
-  private:
     std::unique_ptr<webrtc::DataBuffer> nativeDataBuffer_;
 };
 
