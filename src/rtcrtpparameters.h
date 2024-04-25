@@ -85,7 +85,12 @@ class RTCRtpParameters : public QObject
      */
     void setDegradationPreference(const QVariant &preference);
 
+  protected:
+    RTCRtpParameters(RTCRtpParametersPrivate &d, QObject *parent = nullptr);
+
   private:
+    friend class RTCRtpSender;
+
     RTCRtpParametersPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtpParameters)
 };

@@ -64,6 +64,9 @@ class RTCMediaStreamTrack : public QObject
 
     RTCMediaStreamTrackPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCMediaStreamTrack)
+
+  private:
+    friend class RTCRtpSender;
 };
 
 #endif // RTCMEDIASTREAMTRACK_H

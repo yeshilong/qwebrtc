@@ -34,6 +34,12 @@ RTCMediaStreamTrackPrivate::RTCMediaStreamTrackPrivate(
     }
 }
 
+rtc::scoped_refptr<webrtc::MediaStreamTrackInterface> RTCMediaStreamTrackPrivate::
+    nativeMediaStreamTrack() const
+{
+    return nativeMediaStreamTrack_;
+}
+
 bool RTCMediaStreamTrackPrivate::isEqualToTrack(RTCMediaStreamTrackPrivate *other) const
 {
     if (!other)

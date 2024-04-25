@@ -66,6 +66,11 @@ RTCRtpParameters::RTCRtpParameters(QObject *parent) : QObject{parent}
 {
 }
 
+RTCRtpParameters::RTCRtpParameters(RTCRtpParametersPrivate &d, QObject *parent)
+    : QObject{parent}, d_ptr{&d}
+{
+}
+
 QString RTCRtpParameters::transactionId() const
 {
     Q_D(const RTCRtpParameters);

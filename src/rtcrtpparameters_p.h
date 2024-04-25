@@ -8,6 +8,7 @@
 #include "api/rtp_parameters.h"
 
 #include "rtcrtcpparameters.h"
+#include "rtcrtcpparameters.h"
 #include "rtcrtpheaderextension.h"
 #include "rtcrtpencodingparameters.h"
 #include "rtcrtpcodecparameters.h"

@@ -3,8 +3,24 @@
 
 #include "rtc_base/time_utils.h"
 
+RTCDtmfSenderPrivate::RTCDtmfSenderPrivate(
+    rtc::scoped_refptr<webrtc::DtmfSenderInterface> dtmfSender)
+{
+    Q_ASSERT(dtmfSender);
+    nativeDtmfSender_ = dtmfSender;
+}
+
+rtc::scoped_refptr<webrtc::DtmfSenderInterface> RTCDtmfSenderPrivate::nativeDtmfSender() const
+{
+    return nativeDtmfSender_;
+}
+
 RTCDtmfSender::RTCDtmfSender(QObject *parent)
     : QObject{parent}, d_ptr{new RTCDtmfSenderPrivate{nullptr}}
+{
+}
+
+RTCDtmfSender::RTCDtmfSender(RTCDtmfSenderPrivate &d, QObject *parent) : QObject{parent}, d_ptr{&d}
 {
 }
 
