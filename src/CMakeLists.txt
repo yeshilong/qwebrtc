@@ -4,7 +4,7 @@ add_library(qwebrtc SHARED
   qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
-  media_constraints.h media_constraints.cc
+
   rtctypes.h
   rtcerror.h rtcerror.cpp
   rtccertificate.h rtccertificate.cpp

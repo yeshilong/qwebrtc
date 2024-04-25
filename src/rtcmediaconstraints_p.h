@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QMap>
 
-#include "media_constraints.h"
+#include "sdk/media_constraints.h"
 
 class RTCMediaConstraintsPrivate
 {
