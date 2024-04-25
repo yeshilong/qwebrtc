@@ -128,6 +128,9 @@ add_library(qwebrtc SHARED
   rtcrtpcapabilities_p.h
   rtcrtpsender_p.h
   rtcrtpreceiver_p.h
+  rtcrtptransceiver_p.h
+  rtcrtptransceiverinit_p.h
+  rtcerror_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h

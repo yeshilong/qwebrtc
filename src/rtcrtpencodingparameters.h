@@ -168,5 +168,6 @@ class RTCRtpEncodingParameters : public QObject
   private:
     friend class RTCRtpParametersPrivate;
     friend class RTCRtpParameters;
+    friend class RTCRtpTransceiverInitPrivate;
 };
 #endif // RTCRTPENCODINGPARAMETERS_H

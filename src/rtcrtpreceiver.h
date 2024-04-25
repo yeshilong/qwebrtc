@@ -77,7 +77,12 @@ class RTCRtpReceiver : public QObject
      */
     void rtpReceiverDidReceiveFirstPacketForMediaType(RTCRtpMediaType mediaType);
 
+  protected:
+    RTCRtpReceiver(RTCRtpReceiverPrivate &d, QObject *parent = nullptr);
+
   private:
+    friend class RTCRtpTransceiverPrivate;
+
     RTCRtpReceiverPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtpReceiver)
 };

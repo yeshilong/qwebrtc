@@ -64,7 +64,28 @@ enum class RTCErrorType
      * @brief The operation failed due to an internal error. Maps to
      * OperationError DOMException.
      */
-    InternalError
+    InternalError,
+    /**
+     * @brief   // An error occured that has additional data.
+     * The additional data is specified in
+     * https://w3c.github.io/webrtc-pc/#rtcerror-interface
+     * Maps to RTCError DOMException.
+     */
+    OperationErrorWithData
+};
+
+// Detail information, showing what further information should be present.
+// https://w3c.github.io/webrtc-pc/#rtcerrordetailtype-enum
+enum class RTCErrorDetailType
+{
+    None,
+    DataChannelFailure,
+    DtlsFailure,
+    FingerprintFailure,
+    SctpFailure,
+    SdpSyntaxError,
+    HardwareEncoderNotAvailable,
+    HardwareEncoderError
 };
 
 /**

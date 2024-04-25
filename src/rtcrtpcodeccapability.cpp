@@ -20,6 +20,11 @@ RTCRtpCodecCapabilityPrivate::RTCRtpCodecCapabilityPrivate(
     init(nativeRtpCodecCapability);
 }
 
+webrtc::RtpCodecCapability RTCRtpCodecCapabilityPrivate::nativeRtpCodecCapability() const
+{
+    return nativeRtpCodecCapability_;
+}
+
 RTCRtpCodecCapability::RTCRtpCodecCapability(QObject *parent)
     : QObject{parent}, d_ptr{new RTCRtpCodecCapabilityPrivate{}}
 {

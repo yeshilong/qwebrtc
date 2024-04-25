@@ -11,6 +11,7 @@ class RTCRtpCodecCapabilityPrivate
     RTCRtpCodecCapabilityPrivate();
     RTCRtpCodecCapabilityPrivate(const webrtc::RtpCodecCapability &nativeRtpCodecCapability);
     void init(const webrtc::RtpCodecCapability &nativeRtpCodecCapability);
+    webrtc::RtpCodecCapability nativeRtpCodecCapability() const;
 
     webrtc::RtpCodecCapability nativeRtpCodecCapability_;
 };

@@ -8,6 +8,7 @@
 #include "rtcrtpencodingparameters.h"
 #include "rtctypes.h"
 
+class RTCRtpTransceiverInitPrivate;
 /**
  * @brief The RTCRtpTransceiverInit class.
  */
@@ -49,13 +50,17 @@ class RTCRtpTransceiverInit : public QObject
      * @brief Gets the send encodings.
      * @return The send encodings.
      */
-    QVector<RTCRtpEncodingParameters> sendEncodings() const;
+    QVector<RTCRtpEncodingParameters *> sendEncodings() const;
 
     /**
      * @brief Sets the send encodings.
      * @param sendEncodings The send encodings.
      */
-    void setSendEncodings(const QVector<RTCRtpEncodingParameters> &sendEncodings);
+    void setSendEncodings(const QVector<RTCRtpEncodingParameters *> &sendEncodings);
+
+  private:
+    RTCRtpTransceiverInitPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtpTransceiverInit)
 };
 
 #endif // RTCRTPTRANSCEIVERINIT_H

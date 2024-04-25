@@ -30,8 +30,8 @@ void RtpReceiverDelegateAdapter::OnFirstPacketReceived(cricket::MediaType media_
 
 } // namespace webrtc
 
-RTCRtpReceiverPrivate::RTCRtpReceiverPrivate(RTCPeerConnectionFactory *factory,
-    rtc::scoped_refptr<webrtc::RtpReceiverInterface> receiver)
+RTCRtpReceiverPrivate::RTCRtpReceiverPrivate(
+    RTCPeerConnectionFactory *factory, rtc::scoped_refptr<webrtc::RtpReceiverInterface> receiver)
 {
     Q_ASSERT(factory_);
     Q_ASSERT(receiver);
@@ -56,6 +56,11 @@ void RTCRtpReceiverPrivate::setFrameDecryptor(
 }
 
 RTCRtpReceiver::RTCRtpReceiver(QObject *parent) : QObject{parent}, d_ptr{nullptr}
+{
+}
+
+RTCRtpReceiver::RTCRtpReceiver(RTCRtpReceiverPrivate &d, QObject *parent)
+    : QObject{parent}, d_ptr{&d}
 {
 }
 

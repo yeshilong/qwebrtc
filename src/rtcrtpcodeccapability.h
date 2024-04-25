@@ -103,11 +103,12 @@ class RTCRtpCodecCapability : public QObject
   protected:
     RTCRtpCodecCapability(RTCRtpCodecCapabilityPrivate &d, QObject *parent = nullptr);
 
-  private:
-    friend class RTCRtpCapabilities;
-
     RTCRtpCodecCapabilityPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtpCodecCapability)
+
+  private:
+    friend class RTCRtpCapabilities;
+    friend class RTCRtpTransceiver;
 };
 
 #endif // RTCRTPCODECCAPABILITY_H

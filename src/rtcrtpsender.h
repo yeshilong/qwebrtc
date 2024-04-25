@@ -131,6 +131,8 @@ class RTCRtpSender : public QObject, public IRTCRtpSender
     RTCRtpSender(RTCRtpSenderPrivate &d, QObject *parent = nullptr);
 
   private:
+    friend class RTCRtpTransceiverPrivate;
+
     RTCRtpSenderPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtpSender)
 };
