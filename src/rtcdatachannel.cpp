@@ -1,6 +1,49 @@
 #include "rtcdatachannel.h"
 #include "rtcdatachannel_p.h"
 
+namespace webrtc
+{
+
+DataChannelDelegateAdapter::DataChannelDelegateAdapter(std::shared_ptr<RTCDataChannel> channel)
+{
+    channel_ = channel;
+}
+
+void DataChannelDelegateAdapter::OnStateChange()
+{
+    auto channel = channel_.lock();
+    if (channel)
+    {
+
+        Q_EMIT channel->dataChannelDidChangeState();
+    }
+}
+
+void DataChannelDelegateAdapter::OnMessage(const DataBuffer &buffer)
+{
+    auto channel = channel_.lock();
+    if (channel)
+    {
+        auto dataBuffer = new RTCDataBufferPrivate(buffer);
+        auto bytes =
+            QByteArray(reinterpret_cast<const char *>(dataBuffer->nativeDataBuffer_->data.data()),
+                       dataBuffer->nativeDataBuffer_->data.size());
+        Q_EMIT channel->dataChannelDidReceiveMessageWithBuffer(bytes);
+        delete dataBuffer;
+    }
+}
+
+void DataChannelDelegateAdapter::OnBufferedAmountChange(uint64_t previousAmount)
+{
+    auto channel = channel_.lock();
+    if (channel)
+    {
+        Q_EMIT channel->dataChannelDidChangeBufferedAmount(previousAmount);
+    }
+}
+
+} // namespace webrtc
+
 RTCDataChannelPrivate::RTCDataChannelPrivate(
     RTCPeerConnectionFactory *factory,
     rtc::scoped_refptr<webrtc::DataChannelInterface> nativeDataChannel)
@@ -10,7 +53,10 @@ RTCDataChannelPrivate::RTCDataChannelPrivate(
 
     factory_ = factory;
     nativeDataChannel_ = nativeDataChannel;
-    observer_.reset(new webrtc::DataChannelDelegateAdapter(this->q_ptr.get()));
+
+    auto q = std::make_shared<RTCDataChannel>();
+    q->d_ptr = this;
+    observer_.reset(new webrtc::DataChannelDelegateAdapter(q));
 }
 
 RTCDataChannelPrivate::~RTCDataChannelPrivate()
@@ -18,161 +64,80 @@ RTCDataChannelPrivate::~RTCDataChannelPrivate()
     nativeDataChannel_->UnregisterObserver();
 }
 
-QString RTCDataChannelPrivate::label() const
-{
-    return QString::fromStdString(nativeDataChannel_->label());
-}
-
-bool RTCDataChannelPrivate::isReliable() const
-{
-    return nativeDataChannel_->reliable();
-}
-
-bool RTCDataChannelPrivate::isOrdered() const
-{
-    return nativeDataChannel_->ordered();
-}
-
-unsigned int RTCDataChannelPrivate::maxRetransmitTime() const
-{
-    return maxPacketLifeTime_;
-}
-
-unsigned short RTCDataChannelPrivate::maxPacketLifeTime() const
-{
-    return nativeDataChannel_->maxRetransmitTime();
-}
-
-unsigned short RTCDataChannelPrivate::maxRetransmits() const
-{
-    return nativeDataChannel_->maxRetransmits();
-}
-
-QString RTCDataChannelPrivate::protocol() const
-{
-    return QString::fromStdString(nativeDataChannel_->protocol());
-}
-
-bool RTCDataChannelPrivate::isNegotiated() const
-{
-    return nativeDataChannel_->negotiated();
-}
-
-int RTCDataChannelPrivate::streamId() const
-{
-    return channelId_;
-}
-
-int RTCDataChannelPrivate::channelId() const
-{
-    return nativeDataChannel_->id();
-}
-
-RTCDataChannelState RTCDataChannelPrivate::readyState() const
-{
-    return static_cast<RTCDataChannelState>(nativeDataChannel_->state());
-}
-
-unsigned long long RTCDataChannelPrivate::bufferedAmount() const
-{
-    return nativeDataChannel_->buffered_amount();
-}
-
-void RTCDataChannelPrivate::close()
-{
-    nativeDataChannel_->Close();
-}
-
-bool RTCDataChannelPrivate::sendData(const webrtc::DataBuffer *data)
-{
-    return nativeDataChannel_->Send(*data);
-}
-
-RTCDataChannel::~RTCDataChannel()
-{
-    delete d_ptr;
-}
-
 QString RTCDataChannel::label() const
 {
     Q_D(const RTCDataChannel);
-    return d->label();
+    return QString::fromStdString(d_ptr->nativeDataChannel_->label());
 }
 
 bool RTCDataChannel::isReliable() const
 {
     Q_D(const RTCDataChannel);
-    return d->isReliable();
+    return d_ptr->nativeDataChannel_->reliable();
 }
 
 bool RTCDataChannel::isOrdered() const
 {
-    Q_D(const RTCDataChannel);
-    return d->isOrdered();
+    return d_ptr->nativeDataChannel_->ordered();
 }
 
 unsigned int RTCDataChannel::maxRetransmitTime() const
 {
-    Q_D(const RTCDataChannel);
-    return d->maxRetransmitTime();
+    return d_ptr->maxPacketLifeTime_;
 }
 
 unsigned short RTCDataChannel::maxPacketLifeTime() const
 {
-    Q_D(const RTCDataChannel);
-    return d->maxPacketLifeTime();
+    return d_ptr->nativeDataChannel_->maxRetransmitTime();
 }
 
 unsigned short RTCDataChannel::maxRetransmits() const
 {
-    Q_D(const RTCDataChannel);
-    return d->maxRetransmits();
+    return d_ptr->nativeDataChannel_->maxRetransmits();
 }
 
 QString RTCDataChannel::protocol() const
 {
-    Q_D(const RTCDataChannel);
-    return d->protocol();
+    return QString::fromStdString(d_ptr->nativeDataChannel_->protocol());
 }
 
 bool RTCDataChannel::isNegotiated() const
 {
-    Q_D(const RTCDataChannel);
-    return d->isNegotiated();
+    return d_ptr->nativeDataChannel_->negotiated();
 }
 
 int RTCDataChannel::streamId() const
 {
-    Q_D(const RTCDataChannel);
-    return d->streamId();
+    return d_ptr->channelId_;
 }
 
 int RTCDataChannel::channelId() const
 {
-    Q_D(const RTCDataChannel);
-    return d->channelId();
+    return d_ptr->nativeDataChannel_->id();
 }
 
 RTCDataChannelState RTCDataChannel::readyState() const
 {
-    Q_D(const RTCDataChannel);
-    return d->readyState();
+    return static_cast<RTCDataChannelState>(d_ptr->nativeDataChannel_->state());
 }
 
 unsigned long long RTCDataChannel::bufferedAmount() const
 {
-    Q_D(const RTCDataChannel);
-    return d->bufferedAmount();
+    return d_ptr->nativeDataChannel_->buffered_amount();
 }
 
 void RTCDataChannel::close()
 {
-    Q_D(RTCDataChannel);
-    d->close();
+    d_ptr->nativeDataChannel_->Close();
 }
 
 bool RTCDataChannel::sendData(const RTCDataBuffer *data)
 {
     Q_D(RTCDataChannel);
-    return d->sendData(data->d_ptr->nativeDataBuffer());
+    return d_ptr->nativeDataChannel_->Send(*data->d_ptr->nativeDataBuffer());
+}
+
+RTCDataChannel::~RTCDataChannel()
+{
+    delete d_ptr;
 }

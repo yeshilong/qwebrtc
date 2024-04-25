@@ -37,7 +37,7 @@ class IRTCRtpTransceiver
      * @brief Gets the RTCRtpReceiver corresponding to the RTP media.
      * @return The RTCRtpReceiver.
      */
-    virtual IRTCRtpReceiver *receiver() const = 0;
+    virtual RTCRtpReceiver *receiver() const = 0;
 
     /**
      * @brief Checks if the transceiver is stopped.

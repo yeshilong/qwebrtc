@@ -17,6 +17,7 @@ class RTCDataChannel : public QObject
     Q_OBJECT
   public:
     ~RTCDataChannel();
+
     QString label() const;
     bool isReliable() const;
     bool isOrdered() const;
@@ -39,7 +40,7 @@ class RTCDataChannel : public QObject
     void dataChannelDidChangeBufferedAmount(unsigned long long amount);
 
   private:
-    RTCDataChannelPrivate *const d_ptr = nullptr;
+    RTCDataChannelPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCDataChannel)
 };
 

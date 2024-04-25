@@ -19,34 +19,16 @@ namespace webrtc
 class DataChannelDelegateAdapter : public DataChannelObserver
 {
   public:
-    DataChannelDelegateAdapter(RTCDataChannel *channel) : channel_(std::move(channel))
-    {
-    }
+    DataChannelDelegateAdapter(std::shared_ptr<RTCDataChannel> channel);
 
-    void OnStateChange() override
-    {
-        Q_EMIT channel_->dataChannelDidChangeState();
-    }
-
-    void OnMessage(const DataBuffer &buffer) override
-    {
-        auto dataBuffer = new RTCDataBufferPrivate(buffer);
-        auto bytes =
-            QByteArray(reinterpret_cast<const char *>(dataBuffer->nativeDataBuffer_->data.data()),
-                       dataBuffer->nativeDataBuffer_->data.size());
-        Q_EMIT channel_->dataChannelDidReceiveMessageWithBuffer(bytes);
-        delete dataBuffer;
-    }
-
-    void OnBufferedAmountChange(uint64_t previousAmount) override
-    {
-        Q_EMIT channel_->dataChannelDidChangeBufferedAmount(previousAmount);
-    }
+    void OnStateChange() override;
+    void OnMessage(const DataBuffer &buffer) override;
+    void OnBufferedAmountChange(uint64_t previousAmount) override;
 
   private:
-    std::unique_ptr<RTCDataChannel> channel_;
+    std::weak_ptr<RTCDataChannel> channel_;
 };
-}
+} // namespace webrtc
 
 class RTCDataChannelPrivate
 {
@@ -56,32 +38,13 @@ class RTCDataChannelPrivate
         rtc::scoped_refptr<webrtc::DataChannelInterface> nativeDataChannel);
     ~RTCDataChannelPrivate();
 
-    QString label() const;
-    bool isReliable() const;
-    bool isOrdered() const;
-    unsigned int maxRetransmitTime() const;
-    unsigned short maxPacketLifeTime() const;
-    unsigned short maxRetransmits() const;
-    QString protocol() const;
-    bool isNegotiated() const;
-    int streamId() const;
-    int channelId() const;
-    RTCDataChannelState readyState() const;
-    unsigned long long bufferedAmount() const;
-
-    void close();
-    bool sendData(const webrtc::DataBuffer *data);
-
-    std::unique_ptr<RTCDataChannel> q_ptr;
-
-  private:
-    unsigned short maxPacketLifeTime_;
-    int channelId_;
-
     RTCPeerConnectionFactory *factory_;
     rtc::scoped_refptr<webrtc::DataChannelInterface> nativeDataChannel_;
     std::unique_ptr<webrtc::DataChannelDelegateAdapter> observer_;
     bool _isObserverRegistered;
+
+    unsigned short maxPacketLifeTime_;
+    int channelId_;
 };
 
 #endif // RTCDATACHANNEL_P_H

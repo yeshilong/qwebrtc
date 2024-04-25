@@ -1,69 +1,48 @@
 #ifndef RTCRTPRECEIVER_H
 #define RTCRTPRECEIVER_H
 
-#include "rtcmediastreamtrack.h"
-#include "rtcrtpparameters.h"
-#include <QObject>
 #include <QString>
 
-class RTCRtpReceiver;
+#include "rtcmediastreamtrack.h"
+#include "rtcrtpparameters.h"
 
-/**
- * @brief The RTCRtpReceiverDelegate interface.
- */
-class IRTCRtpReceiverDelegate
-{
-  public:
-    /**
-     * @brief Called when the first RTP packet is received.
-     * @param rtpReceiver The RTP receiver.
-     * @param mediaType The media type.
-     */
-    virtual void rtpReceiverDidReceiveFirstPacketForMediaType(RTCRtpReceiver rtpReceiver,
-                                                              RTCRtpMediaType mediaType) = 0;
-};
+class RTCRtpReceiverPrivate;
+// /**
+//  * @brief The RTCRtpReceiver interface.
+//  */
+// class IRTCRtpReceiver
+// {
+//   public:
+//     /**
+//      * @brief Gets the receiver ID.
+//      * @return The receiver ID.
+//      */
+//     virtual QString receiverId() const = 0;
 
-/**
- * @brief The RTCRtpReceiver interface.
- */
-class IRTCRtpReceiver
-{
-  public:
-    /**
-     * @brief Gets the receiver ID.
-     * @return The receiver ID.
-     */
-    virtual QString receiverId() const = 0;
+//     /**
+//      * @brief Gets the RTP parameters.
+//      * @return The RTP parameters.
+//      */
+//     virtual RTCRtpParameters *parameters() const = 0;
 
-    /**
-     * @brief Gets the RTP parameters.
-     * @return The RTP parameters.
-     */
-    virtual RTCRtpParameters parameters() const = 0;
+//     /**
+//      * @brief Gets the media stream track.
+//      * @return The media stream track.
+//      */
+//     virtual RTCMediaStreamTrack *track() const = 0;
 
-    /**
-     * @brief Gets the media stream track.
-     * @return The media stream track.
-     */
-    virtual RTCMediaStreamTrack track() const = 0;
-
-    /**
-     * @brief Gets the delegate.
-     * @return The delegate.
-     */
-    virtual IRTCRtpReceiverDelegate *delegate() const = 0;
-
-    /**
-     * @brief Sets the delegate.
-     * @param delegate The delegate.
-     */
-    virtual void setDelegate(IRTCRtpReceiverDelegate *delegate) = 0;
-};
+//   Q_SIGNALS:
+//     /**
+//      * @brief This signal is emitted when the first packet is received for a media type.
+//      * @param mediaType The media type.
+//      */
+//     void didReceiveFirstPacketForMediaType(RTCRtpMediaType mediaType);
+// };
 
 /**
  * @brief The RTCRtpReceiver class.
  */
-class RTCRtpReceiver : public QObject, public IRTCRtpReceiver
+class RTCRtpReceiver : public QObject
 {
     Q_OBJECT
 
@@ -72,6 +51,35 @@ class RTCRtpReceiver : public QObject, public IRTCRtpReceiver
      * @brief Constructs an RTCRtpReceiver object.
      */
     explicit RTCRtpReceiver(QObject *parent = nullptr);
+
+    /**
+     * @brief Gets the receiver ID.
+     * @return The receiver ID.
+     */
+    QString receiverId() const;
+
+    /**
+     * @brief Gets the RTP parameters.
+     * @return The RTP parameters.
+     */
+    RTCRtpParameters *parameters() const;
+
+    /**
+     * @brief Gets the media stream track.
+     * @return The media stream track.
+     */
+    RTCMediaStreamTrack *track() const;
+
+  Q_SIGNALS:
+    /**
+     * @brief This signal is emitted when the first packet is received for a media type.
+     * @param mediaType The media type.
+     */
+    void rtpReceiverDidReceiveFirstPacketForMediaType(RTCRtpMediaType mediaType);
+
+  private:
+    RTCRtpReceiverPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCRtpReceiver)
 };
 
 #endif // RTCRTPRECEIVER_H

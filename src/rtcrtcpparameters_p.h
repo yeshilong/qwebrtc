@@ -5,6 +5,8 @@
 
 #include "api/rtp_parameters.h"
 
+#include "rtcrtcpparameters.h"
+
 class RTCRtcpParametersPrivate
 {
   public:

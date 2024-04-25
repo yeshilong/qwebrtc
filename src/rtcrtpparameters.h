@@ -90,6 +90,7 @@ class RTCRtpParameters : public QObject
 
   private:
     friend class RTCRtpSender;
+    friend class RTCRtpReceiver;
 
     RTCRtpParametersPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtpParameters)
