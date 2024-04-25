@@ -6,6 +6,7 @@
 
 #include "rtctypes.h"
 
+class RTCSessionDescriptionPrivate;
 /**
  * @brief The RTCSessionDescription class.
  */
@@ -17,14 +18,14 @@ class RTCSessionDescription : public QObject
     /**
      * @brief Constructs an RTCSessionDescription object.
      */
-    explicit RTCSessionDescription(QObject *parent = nullptr);
+    RTCSessionDescription(QObject *parent = nullptr) = delete;
 
     /**
      * @brief Initialize a session description with a type and SDP string.
      * @param type The type of session description.
      * @param sdp The SDP string representation of this session description.
      */
-    RTCSessionDescription(RTCSdpType type, QString sdp, QObject *parent = nullptr);
+    explicit RTCSessionDescription(RTCSdpType type, QString sdp, QObject *parent = nullptr);
 
     /**
      * @brief Gets the type of session description.
@@ -51,6 +52,13 @@ class RTCSessionDescription : public QObject
      * @return The session description type for a string representation.
      */
     static RTCSdpType typeForString(QString string);
+
+  protected:
+    RTCSessionDescription(RTCSessionDescriptionPrivate &d, QObject *parent = nullptr);
+
+  private:
+    RTCSessionDescriptionPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCSessionDescription)
 };
 
 #endif // RTCSESSIONDESCRIPTION_H

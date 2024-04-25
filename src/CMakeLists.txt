@@ -132,6 +132,7 @@ add_library(qwebrtc SHARED
   rtcrtptransceiverinit_p.h
   rtcerror_p.h
   sslcertificateverifieradapter.h sslcertificateverifieradapter.cpp
+  rtcsessiondescription_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h
