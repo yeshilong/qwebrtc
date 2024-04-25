@@ -15,7 +15,7 @@ class IRTCSSLCertificateVerifier
      * @param derCertificate The certificate to verify.
      * @return True if the certificate is verified, false otherwise.
      */
-    virtual bool verify(QByteArray derCertificate) = 0;
+    virtual bool verify(QByteArray &derCertificate) = 0;
 };
 
 #endif // RTCSSLCERTIFICATEVERIFIER_H
