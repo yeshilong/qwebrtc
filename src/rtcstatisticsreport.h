@@ -8,6 +8,7 @@
 
 #include "rtcstatistics.h"
 
+class RTCStatisticsReportPrivate;
 /**
  * @brief The RTCStatisticsReport class.
  * A statistics report. Encapsulates a number of RTCStatistics objects.
@@ -20,7 +21,7 @@ class RTCStatisticsReport : public QObject
     /**
      * @brief Constructs an RTCStatisticsReport object.
      */
-    explicit RTCStatisticsReport(QObject *parent = nullptr);
+    RTCStatisticsReport(QObject *parent = nullptr) = delete;
 
     /**
      * @brief Gets the timestamp of the report in microseconds since 1970-01-01T00:00:00Z.
@@ -33,6 +34,13 @@ class RTCStatisticsReport : public QObject
      * @return The RTCStatistics objects by id.
      */
     QMap<QString, RTCStatistics *> statistics() const;
+
+  protected:
+    RTCStatisticsReport(RTCStatisticsReportPrivate &d, QObject *parent = nullptr);
+
+  private:
+    RTCStatisticsReportPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCStatisticsReport)
 };
 
 #endif // RTCSTATISTICSREPORT_H

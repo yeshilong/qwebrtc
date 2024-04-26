@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QDateTime>
 
+class RTCStatisticsPrivate;
 /**
  * @brief The RTCStatistics class.
  * A part of a report (a subreport) covering a certain area.
@@ -19,7 +20,7 @@ class RTCStatistics : public QObject
     /**
      * @brief Constructs an RTCStatistics object.
      */
-    explicit RTCStatistics(QObject *parent = nullptr);
+    RTCStatistics(QObject *parent = nullptr) = delete;
 
     /**
      * @brief Gets the id of this subreport, e.g. "RTCMediaStreamTrack_receiver_2".
@@ -46,6 +47,15 @@ class RTCStatistics : public QObject
      * @return The keys and values of the subreport.
      */
     QMap<QString, QVariant> values() const;
+
+  protected:
+    RTCStatistics(RTCStatisticsPrivate &d, QObject *parent = nullptr);
+
+  private:
+    friend class RTCStatisticsReportPrivate;
+
+    RTCStatisticsPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCStatistics)
 };
 
 #endif // RTCSTATISTICS_H
