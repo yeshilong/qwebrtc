@@ -10,7 +10,16 @@ class RTCPeerConnectionFactory;
 class RTCFrameCryptorKeyProvider;
 class RTCRtpSender;
 class RTCRtpReceiver;
+class RTCFrameCryptor;
 
+class RTCFrameCryptorDelegate
+{
+  public:
+    virtual void frameCryptor(RTCFrameCryptor *frameCryptor, const QString &participantId,
+                              RTCFrameCryptionState stateChanged) = 0;
+};
+
+class RTCFrameCryptorPrivate;
 /**
  * @brief The RTCFrameCryptor class represents a frame cryptor.
  */
@@ -34,17 +43,21 @@ class RTCFrameCryptor : public QObject
 
     QString participantId() const;
 
+    RTCFrameCryptorDelegate *delegate() const;
+    void setDelegate(RTCFrameCryptorDelegate *delegate);
+
   Q_SIGNALS:
     void frameCryptorStateChanged(RTCFrameCryptor *frameCryptor, QString participantId,
-                                  FrameCryptionState stateChanged);
+                                  RTCFrameCryptionState stateChanged);
 
   public Q_SLOTS:
-    void onStateChanged(FrameCryptionState stateChanged);
+    void onStateChanged(RTCFrameCryptionState stateChanged);
 
   private:
-    bool enabled_;
-    uint keyIndex_;
-    QString participantId_;
+    RTCFrameCryptorPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCFrameCryptor)
+
+    RTCFrameCryptorDelegate *delegate_;
 };
 
 #endif // RTCFRAMECRYPTOR_H

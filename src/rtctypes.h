@@ -397,7 +397,7 @@ enum class RTCCyrptorAlgorithm
 /**
  * @brief Enum for FrameCryptionState.
  */
-enum class FrameCryptionState
+enum class RTCFrameCryptionState
 {
     New = 0,
     Ok = 1,

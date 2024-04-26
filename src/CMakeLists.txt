@@ -135,6 +135,8 @@ add_library(qwebrtc SHARED
   rtcsessiondescription_p.h
   rtcstatisticsreport_p.h
   rtcstatistics_p.h
+  rtcframecryptor_p.h
+  rtcpeerconnectionfactoryoptions_p.h
 )
 
 find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h

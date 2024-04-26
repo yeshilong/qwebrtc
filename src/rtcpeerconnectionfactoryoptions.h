@@ -3,6 +3,7 @@
 
 #include <QObject>
 
+class RTCPeerConnectionFactoryOptionsPrivate;
 /**
  * @brief Represents options used for configuring the behavior of the RTCPeerConnectionFactory.
  */
@@ -102,13 +103,8 @@ class RTCPeerConnectionFactoryOptions : public QObject
     void setIgnoreEthernetNetworkAdapter(bool value);
 
   private:
-    bool disableEncryption_;
-    bool disableNetworkMonitor_;
-    bool ignoreLoopbackNetworkAdapter_;
-    bool ignoreVPNNetworkAdapter_;
-    bool ignoreCellularNetworkAdapter_;
-    bool ignoreWiFiNetworkAdapter_;
-    bool ignoreEthernetNetworkAdapter_;
+    RTCPeerConnectionFactoryOptionsPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCPeerConnectionFactoryOptions)
 };
 
 #endif // RTCPEERCONNECTIONFACTORYOPTIONS_H
