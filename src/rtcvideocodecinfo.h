@@ -15,7 +15,7 @@ class RTCVideoCodecInfo : public QObject
     /**
      * @brief Initializes a new instance of the RTCVideoCodecInfo class with the specified name.
      */
-    RTCVideoCodecInfo(QObject *parent = nullptr);
+    RTCVideoCodecInfo(QObject *parent = nullptr) = delete;
 
     /**
      * @brief Initializes a new instance of the RTCVideoCodecInfo class with the specified name.
@@ -55,6 +55,11 @@ class RTCVideoCodecInfo : public QObject
      * @return The scalability modes.
      */
     QVector<QString> scalabilityModes() const;
+
+  private:
+    QString name_;
+    QMap<QString, QString> parameters_;
+    QVector<QString> scalabilityModes_;
 };
 
 #endif // RTCVIDEOCODECINFO_H
