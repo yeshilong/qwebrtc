@@ -29,6 +29,10 @@ class RTCVideoEncoderQpThresholds : public QObject
      * @return The high threshold.
      */
     int high() const;
+
+  private:
+    int low_;
+    int high_;
 };
 
 #endif // RTCVIDEOENCODERQPTHRESHOLDS_H
