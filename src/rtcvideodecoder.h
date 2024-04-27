@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QSharedPointer>
+
 #include <functional>
 
 class RTCVideoFrame;

@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QVector>
+#include <QSharedPointer>
+
+#include <functional>
 
 #include "rtccodecspecificinfo.h"
 #include "rtcvideoencoderqpthresholds.h"
