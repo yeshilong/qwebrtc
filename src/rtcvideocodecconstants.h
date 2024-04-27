@@ -15,7 +15,7 @@ class RTCVideoCodecConstants : public QObject
     /**
      * @brief Constructs an RTCVideoCodecConstants object.
      */
-    explicit RTCVideoCodecConstants(QObject *parent = nullptr);
+    RTCVideoCodecConstants(QObject *parent = nullptr) = delete;
 
     /**
      * @brief Gets the VP8 video codec name.
