@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-add_library(qwebrtc SHARED
+add_library(qwebrtc STATIC
   qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
@@ -69,7 +69,7 @@ add_library(qwebrtc SHARED
   rtcvideocodecconstants.h rtcvideocodecconstants.cpp
   rtcvideoframe.h rtcvideoframe.cpp
   rtcyuvhelper.h rtcyuvhelper.cpp
-  rtcencodedimage.h rtcencodedimage.cpp
+  rtcencodedimage.h rtcencodedimage.cpp rtcencodedimage_p.h
   rtcvideoencodersettings.h rtcvideoencodersettings.cpp
   rtcvideodecoder.h rtcvideodecoder.cpp
   rtccodecspecificinfo.h rtccodecspecificinfo.cpp

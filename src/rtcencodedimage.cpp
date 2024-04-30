@@ -1,148 +1,260 @@
-#include "rtcencodedimage.h"
+#include "rtcencodedimage_p.h"
 
-RTCEncodedImage::RTCEncodedImage(QObject *parent) : QObject{parent}
+#include "rtc_base/numerics/safe_conversions.h"
+
+namespace
 {
-    buffer_ = QByteArray();
-    encodedWidth_ = 0;
-    encodedHeight_ = 0;
-    timeStamp_ = 0;
-    captureTimeMs_ = 0;
-    ntpTimeMs_ = 0;
-    flags_ = 0;
-    encodeStartMs_ = 0;
-    encodeFinishMs_ = 0;
-    frameType_ = RTCFrameType::RTCFrameTypeEmptyFrame;
-    rotation_ = RTCVideoRotation::RTCVideoRotation_0;
-    qp_ = QVariant(0);
-    contentType_ = RTCVideoContentType::RTCVideoContentTypeUnspecified;
+// An implementation of EncodedImageBufferInterface that doesn't perform any copies.
+class ObjCEncodedImageBuffer : public webrtc::EncodedImageBufferInterface
+{
+  public:
+    static rtc::scoped_refptr<ObjCEncodedImageBuffer> Create(QByteArray data)
+    {
+        return rtc::make_ref_counted<ObjCEncodedImageBuffer>(data);
+    }
+    const uint8_t *data() const override
+    {
+        return reinterpret_cast<const uint8_t *>(data_.constData());
+    }
+    // TODO(bugs.webrtc.org/9378): delete this non-const data method.
+    uint8_t *data() override
+    {
+        return const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(data_.constData()));
+    }
+    size_t size() const override
+    {
+        return data_.size();
+    }
+
+  protected:
+    explicit ObjCEncodedImageBuffer(QByteArray data) : data_(std::move(data))
+    {
+    }
+    ~ObjCEncodedImageBuffer()
+    {
+    }
+
+    QByteArray data_;
+};
+} // namespace
+
+RTCEncodedImagePrivate::RTCEncodedImagePrivate()
+{
+}
+
+RTCEncodedImagePrivate::RTCEncodedImagePrivate(const webrtc::EncodedImage &nativeEncodedImage)
+{
+    encodedImageBuffer_ = nativeEncodedImage.GetEncodedData();
+    encodedWidth_ = rtc::dchecked_cast<int32_t>(nativeEncodedImage._encodedWidth);
+    encodedHeight_ = rtc::dchecked_cast<int32_t>(nativeEncodedImage._encodedHeight);
+    timeStamp_ = nativeEncodedImage.Timestamp();
+    captureTimeMs_ = nativeEncodedImage.capture_time_ms_;
+    ntpTimeMs_ = nativeEncodedImage.ntp_time_ms_;
+    flags_ = nativeEncodedImage.timing_.flags;
+    encodeStartMs_ = nativeEncodedImage.timing_.encode_start_ms;
+    encodeFinishMs_ = nativeEncodedImage.timing_.encode_finish_ms;
+    frameType_ = static_cast<RTCFrameType>(nativeEncodedImage._frameType);
+    rotation_ = static_cast<RTCVideoRotation>(nativeEncodedImage.rotation_);
+    qp_ = nativeEncodedImage.qp_;
+    contentType_ = (nativeEncodedImage.content_type_ == webrtc::VideoContentType::SCREENSHARE)
+                       ? RTCVideoContentType::RTCVideoContentTypeScreenshare
+                       : RTCVideoContentType::RTCVideoContentTypeUnspecified;
+    buffer_ = QByteArray::fromRawData(reinterpret_cast<const char *>(encodedImageBuffer_->data()),
+                                      nativeEncodedImage.size());
+}
+
+webrtc::EncodedImage RTCEncodedImagePrivate::nativeEncodedImage() const
+{
+    webrtc::EncodedImage encodedImage;
+    if (encodedImageBuffer_)
+    {
+        encodedImage.SetEncodedData(encodedImageBuffer_);
+    }
+    else if (!buffer_.isNull())
+    {
+        encodedImage.SetEncodedData(ObjCEncodedImageBuffer::Create(buffer_));
+    }
+    encodedImage.set_size(buffer_.size());
+    encodedImage._encodedWidth = rtc::dchecked_cast<uint32_t>(encodedWidth_);
+    encodedImage._encodedHeight = rtc::dchecked_cast<uint32_t>(encodedHeight_);
+    encodedImage.SetTimestamp(timeStamp_);
+    encodedImage.capture_time_ms_ = captureTimeMs_;
+    encodedImage.ntp_time_ms_ = ntpTimeMs_;
+    encodedImage.timing_.flags = flags_;
+    encodedImage.timing_.encode_start_ms = encodeStartMs_;
+    encodedImage.timing_.encode_finish_ms = encodeFinishMs_;
+    encodedImage._frameType = static_cast<webrtc::VideoFrameType>(frameType_);
+    encodedImage.rotation_ = static_cast<webrtc::VideoRotation>(rotation_);
+    encodedImage.qp_ = qp_.isNull() ? qp_.toInt() : -1;
+    encodedImage.content_type_ =
+        (contentType_ == RTCVideoContentType::RTCVideoContentTypeScreenshare)
+            ? webrtc::VideoContentType::SCREENSHARE
+            : webrtc::VideoContentType::UNSPECIFIED;
+    return encodedImage;
+}
+
+RTCEncodedImage::RTCEncodedImage(QObject *parent)
+    : QObject{parent}, d_ptr{new RTCEncodedImagePrivate{}}
+{
+}
+
+RTCEncodedImage::RTCEncodedImage(RTCEncodedImagePrivate &d, QObject *parent)
+    : QObject{parent}, d_ptr{&d}
+{
 }
 
 QByteArray RTCEncodedImage::buffer() const
 {
-    return buffer_;
+    Q_D(const RTCEncodedImage);
+    return d->buffer_;
 }
 
 void RTCEncodedImage::setBuffer(const QByteArray &buffer)
 {
-    buffer_ = buffer;
+    Q_D(RTCEncodedImage);
+    d->buffer_ = buffer;
 }
 
 int32_t RTCEncodedImage::encodedWidth() const
 {
-    return encodedWidth_;
+    Q_D(const RTCEncodedImage);
+    return d->encodedWidth_;
 }
 
 void RTCEncodedImage::setEncodedWidth(int32_t encodedWidth)
 {
-    encodedWidth_ = encodedWidth;
+    Q_D(RTCEncodedImage);
+    d->encodedWidth_ = encodedWidth;
 }
 
 int32_t RTCEncodedImage::encodedHeight() const
 {
-    return encodedHeight_;
+    Q_D(const RTCEncodedImage);
+    return d->encodedHeight_;
 }
 
 void RTCEncodedImage::setEncodedHeight(int32_t encodedHeight)
 {
-    encodedHeight_ = encodedHeight;
+    Q_D(RTCEncodedImage);
+    d->encodedHeight_ = encodedHeight;
 }
 
 uint32_t RTCEncodedImage::timeStamp() const
 {
-    return timeStamp_;
+    Q_D(const RTCEncodedImage);
+    return d->timeStamp_;
 }
 
 void RTCEncodedImage::setTimeStamp(uint32_t timeStamp)
 {
-    timeStamp_ = timeStamp;
+    Q_D(RTCEncodedImage);
+    d->timeStamp_ = timeStamp;
 }
 
 int64_t RTCEncodedImage::captureTimeMs() const
 {
-    return captureTimeMs_;
+    Q_D(const RTCEncodedImage);
+    return d->captureTimeMs_;
 }
 
 void RTCEncodedImage::setCaptureTimeMs(int64_t captureTimeMs)
 {
-    captureTimeMs_ = captureTimeMs;
+    Q_D(RTCEncodedImage);
+    d->captureTimeMs_ = captureTimeMs;
 }
 
 int64_t RTCEncodedImage::ntpTimeMs() const
 {
-    return ntpTimeMs_;
+    Q_D(const RTCEncodedImage);
+    return d->ntpTimeMs_;
 }
 
 void RTCEncodedImage::setNtpTimeMs(int64_t ntpTimeMs)
 {
-    ntpTimeMs_ = ntpTimeMs;
+    Q_D(RTCEncodedImage);
+    d->ntpTimeMs_ = ntpTimeMs;
 }
 
 uint8_t RTCEncodedImage::flags() const
 {
-    return flags_;
+    Q_D(const RTCEncodedImage);
+    return d->flags_;
 }
 
 void RTCEncodedImage::setFlags(uint8_t flags)
 {
-    flags_ = flags;
+    Q_D(RTCEncodedImage);
+    d->flags_ = flags;
 }
 
 int64_t RTCEncodedImage::encodeStartMs() const
 {
-    return encodeStartMs_;
+    Q_D(const RTCEncodedImage);
+    return d->encodeStartMs_;
 }
 
 void RTCEncodedImage::setEncodeStartMs(int64_t encodeStartMs)
 {
-    encodeStartMs_ = encodeStartMs;
+    Q_D(RTCEncodedImage);
+    d->encodeStartMs_ = encodeStartMs;
 }
 
 int64_t RTCEncodedImage::encodeFinishMs() const
 {
-    return encodeFinishMs_;
+    Q_D(const RTCEncodedImage);
+    return d->encodeFinishMs_;
 }
 
 void RTCEncodedImage::setEncodeFinishMs(int64_t encodeFinishMs)
 {
-    encodeFinishMs_ = encodeFinishMs;
+    Q_D(RTCEncodedImage);
+    d->encodeFinishMs_ = encodeFinishMs;
 }
 
 RTCFrameType RTCEncodedImage::frameType() const
 {
-    return frameType_;
+    Q_D(const RTCEncodedImage);
+    return d->frameType_;
 }
 
 void RTCEncodedImage::setFrameType(const RTCFrameType &frameType)
 {
-    frameType_ = frameType;
+    Q_D(RTCEncodedImage);
+    d->frameType_ = frameType;
 }
 
 RTCVideoRotation RTCEncodedImage::rotation() const
 {
-    return rotation_;
+    Q_D(const RTCEncodedImage);
+    return d->rotation_;
 }
 
 void RTCEncodedImage::setRotation(const RTCVideoRotation &rotation)
 {
-    rotation_ = rotation;
+    Q_D(RTCEncodedImage);
+    d->rotation_ = rotation;
 }
 
 QVariant RTCEncodedImage::qp() const
 {
-    return qp_;
+    Q_D(const RTCEncodedImage);
+    return d->qp_;
 }
 
 void RTCEncodedImage::setQp(const QVariant &qp)
 {
-    qp_ = qp;
+    Q_D(RTCEncodedImage);
+    d->qp_ = qp;
 }
 
 RTCVideoContentType RTCEncodedImage::contentType() const
 {
-    return contentType_;
+    Q_D(const RTCEncodedImage);
+    return d->contentType_;
 }
 
 void RTCEncodedImage::setContentType(const RTCVideoContentType &contentType)
 {
-    contentType_ = contentType;
+    Q_D(RTCEncodedImage);
+    d->contentType_ = contentType;
 }

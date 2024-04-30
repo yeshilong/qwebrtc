@@ -7,6 +7,8 @@
 
 #include "rtctypes.h"
 
+class RTCEncodedImagePrivate;
+
 /**
  * @brief Represents an encoded frame. Corresponds to webrtc::EncodedImage.
  */
@@ -60,20 +62,11 @@ class RTCEncodedImage : public QObject
     RTCVideoContentType contentType() const;
     void setContentType(const RTCVideoContentType &contentType);
 
+    RTCEncodedImage(RTCEncodedImagePrivate &d, QObject *parent = nullptr);
+
   private:
-    QByteArray buffer_;
-    int32_t encodedWidth_;
-    int32_t encodedHeight_;
-    uint32_t timeStamp_;
-    int64_t captureTimeMs_;
-    int64_t ntpTimeMs_;
-    uint8_t flags_;
-    int64_t encodeStartMs_;
-    int64_t encodeFinishMs_;
-    RTCFrameType frameType_;
-    RTCVideoRotation rotation_;
-    QVariant qp_;
-    RTCVideoContentType contentType_;
+    RTCEncodedImagePrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCEncodedImage)
 };
 
 #endif // RTCENCODEDIMAGE_H
