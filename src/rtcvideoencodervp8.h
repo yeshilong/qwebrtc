@@ -19,8 +19,10 @@ class RTCVideoEncoderVP8 : public QObject
     explicit RTCVideoEncoderVP8(QObject *parent = nullptr);
 
     /**
-     * @brief Gets a VP8 encoder.
-     * @return The VP8 encoder.
+     * @brief This returns a VP8 encoder that can be returned from a RTCVideoEncoderFactory injected into
+     * RTCPeerConnectionFactory. Even though it implements the RTCVideoEncoder protocol, it can not be
+     * used independently from the RTCPeerConnectionFactory.
+     * @return A pointer to the VP8 encoder.
      */
     static IRTCVideoEncoder *vp8Encoder();
 };

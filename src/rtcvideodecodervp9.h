@@ -19,8 +19,10 @@ class RTCVideoDecoderVP9 : public QObject
     explicit RTCVideoDecoderVP9(QObject *parent = nullptr);
 
     /**
-     * @brief Gets the VP9 decoder.
-     * @return The VP9 decoder.
+     * @brief This returns a VP9 decoder that can be returned from a RTCVideoDecoderFactory injected into
+     * RTCPeerConnectionFactory. Even though it implements the RTCVideoDecoder protocol, it can not be
+     * used independently from the RTCPeerConnectionFactory.
+     * @return A pointer to the VP9 decoder.
      */
     static IRTCVideoDecoder *vp9Decoder();
 
