@@ -26,7 +26,7 @@ class RTCVideoEncoderH264 : public IRTCVideoEncoder
      * used independently from the RTCPeerConnectionFactory.
      * @return A pointer to the H264 encoder.
      */
-    static IRTCVideoEncoder *h264Eecoder();
+    static IRTCVideoEncoder *h264Encoder();
 
     /**
      * @brief Checks if the H264 encoder is supported.

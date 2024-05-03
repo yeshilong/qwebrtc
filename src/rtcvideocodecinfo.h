@@ -6,6 +6,7 @@
 #include <QVector>
 #include <QString>
 
+class RTCVideoCodecInfoPrivate;
 /**
  * @brief Holds information to identify a codec. Corresponds to webrtc::SdpVideoFormat.
  */
@@ -56,10 +57,12 @@ class RTCVideoCodecInfo : public QObject
      */
     QVector<QString> scalabilityModes() const;
 
+  protected:
+    RTCVideoCodecInfo(RTCVideoCodecInfoPrivate &d, QObject *parent = nullptr);
+
   private:
-    QString name_;
-    QMap<QString, QString> parameters_;
-    QVector<QString> scalabilityModes_;
+    RTCVideoCodecInfoPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCVideoCodecInfo)
 };
 
 #endif // RTCVIDEOCODECINFO_H

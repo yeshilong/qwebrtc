@@ -8,8 +8,19 @@ RTCVideoEncoderH264::RTCVideoEncoderH264(RTCVideoCodecInfo *codecInfo, QObject *
 {
 }
 
-// IRTCVideoEncoder *RTCVideoEncoderH264::h264Encoder()
-// {
-//     return new RTCWrappedNativeVideoEncoder{
-//         std::unique_ptr<webrtc::VideoEncoder>(webrtc::H264Encoder::Create())};
-// }
+IRTCVideoEncoder *RTCVideoEncoderH264::h264Encoder()
+{
+    return nullptr;
+    // return new RTCWrappedNativeVideoEncoder{
+    //     std::unique_ptr<webrtc::VideoEncoder>(webrtc::H264Encoder::Create())};
+}
+
+bool RTCVideoEncoderH264::isSupported()
+{
+    return true;
+}
+
+QVector<QString> RTCVideoEncoderH264::scalabilityModes()
+{
+    return QVector<QString>{};
+}
