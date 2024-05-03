@@ -1,104 +1,150 @@
-#include "rtcvideoencodersettings.h"
+#include "rtcvideoencodersettings_p.h"
 
-RTCVideoEncoderSettings::RTCVideoEncoderSettings(QObject *parent) : QObject{parent}
+RTCVideoEncoderSettingsPrivate::RTCVideoEncoderSettingsPrivate()
+    : width_{0}, height_{0}, startBitrate_{0}, maxBitrate_{0}, minBitrate_{0}, maxFramerate_{0},
+      qpMax_{0}, mode_{RTCVideoCodecMode::RTCVideoCodecModeRealtimeVideo}
 {
-    name_ = QString();
-    width_ = 0;
-    height_ = 0;
-    startBitrate_ = 0;
-    maxBitrate_ = 0;
-    minBitrate_ = 0;
-    maxFramerate_ = 0;
-    qpMax_ = 0;
-    mode_ = RTCVideoCodecMode::RTCVideoCodecModeRealtimeVideo;
+}
+
+RTCVideoEncoderSettingsPrivate::RTCVideoEncoderSettingsPrivate(
+    const webrtc::VideoCodec *nativeVideoCodec)
+{
+    const char *codecName = CodecTypeToPayloadString(nativeVideoCodec->codecType);
+    name_ = QString::fromUtf8(codecName);
+    width_ = nativeVideoCodec->width;
+    height_ = nativeVideoCodec->height;
+    startBitrate_ = nativeVideoCodec->startBitrate;
+    maxBitrate_ = nativeVideoCodec->maxBitrate;
+    minBitrate_ = nativeVideoCodec->minBitrate;
+    maxFramerate_ = nativeVideoCodec->maxFramerate;
+    qpMax_ = nativeVideoCodec->qpMax;
+    mode_ = static_cast<RTCVideoCodecMode>(nativeVideoCodec->mode);
+}
+
+webrtc::VideoCodec RTCVideoEncoderSettingsPrivate::nativeVideoCodec() const
+{
+    webrtc::VideoCodec nativeVideoCodec;
+
+    nativeVideoCodec.width = width_;
+    nativeVideoCodec.height = height_;
+    nativeVideoCodec.startBitrate = startBitrate_;
+    nativeVideoCodec.maxBitrate = maxBitrate_;
+    nativeVideoCodec.minBitrate = minBitrate_;
+    nativeVideoCodec.maxFramerate = maxFramerate_;
+    nativeVideoCodec.qpMax = qpMax_;
+    nativeVideoCodec.mode = static_cast<webrtc::VideoCodecMode>(mode_);
+
+    return nativeVideoCodec;
+}
+
+RTCVideoEncoderSettings::RTCVideoEncoderSettings(QObject *parent)
+    : QObject{parent}, d_ptr{new RTCVideoEncoderSettingsPrivate{}}
+{
+}
+
+RTCVideoEncoderSettings::RTCVideoEncoderSettings(RTCVideoEncoderSettingsPrivate &d, QObject *parent)
+    : QObject{parent}, d_ptr{&d}
+{
 }
 
 QString RTCVideoEncoderSettings::name() const
 {
-    return name_;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->name_;
 }
 
 void RTCVideoEncoderSettings::setName(const QString &name)
 {
-    name_ = name;
+    Q_D(RTCVideoEncoderSettings);
+    d->name_ = name;
 }
 
 quint16 RTCVideoEncoderSettings::width() const
 {
-    return width_;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->width_;
 }
 
 void RTCVideoEncoderSettings::setWidth(quint16 width)
 {
-    width_ = width;
+    Q_D(RTCVideoEncoderSettings);
+    d->width_ = width;
 }
 
 quint16 RTCVideoEncoderSettings::height() const
 {
-    return height_;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->height_;
 }
 
 void RTCVideoEncoderSettings::setHeight(quint16 height)
 {
-    height_ = height;
+    Q_D(RTCVideoEncoderSettings);
+    d->height_ = height;
 }
 
 quint32 RTCVideoEncoderSettings::startBitrate() const
 {
-    return startBitrate_;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->startBitrate_;
 }
 
 void RTCVideoEncoderSettings::setStartBitrate(quint32 startBitrate)
 {
-    startBitrate_ = startBitrate;
+    Q_D(RTCVideoEncoderSettings);
+    d->startBitrate_ = startBitrate;
 }
 
 quint32 RTCVideoEncoderSettings::maxBitrate() const
 {
-    return maxBitrate_;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->maxBitrate_;
 }
 
 void RTCVideoEncoderSettings::setMaxBitrate(quint32 maxBitrate)
 {
-    maxBitrate_ = maxBitrate;
+    Q_D(RTCVideoEncoderSettings);
+    d->maxBitrate_ = maxBitrate;
 }
 
 quint32 RTCVideoEncoderSettings::minBitrate() const
 {
-    return minBitrate_;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->minBitrate_;
 }
 
 void RTCVideoEncoderSettings::setMinBitrate(quint32 minBitrate)
 {
-    minBitrate_ = minBitrate;
+    Q_D(RTCVideoEncoderSettings);
+    d->minBitrate_ = minBitrate;
 }
 
 quint32 RTCVideoEncoderSettings::maxFramerate() const
 {
-    return maxFramerate_;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->maxFramerate_;
 }
 
 void RTCVideoEncoderSettings::setMaxFramerate(quint32 maxFramerate)
 {
-    maxFramerate_ = maxFramerate;
+    Q_D(RTCVideoEncoderSettings);
+    d->maxFramerate_ = maxFramerate;
 }
 
 quint32 RTCVideoEncoderSettings::qpMax() const
 {
-    return qpMax_;
-}
-
-void RTCVideoEncoderSettings::setQpMax(quint32 qpMax)
-{
-    qpMax_ = qpMax;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->qpMax_;
 }
 
 RTCVideoCodecMode RTCVideoEncoderSettings::mode() const
 {
-    return mode_;
+    Q_D(const RTCVideoEncoderSettings);
+    return d->mode_;
 }
 
 void RTCVideoEncoderSettings::setMode(RTCVideoCodecMode mode)
 {
-    mode_ = mode;
+    Q_D(RTCVideoEncoderSettings);
+    d->mode_ = mode;
 }

@@ -6,6 +6,7 @@
 
 #include "rtctypes.h"
 
+class RTCVideoEncoderSettingsPrivate;
 /**
  * @brief The RTCVideoEncoderSettings class.
  */
@@ -127,15 +128,16 @@ class RTCVideoEncoderSettings : public QObject
      */
     void setMode(RTCVideoCodecMode mode);
 
+  protected:
+    /**
+     * @brief Constructs an RTCVideoEncoderSettings object.
+     * @param d_ptr The private implementation.
+     * @param parent The parent object.
+     */
+    RTCVideoEncoderSettings(RTCVideoEncoderSettingsPrivate &d, QObject *parent = nullptr);
+
   private:
-    QString name_;
-    quint16 width_;
-    quint16 height_;
-    quint32 startBitrate_;
-    quint32 maxBitrate_;
-    quint32 minBitrate_;
-    quint32 maxFramerate_;
-    quint32 qpMax_;
-    RTCVideoCodecMode mode_;
+    RTCVideoEncoderSettingsPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCVideoEncoderSettings)
 };
 #endif // RTCVIDEOENCODERSETTINGS_H
