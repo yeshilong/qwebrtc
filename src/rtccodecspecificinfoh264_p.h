@@ -1,7 +1,7 @@
 #ifndef RTCCODECSPECIFICINFOH264_P_H
 #define RTCCODECSPECIFICINFOH264_P_H
 
-#include <QObject>
+#include "rtccodecspecificinfoh264.h"
 
 #include "modules/video_coding/include/video_codec_interface.h"
 

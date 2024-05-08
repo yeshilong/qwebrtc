@@ -128,7 +128,7 @@ class RTCVideoEncoderSettings : public QObject
      */
     void setMode(RTCVideoCodecMode mode);
 
-  protected:
+  public:
     /**
      * @brief Constructs an RTCVideoEncoderSettings object.
      * @param d_ptr The private implementation.

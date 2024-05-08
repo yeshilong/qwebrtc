@@ -15,7 +15,7 @@ using RTCFileVideoCapturerErrorBlock = std::function<void(RTCError *)>;
 /**
  * @brief Captures buffers from bundled video file.
  */
-class RTCFileVideoCapturer : public RTCVideoCapturer
+class RTCFileVideoCapturer : public QObject, IRTCVideoCapturer
 {
     Q_OBJECT
 
@@ -23,7 +23,7 @@ class RTCFileVideoCapturer : public RTCVideoCapturer
     /**
      * @brief Initializes a new instance of the RTCFileVideoCapturer class.
      */
-    explicit RTCFileVideoCapturer(QSharedPointer<IRTCVideoCapturerDelegate> videoCapturerDelegate,
+    explicit RTCFileVideoCapturer(std::shared_ptr<IRTCVideoCapturerDelegate> videoCapturerDelegate,
                                   QObject *parent = nullptr);
 
     /**

@@ -6,6 +6,20 @@
 #include <QVector>
 #include <QString>
 
+namespace webrtc
+{
+
+namespace
+{
+class CVideoEncoder;
+class CVideoEncoderSelector;
+} // namespace
+
+class CVideoDecoderFactory;
+class CVideoEncoderFactory;
+
+} // namespace webrtc
+
 class RTCVideoCodecInfoPrivate;
 /**
  * @brief Holds information to identify a codec. Corresponds to webrtc::SdpVideoFormat.
@@ -35,6 +49,11 @@ class RTCVideoCodecInfo : public QObject
                       QVector<QString> scalabilityModes, QObject *parent = nullptr);
 
     /**
+     * @brief Initializes a new instance of the RTCVideoCodecInfo class with the specified private implementation and parent.
+     */
+    RTCVideoCodecInfo(RTCVideoCodecInfoPrivate &d, QObject *parent = nullptr);
+
+    /**
      * @brief Determines whether the specified RTCVideoCodecInfo is equal to the current RTCVideoCodecInfo.
      */
     bool isEqualToCodecInfo(RTCVideoCodecInfo info);
@@ -58,9 +77,12 @@ class RTCVideoCodecInfo : public QObject
     QVector<QString> scalabilityModes() const;
 
   protected:
-    RTCVideoCodecInfo(RTCVideoCodecInfoPrivate &d, QObject *parent = nullptr);
+    friend class webrtc::CVideoEncoderSelector;
+    friend class webrtc::CVideoDecoderFactory;
+    friend class webrtc::CVideoEncoderFactory;
 
-  private:
+    friend class RTCVideoEncoderSimulcast;
+
     RTCVideoCodecInfoPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCVideoCodecInfo)
 };

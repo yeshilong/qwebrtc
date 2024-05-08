@@ -3,11 +3,10 @@
 
 #include <QObject>
 #include <QSize>
-#include <QSharedPointer>
 
 #include "rtctypes.h"
-#include "rtcvideoframebuffer.h"
 
+class IRTCVideoFrameBuffer;
 /**
  * @brief The RTCVideoFrame class.
  */
@@ -19,7 +18,37 @@ class RTCVideoFrame : public QObject
     /**
      * @brief Constructs an RTCVideoFrame object.
      */
-    explicit RTCVideoFrame(QObject *parent = nullptr);
+    RTCVideoFrame(QObject *parent = nullptr) = delete;
+
+    /**
+     * @brief Initialize an RTCVideoFrame from a frame buffer, rotation, and timestamp.
+     * @param frameBuffer The frame buffer.
+     * @param rotation The rotation.
+     * @param timeStampNs The timestamp in nanoseconds.
+     */
+    explicit RTCVideoFrame(std::shared_ptr<IRTCVideoFrameBuffer> frameBuffer,
+                           RTCVideoRotation rotation, qint64 timeStampNs);
+
+    /**
+     * @brief Initialize an RTCVideoFrame from a pixel buffer, rotation, and timestamp.
+     * @param pixelBuffer The pixel buffer.
+     * @param rotation The rotation.
+     * @param timeStampNs The timestamp in nanoseconds.
+     */
+    RTCVideoFrame(QObject *pixelBuffer, RTCVideoRotation rotation, qint64 timeStampNs);
+
+    /**
+     * @brief Initialize an RTCVideoFrame from a pixel buffer combined with cropping and
+     * scaling. Cropping will be applied first on the pixel buffer, followed by
+     * scaling to the final resolution of scaledWidth x scaledHeight.
+     * @param pixelBuffer The pixel buffer.
+     * @param scaledSize The final resolution after scaling.
+     * @param cropRect The rectangle to crop from the pixel buffer.
+     * @param rotation The rotation.
+     * @param timeStampNs The timestamp in nanoseconds.
+     */
+    RTCVideoFrame(QObject *pixelBuffer, const QSize &scaledSize, const QRect &cropRect,
+                  RTCVideoRotation rotation, qint64 timeStampNs);
 
     /**
      * @brief Gets the width without rotation applied.
@@ -61,43 +90,19 @@ class RTCVideoFrame : public QObject
      * @brief Gets the video frame buffer.
      * @return The video frame buffer.
      */
-    QSharedPointer<IRTCVideoFrameBuffer> buffer() const;
-
-    /**
-     * @brief Initialize an RTCVideoFrame from a pixel buffer, rotation, and timestamp.
-     * @param pixelBuffer The pixel buffer.
-     * @param rotation The rotation.
-     * @param timeStampNs The timestamp in nanoseconds.
-     */
-    void initialize(QObject *pixelBuffer, RTCVideoRotation rotation, qint64 timeStampNs);
-
-    /**
-     * @brief Initialize an RTCVideoFrame from a pixel buffer combined with cropping and
-     * scaling. Cropping will be applied first on the pixel buffer, followed by
-     * scaling to the final resolution of scaledWidth x scaledHeight.
-     * @param pixelBuffer The pixel buffer.
-     * @param scaledSize The final resolution after scaling.
-     * @param cropRect The rectangle to crop from the pixel buffer.
-     * @param rotation The rotation.
-     * @param timeStampNs The timestamp in nanoseconds.
-     */
-    void initialize(QObject *pixelBuffer, const QSize &scaledSize, const QRect &cropRect,
-                    RTCVideoRotation rotation, qint64 timeStampNs);
-
-    /**
-     * @brief Initialize an RTCVideoFrame from a frame buffer, rotation, and timestamp.
-     * @param frameBuffer The frame buffer.
-     * @param rotation The rotation.
-     * @param timeStampNs The timestamp in nanoseconds.
-     */
-    void createWithBuffer(QSharedPointer<IRTCVideoFrameBuffer> frameBuffer,
-                          RTCVideoRotation rotation, qint64 timeStampNs);
+    std::shared_ptr<IRTCVideoFrameBuffer> buffer() const;
 
     /**
      * @brief Return a frame that is guaranteed to be I420, i.e. it is possible to access
      * the YUV data on it.
      * @return The I420 video frame.
      */
-    QSharedPointer<RTCVideoFrame> newI420VideoFrame();
+    std::shared_ptr<RTCVideoFrame> newI420VideoFrame();
+
+  private:
+    RTCVideoRotation rotation_;
+    qint64 timeStampNs_;
+    int timeStamp_;
+    std::shared_ptr<IRTCVideoFrameBuffer> buffer_;
 };
 #endif // RTCVIDEOFRAME_H

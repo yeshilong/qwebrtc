@@ -21,6 +21,35 @@ class RTCVideoEncoderFactorySimulcast : public IRTCVideoEncoderFactory
     explicit RTCVideoEncoderFactorySimulcast(IRTCVideoEncoderFactory *primary,
                                              IRTCVideoEncoderFactory *fallback,
                                              QObject *parent = nullptr);
+
+    /**
+     * @brief Creates an encoder.
+     * @param info The codec info.
+     * @return The created encoder.
+     */
+    IRTCVideoEncoder *createEncoder(RTCVideoCodecInfo *info);
+
+    /**
+     * @brief Gets the supported codecs.
+     * @return The supported codecs.
+     */
+    QVector<RTCVideoCodecInfo *> supportedCodecs();
+
+    /**
+     * @brief Gets the implementations.
+     * @return The implementations.
+     */
+    QVector<RTCVideoCodecInfo *> implementations() = 0;
+
+    /**
+     * @brief Gets the encoder selector.
+     * @return The encoder selector.
+     */
+    IRTCVideoEncoderSelector *encoderSelector() = 0;
+
+  private:
+    IRTCVideoEncoderFactory *primary_;
+    IRTCVideoEncoderFactory *fallback_;
 };
 
 #endif // RTCVIDEOENCODERFACTORYSIMULCAST_H

@@ -1,9 +1,9 @@
-#include "sslcertificateverifieradapter.h"
+#include "csslcertificateverifieradapter.h"
 
-class SSLCertificateVerifierAdapter final : public rtc::SSLCertificateVerifier
+class CSslCertificateVerifierAdapter final : public rtc::SSLCertificateVerifier
 {
   public:
-    explicit SSLCertificateVerifierAdapter(IRTCSSLCertificateVerifier *qt_certificate_verifier)
+    explicit CSslCertificateVerifierAdapter(IRTCSSLCertificateVerifier *qt_certificate_verifier)
         : qt_certificate_verifier_(qt_certificate_verifier)
     {
         Q_ASSERT(qt_certificate_verifier_ != nullptr);
@@ -25,10 +25,10 @@ class SSLCertificateVerifierAdapter final : public rtc::SSLCertificateVerifier
 namespace webrtc
 {
 
-std::unique_ptr<rtc::SSLCertificateVerifier> QtToNativeCertificateVerifier(
+std::unique_ptr<rtc::SSLCertificateVerifier> CToNativeCertificateVerifier(
     IRTCSSLCertificateVerifier *qt_certificate_verifier)
 {
-    return std::make_unique<SSLCertificateVerifierAdapter>(qt_certificate_verifier);
+    return std::make_unique<CSslCertificateVerifierAdapter>(qt_certificate_verifier);
 }
 
 } // namespace webrtc

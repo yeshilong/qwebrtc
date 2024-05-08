@@ -1,237 +1,556 @@
 cmake_minimum_required(VERSION 3.14)
 
-add_library(qwebrtc STATIC
+add_library(
+  qwebrtc SHARED
   qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
-
-  rtctypes.h
-  rtcerror.h rtcerror.cpp
-  rtccertificate.h rtccertificate.cpp
-  rtccryptooptions.h rtccryptooptions.cpp
-  rtciceserver.h rtciceserver.cpp
-  rtcicecandidate.h rtcicecandidate.cpp
-  rtcicecandidateerrorevent.h rtcicecandidateerrorevent.cpp
-  rtcaudiobuffer.h rtcaudiobuffer.cpp
-  rtcdatabuffer.h rtcdatabuffer.cpp
-  rtcdatachannel.h rtcdatachannel.cpp
-  rtcdatachannelconfiguration.h rtcdatachannelconfiguration.cpp
-  rtcdesktopsource.h rtcdesktopsource.cpp
-  rtcdtmfsender.h rtcdtmfsender.cpp
-  rtcframecryptor.h rtcframecryptor.cpp
-  rtcframecryptorkeyprovider.h rtcframecryptorkeyprovider.cpp
-  rtcmediaconstraints.h rtcmediaconstraints.cpp
-  rtcmetricssampleinfo.h rtcmetricssampleinfo.cpp
-  rtcmetrics.h rtcmetrics.cpp
-  rtcpeerconnectionfactoryoptions.h rtcpeerconnectionfactoryoptions.cpp
-  rtcconfiguration.h rtcconfiguration.cpp
-  rtciodevice.h rtciodevice.cpp
-  rtcaudiodevicemodule.h rtcaudiodevicemodule.cpp
-  rtcaudioprocessingmodule.h
-  rtcaudioprocessingconfig.h rtcaudioprocessingconfig.cpp
-  rtcdefaultaudioprocessingmodule.h rtcdefaultaudioprocessingmodule.cpp
+  native/cframebuffer.cpp
+  native/cframebuffer.h
+  native/cnetworkmonitorfactory.cpp
+  native/cnetworkmonitorfactory.h
+  native/csslcertificateverifieradapter.cpp
+  native/csslcertificateverifieradapter.h
+  native/cvideodecoderfactory.cpp
+  native/cvideodecoderfactory.h
+  native/cvideoencoderfactory.cpp
+  native/cvideoencoderfactory.h
+  native/cvideoframe.cpp
+  native/cvideoframe.h
+  rtcaudiobuffer.cpp
+  rtcaudiobuffer.h
   rtcaudiocustomprocessingdelegate.h
+  rtcaudiodevicemodule.cpp
+  rtcaudiodevicemodule.h
+  rtcaudioprocessingconfig.cpp
+  rtcaudioprocessingconfig.h
+  rtcaudioprocessingmodule.h
   rtcaudiorenderer.h
-  rtcaudiotrack.h rtcaudiotrack.cpp
-  rtcmediastreamtrack.h rtcmediastreamtrack.cpp
-  rtcmediasource.h rtcmediasource.cpp
-  rtcaudiosource.h rtcaudiosource.cpp
-  rtcvideotrack.h rtcvideotrack.cpp
-  rtcvideocapturer.h rtcvideocapturer.cpp
-  rtcvideosource.h rtcvideosource.cpp
-  rtcvideorenderer.h
-  rtcmediastream.h rtcmediastream.cpp
-  rtcvideoframebuffer.h
-  rtcyuvplanarbuffer.h
-  rtci420buffer.h rtci420buffer.cpp
-  rtcvideocodecinfo.h rtcvideocodecinfo.cpp
-  rtcdesktopmedialist.h rtcdesktopmedialist.cpp
-  rtcdesktopcapturer.h rtcdesktopcapturer.cpp
-  rtcfilevideocapturer.h rtcfilevideocapturer.cpp
-  rtcrtcpparameters.h rtcrtcpparameters.cpp
-  rtcrtpcodeccapability.h rtcrtpcodeccapability.cpp
-  rtcrtpcapabilities.h rtcrtpcapabilities.cpp
-  rtcrtpcodecparameters.h rtcrtpcodecparameters.cpp
-  rtcrtpencodingparameters.h rtcrtpencodingparameters.cpp
-  rtcrtpheaderextension.h rtcrtpheaderextension.cpp
-  rtcrtpparameters.h rtcrtpparameters.cpp
-  rtcrtpreceiver.h rtcrtpreceiver.cpp
-  rtcrtpsender.h rtcrtpsender.cpp
-  rtcrtptransceiverinit.h rtcrtptransceiverinit.cpp
-  rtcrtptransceiver.h rtcrtptransceiver.cpp
-  rtcsessiondescription.h rtcsessiondescription.cpp
-  rtcssladapter.h rtcssladapter.cpp
-  rtcfieldtrials.h rtcfieldtrials.cpp
-  rtcsslcertificateverifier.h
-  rtcstatistics.h rtcstatistics.cpp
-  rtcstatisticsreport.h rtcstatisticsreport.cpp
-  rtctracing.h rtctracing.cpp
-  rtcvideocodecconstants.h rtcvideocodecconstants.cpp
-  rtcvideoframe.h rtcvideoframe.cpp
-  rtcyuvhelper.h rtcyuvhelper.cpp
-  rtcencodedimage.h rtcencodedimage.cpp rtcencodedimage_p.h
-  rtcvideoencodersettings.h rtcvideoencodersettings.cpp
-  rtcvideodecoder.h rtcvideodecoder.cpp
-  rtccodecspecificinfo.h rtccodecspecificinfo.cpp
-  rtccodecspecificinfoh264.h rtccodecspecificinfoh264.cpp
-  rtccvpixelbuffer.h rtccvpixelbuffer.cpp
-  rtcwrappednativevideodecoder.h rtcwrappednativevideodecoder.cpp
-  rtcvideodecoderav1.h rtcvideodecoderav1.cpp
-  rtcvideodecoderh264.h rtcvideodecoderh264.cpp
-  rtcvideodecodervp8.h rtcvideodecodervp8.cpp
-  rtcvideodecodervp9.h rtcvideodecodervp9.cpp
-  rtcvideodecoderh264mf.h rtcvideodecoderh264mf.cpp
-  rtcvideodecoderfactory.h rtcvideodecoderfactory.cpp
-  rtcdefaultvideodecoderfactory.h rtcdefaultvideodecoderfactory.cpp
-  rtcvideodecoderfactoryh264.h rtcvideodecoderfactoryh264.cpp
-  rtcvideoencoderqpthresholds.h rtcvideoencoderqpthresholds.cpp
-  rtcvideoencoder.h rtcvideoencoder.cpp
-  rtcwrappednativevideoencoder.h rtcwrappednativevideoencoder.cpp
-  rtcvideoencoderav1.h rtcvideoencoderav1.cpp
-  rtcvideoencoderfactory.h rtcvideoencoderfactory.cpp
-  rtcdefaultvideoencoderfactory.h rtcdefaultvideoencoderfactory.cpp
-  rtcvideoencoderfactoryh264.h rtcvideoencoderfactoryh264.cpp
-  rtcvideoencoderfactorysimulcast.h rtcvideoencoderfactorysimulcast.cpp
-  rtcvideoencoderh264.h rtcvideoencoderh264.cpp
-  rtcvideoencodersimulcast.h rtcvideoencodersimulcast.cpp
-  rtcvideoencodervp8.h rtcvideoencodervp8.cpp
-  rtcvideoencodervp9.h rtcvideoencodervp9.cpp
-  rtcvideoencoderh264mf.h rtcvideoencoderh264mf.cpp
-  rtclogging.h rtclogging.cpp
-  rtcfilelogger.h rtcfilelogger.cpp
-  rtclegacystatsreport.h rtclegacystatsreport.cpp
-  rtcpeerconnectiondelegate.h
-  rtcpeerconnectionfactory.h rtcpeerconnectionfactory.cpp
-  rtcpeerconnection.h rtcpeerconnection.cpp
-  rtcicecandidate_p.h
-  rtciceserver_p.h
-  rtcdtmfsender_p.h
-  rtcmediasource_p.h
   rtcaudiosource_p.h
-  rtcmediaconstraints_p.h
-  rtcmediastreamtrack_p.h
+  rtcaudiosource.cpp
+  rtcaudiosource.h
   rtcaudiotrack_p.h
-  rtcvideotrack_p.h
+  rtcaudiotrack.cpp
+  rtcaudiotrack.h
+  rtccertificate.cpp
+  rtccertificate.h
+  rtccodecspecificinfo.cpp
+  rtccodecspecificinfo.h
   rtccodecspecificinfoh264_p.h
+  rtccodecspecificinfoh264.cpp
+  rtccodecspecificinfoh264.h
+  rtcconfiguration.cpp
+  rtcconfiguration.h
+  rtccryptooptions.cpp
+  rtccryptooptions.h
+  rtccvpixelbuffer.cpp
+  rtccvpixelbuffer.h
   rtcdatabuffer_p.h
+  rtcdatabuffer.cpp
+  rtcdatabuffer.h
   rtcdatachannel_p.h
+  rtcdatachannel.cpp
+  rtcdatachannel.h
   rtcdatachannelconfiguration_p.h
-  rtcmetricssampleinfo_p.h
-  rtcrtcpparameters_p.h
-  rtcframecryptorkeyprovider_p.h
-  rtclegacystatsreport_p.h
-  rtcrtpcodecparameters_p.h
-  rtcrtpheaderextension_p.h
-  rtcrtpencodingparameters_p.h
-  rtcrtpparameters_p.h
-  rtcrtpcodeccapability_p.h
-  rtcrtpcapabilities_p.h
-  rtcrtpsender_p.h
-  rtcrtpreceiver_p.h
-  rtcrtptransceiver_p.h
-  rtcrtptransceiverinit_p.h
+  rtcdatachannelconfiguration.cpp
+  rtcdatachannelconfiguration.h
+  rtcdefaultaudioprocessingmodule.cpp
+  rtcdefaultaudioprocessingmodule.h
+  rtcdefaultvideodecoderfactory.cpp
+  rtcdefaultvideodecoderfactory.h
+  rtcdefaultvideoencoderfactory.cpp
+  rtcdefaultvideoencoderfactory.h
+  rtcdesktopcapturer.cpp
+  rtcdesktopcapturer.h
+  rtcdesktopmedialist.cpp
+  rtcdesktopmedialist.h
+  rtcdesktopsource.cpp
+  rtcdesktopsource.h
+  rtcdtmfsender_p.h
+  rtcdtmfsender.cpp
+  rtcdtmfsender.h
+  rtcencodedimage_p.h
+  rtcencodedimage.cpp
+  rtcencodedimage.h
   rtcerror_p.h
-  sslcertificateverifieradapter.h sslcertificateverifieradapter.cpp
-  rtcsessiondescription_p.h
-  rtcstatisticsreport_p.h
-  rtcstatistics_p.h
+  rtcerror.cpp
+  rtcerror.h
+  rtcfieldtrials.cpp
+  rtcfieldtrials.h
+  rtcfilelogger.cpp
+  rtcfilelogger.h
+  rtcfilevideocapturer.cpp
+  rtcfilevideocapturer.h
   rtcframecryptor_p.h
+  rtcframecryptor.cpp
+  rtcframecryptor.h
+  rtcframecryptorkeyprovider_p.h
+  rtcframecryptorkeyprovider.cpp
+  rtcframecryptorkeyprovider.h
+  rtci420buffer.cpp
+  rtci420buffer.h
+  rtcicecandidate_p.h
+  rtcicecandidate.cpp
+  rtcicecandidate.h
+  rtcicecandidateerrorevent.cpp
+  rtcicecandidateerrorevent.h
+  rtciceserver_p.h
+  rtciceserver.cpp
+  rtciceserver.h
+  rtciodevice.cpp
+  rtciodevice.h
+  rtclegacystatsreport_p.h
+  rtclegacystatsreport.cpp
+  rtclegacystatsreport.h
+  rtclogging.cpp
+  rtclogging.h
+  rtcmediaconstraints_p.h
+  rtcmediaconstraints.cpp
+  rtcmediaconstraints.h
+  rtcmediasource_p.h
+  rtcmediasource.cpp
+  rtcmediasource.h
+  rtcmediastream.cpp
+  rtcmediastream.h
+  rtcmediastreamtrack_p.h
+  rtcmediastreamtrack.cpp
+  rtcmediastreamtrack.h
+  rtcmetrics.cpp
+  rtcmetrics.h
+  rtcmetricssampleinfo_p.h
+  rtcmetricssampleinfo.cpp
+  rtcmetricssampleinfo.h
+  rtcmutableyuvplanarbuffer.h
+  rtcnativei420buffer_p.h
+  rtcnativei420buffer.cpp
+  rtcnativei420buffer.h
+  rtcnativemutablei420buffer_p.h
+  rtcnativemutablei420buffer.cpp
+  rtcnativemutablei420buffer.h
+  rtcpeerconnection.cpp
+  rtcpeerconnection.h
+  rtcpeerconnectiondelegate.h
+  rtcpeerconnectionfactory.cpp
+  rtcpeerconnectionfactory.h
   rtcpeerconnectionfactoryoptions_p.h
+  rtcpeerconnectionfactoryoptions.cpp
+  rtcpeerconnectionfactoryoptions.h
+  rtcrtcpparameters_p.h
+  rtcrtcpparameters.cpp
+  rtcrtcpparameters.h
+  rtcrtpcapabilities_p.h
+  rtcrtpcapabilities.cpp
+  rtcrtpcapabilities.h
+  rtcrtpcodeccapability_p.h
+  rtcrtpcodeccapability.cpp
+  rtcrtpcodeccapability.h
+  rtcrtpcodecparameters_p.h
+  rtcrtpcodecparameters.cpp
+  rtcrtpcodecparameters.h
+  rtcrtpencodingparameters_p.h
+  rtcrtpencodingparameters.cpp
+  rtcrtpencodingparameters.h
+  rtcrtpheaderextension_p.h
+  rtcrtpheaderextension.cpp
+  rtcrtpheaderextension.h
+  rtcrtpparameters_p.h
+  rtcrtpparameters.cpp
+  rtcrtpparameters.h
+  rtcrtpreceiver_p.h
+  rtcrtpreceiver.cpp
+  rtcrtpreceiver.h
+  rtcrtpsender_p.h
+  rtcrtpsender.cpp
+  rtcrtpsender.h
+  rtcrtptransceiver_p.h
+  rtcrtptransceiver.cpp
+  rtcrtptransceiver.h
+  rtcrtptransceiverinit_p.h
+  rtcrtptransceiverinit.cpp
+  rtcrtptransceiverinit.h
+  rtcsessiondescription_p.h
+  rtcsessiondescription.cpp
+  rtcsessiondescription.h
+  rtcssladapter.cpp
+  rtcssladapter.h
+  rtcsslcertificateverifier.h
+  rtcstatistics_p.h
+  rtcstatistics.cpp
+  rtcstatistics.h
+  rtcstatisticsreport_p.h
+  rtcstatisticsreport.cpp
+  rtcstatisticsreport.h
+  rtctracing.cpp
+  rtctracing.h
+  rtctypes.h
+  rtcvideocapturer.cpp
+  rtcvideocapturer.h
+  rtcvideocodecconstants.cpp
+  rtcvideocodecconstants.h
   rtcvideocodecinfo_p.h
+  rtcvideocodecinfo.cpp
+  rtcvideocodecinfo.h
+  rtcvideodecoder.cpp
+  rtcvideodecoder.h
+  rtcvideodecoderav1.cpp
+  rtcvideodecoderav1.h
+  rtcvideodecoderfactory.cpp
+  rtcvideodecoderfactory.h
+  rtcvideodecoderfactoryh264.cpp
+  rtcvideodecoderfactoryh264.h
+  rtcvideodecoderh264.cpp
+  rtcvideodecoderh264.h
+  rtcvideodecoderh264mf.cpp
+  rtcvideodecoderh264mf.h
+  rtcvideodecodervp8.cpp
+  rtcvideodecodervp8.h
+  rtcvideodecodervp9.cpp
+  rtcvideodecodervp9.h
+  rtcvideoencoder.cpp
+  rtcvideoencoder.h
+  rtcvideoencoderav1.cpp
+  rtcvideoencoderav1.h
+  rtcvideoencoderfactory.cpp
+  rtcvideoencoderfactory.h
+  rtcvideoencoderfactoryh264.cpp
+  rtcvideoencoderfactoryh264.h
+  rtcvideoencoderfactorysimulcast.cpp
+  rtcvideoencoderfactorysimulcast.h
+  rtcvideoencoderh264.cpp
+  rtcvideoencoderh264.h
+  rtcvideoencoderh264mf.cpp
+  rtcvideoencoderh264mf.h
+  rtcvideoencoderqpthresholds.cpp
+  rtcvideoencoderqpthresholds.h
   rtcvideoencodersettings_p.h
-)
+  rtcvideoencodersettings.cpp
+  rtcvideoencodersettings.h
+  rtcvideoencodersimulcast.cpp
+  rtcvideoencodersimulcast.h
+  rtcvideoencodervp8.cpp
+  rtcvideoencodervp8.h
+  rtcvideoencodervp9.cpp
+  rtcvideoencodervp9.h
+  rtcvideoframe.cpp
+  rtcvideoframe.h
+  rtcvideoframebuffer.h
+  rtcvideorenderer.h
+  rtcvideosource.cpp
+  rtcvideosource.h
+  rtcvideotrack_p.h
+  rtcvideotrack.cpp
+  rtcvideotrack.h
+  rtcwrappednativevideodecoder.cpp
+  rtcwrappednativevideodecoder.h
+  rtcwrappednativevideoencoder.cpp
+  rtcwrappednativevideoencoder.h
+  rtcyuvhelper.cpp
+  rtcyuvhelper.h
+  rtcyuvplanarbuffer.h
+  native/cvideorenderer.h native/cvideorenderer.cpp)
 
-find_path(WEBRTC_INCLUDE_DIR NAMES api/jsep.h
-         HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/include)
-list(APPEND WEBRTC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/extern/libwebrtc/include/third_party/libyuv/include)
+find_path(
+  WEBRTC_INCLUDE_DIR
+  NAMES api/jsep.h
+  HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/include)
+list(APPEND WEBRTC_INCLUDE_DIR
+     ${PROJECT_SOURCE_DIR}/extern/libwebrtc/include/third_party/libyuv/include)
 
 if(X86_64)
-    set(ARCH_STRING "x64")
+  set(ARCH_STRING "x64")
 elseif(X86)
-    set(ARCH_STRING "x86")
+  set(ARCH_STRING "x86")
 elseif(AARCH64)
-    set(ARCH_STRING "arm64")
+  set(ARCH_STRING "arm64")
 endif()
 
-find_library(WEBRTC_LIBRARY_DEBUG NAMES libwebrtc.a
-             HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/lib/${ARCH_STRING}/debug
-             PATHS ${CMAKE_SYSTEM_LIBRARY_DIRS})
-find_library(WEBRTC_LIBRARY_RELEASE NAMES libwebrtc.a
-          HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/lib/${ARCH_STRING}/release
-          PATHS ${CMAKE_SYSTEM_LIBRARY_DIRS})
+find_library(
+  WEBRTC_LIBRARY_DEBUG
+  NAMES libwebrtc.a
+  HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/lib/${ARCH_STRING}/debug
+  PATHS ${CMAKE_SYSTEM_LIBRARY_DIRS})
+find_library(
+  WEBRTC_LIBRARY_RELEASE
+  NAMES libwebrtc.a
+  HINTS ${PROJECT_SOURCE_DIR}/extern/libwebrtc/lib/${ARCH_STRING}/release
+  PATHS ${CMAKE_SYSTEM_LIBRARY_DIRS})
 
 message(STATUS "WEBRTC_INCLUDE_DIR: ${WEBRTC_INCLUDE_DIR}")
 message(STATUS "WEBRTC_LIBRARY_DEBUG: ${WEBRTC_LIBRARY_DEBUG}")
 message(STATUS "WEBRTC_LIBRARY_RELEASE: ${WEBRTC_LIBRARY_RELEASE}")
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_DEBUG})
-  add_definitions(-D__STDC_CONSTANT_MACROS)
-  add_definitions(-D__STDC_FORMAT_MACROS)
-  add_definitions(-DCR_XCODE_VERSION=1510)
-  add_definitions(-D_DEBUG)
-  add_definitions(-DDYNAMIC_ANNOTATIONS_ENABLED=1)
-  add_definitions(-DWEBRTC_ENABLE_PROTOBUF=1)
-  add_definitions(-DWEBRTC_STRICT_FIELD_TRIALS=0)
-  add_definitions(-DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE)
-  add_definitions(-DRTC_ENABLE_VP9)
-  add_definitions(-DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY)
-  add_definitions(-DWEBRTC_HAVE_SCTP)
-  add_definitions(-DWEBRTC_ARCH_ARM64)
-  add_definitions(-DWEBRTC_HAS_NEON)
-  add_definitions(-DWEBRTC_LIBRARY_IMPL)
-  add_definitions(-DWEBRTC_ENABLE_SYMBOL_EXPORT)
-  add_definitions(-DWEBRTC_ENABLE_AVX2)
-  add_definitions(-DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0)
-  add_definitions(-DWEBRTC_POSIX)
-  add_definitions(-DWEBRTC_MAC)
-  add_definitions(-DABSL_ALLOCATOR_NOTHROW=1)
-  add_definitions(-DGOOGLE_PROTOBUF_NO_RTTI)
-  add_definitions(-DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER)
-  add_definitions(-DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0)
-  add_definitions(-DHAVE_PTHREAD)
-else()
-  set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_RELEASE})
-  add_definitions(-D__STDC_CONSTANT_MACROS)
-  add_definitions(-D__STDC_FORMAT_MACROS)
-  add_definitions(-D_FORTIFY_SOURCE=2)  # Note the value after the equal sign
-  add_definitions(-DCR_XCODE_VERSION=1510)
-  add_definitions(-DNDEBUG)  # No value needed, indicates debug mode is off
-  add_definitions(-DNVALGRIND)  # No value needed
-  add_definitions(-DDYNAMIC_ANNOTATIONS_ENABLED=0)
-  add_definitions(-DWEBRTC_ENABLE_PROTOBUF=1)
-  add_definitions(-DWEBRTC_STRICT_FIELD_TRIALS=0)
-  add_definitions(-DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE)
-  add_definitions(-DRTC_ENABLE_VP9)
-  add_definitions(-DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY)
-  add_definitions(-DWEBRTC_HAVE_SCTP)
-  add_definitions(-DWEBRTC_ARCH_ARM64)
-  add_definitions(-DWEBRTC_HAS_NEON)
-  add_definitions(-DWEBRTC_LIBRARY_IMPL)
-  add_definitions(-DWEBRTC_ENABLE_SYMBOL_EXPORT)
-  add_definitions(-DWEBRTC_ENABLE_AVX2)
-  add_definitions(-DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0)
-  add_definitions(-DWEBRTC_POSIX)
-  add_definitions(-DWEBRTC_MAC)
-  add_definitions(-DABSL_ALLOCATOR_NOTHROW=1)
-  add_definitions(-DGOOGLE_PROTOBUF_NO_RTTI)
-  add_definitions(-DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER)
-  add_definitions(-DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0)
-  add_definitions(-DHAVE_PTHREAD)
+if(OS_LINUX)
+  if(X86_64)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_DEBUG})
+      add_definitions(
+        -DUSE_UDEV
+        -DUSE_AURA=1
+        -DUSE_GLIB=1
+        -DUSE_OZONE=1
+        -D__STDC_CONSTANT_MACROS
+        -D__STDC_FORMAT_MACROS
+        -D_FILE_OFFSET_BITS=64
+        -D_LARGEFILE_SOURCE
+        -D_LARGEFILE64_SOURCE
+        -D_GNU_SOURCE
+        -DDYNAMIC_ANNOTATIONS_ENABLED=1
+        -DWEBRTC_ENABLE_PROTOBUF=1
+        -DWEBRTC_STRICT_FIELD_TRIALS=0
+        -DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE
+        -DRTC_ENABLE_VP9
+        -DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY
+        -DWEBRTC_HAVE_SCTP
+        -DWEBRTC_LIBRARY_IMPL
+        -DWEBRTC_ENABLE_SYMBOL_EXPORT
+        -DWEBRTC_ENABLE_AVX2
+        -DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0
+        -DWEBRTC_POSIX
+        -DWEBRTC_LINUX
+        -DABSL_ALLOCATOR_NOTHROW=1
+        -DLIBYUV_DISABLE_NEON
+        -DWEBRTC_USE_PIPEWIRE
+        -DWEBRTC_USE_GIO
+        -DGOOGLE_PROTOBUF_NO_RTTI
+        -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+        -DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0
+        -DHAVE_PTHREAD)
+    else()
+      set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_RELEASE})
+      add_definitions(
+        -DUSE_UDEV
+        -DUSE_AURA=1
+        -DUSE_GLIB=1
+        -DUSE_OZONE=1
+        -D__STDC_CONSTANT_MACROS
+        -D__STDC_FORMAT_MACROS
+        -D_FORTIFY_SOURCE=2
+        -D_FILE_OFFSET_BITS=64
+        -D_LARGEFILE_SOURCE
+        -D_LARGEFILE64_SOURCE
+        -D_GNU_SOURCE
+        -DNVALGRIND
+        -DDYNAMIC_ANNOTATIONS_ENABLED=0
+        -DWEBRTC_ENABLE_PROTOBUF=1
+        -DWEBRTC_STRICT_FIELD_TRIALS=0
+        -DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE
+        -DRTC_ENABLE_VP9
+        -DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY
+        -DWEBRTC_HAVE_SCTP
+        -DWEBRTC_LIBRARY_IMPL
+        -DWEBRTC_ENABLE_SYMBOL_EXPORT
+        -DWEBRTC_ENABLE_AVX2
+        -DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0
+        -DWEBRTC_POSIX
+        -DWEBRTC_LINUX
+        -DABSL_ALLOCATOR_NOTHROW=1
+        -DLIBYUV_DISABLE_NEON
+        -DWEBRTC_USE_PIPEWIRE
+        -DWEBRTC_USE_GIO
+        -DGOOGLE_PROTOBUF_NO_RTTI
+        -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+        -DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0
+        -DHAVE_PTHREAD)
+    endif()
+  elseif(AARCH64)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_DEBUG})
+      add_definitions(
+        -DUSE_UDEV
+        -DUSE_AURA=1
+        -DUSE_GLIB=1
+        -DUSE_OZONE=1
+        -D__STDC_CONSTANT_MACROS
+        -D__STDC_FORMAT_MACROS
+        -D_FILE_OFFSET_BITS=64
+        -D_LARGEFILE_SOURCE
+        -D_LARGEFILE64_SOURCE
+        -D_GNU_SOURCE
+        -DDYNAMIC_ANNOTATIONS_ENABLED=1
+        -DWEBRTC_ENABLE_PROTOBUF=1
+        -DWEBRTC_STRICT_FIELD_TRIALS=0
+        -DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE
+        -DRTC_ENABLE_VP9
+        -DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY
+        -DWEBRTC_HAVE_SCTP
+        -DWEBRTC_ARCH_ARM64
+        -DWEBRTC_HAS_NEON
+        -DWEBRTC_LIBRARY_IMPL
+        -DWEBRTC_ENABLE_SYMBOL_EXPORT
+        -DWEBRTC_ENABLE_AVX2
+        -DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0
+        -DWEBRTC_POSIX
+        -DWEBRTC_LINUX
+        -DABSL_ALLOCATOR_NOTHROW=1
+        -DWEBRTC_USE_PIPEWIRE
+        -DWEBRTC_USE_GIO
+        -DGOOGLE_PROTOBUF_NO_RTTI
+        -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+        -DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0
+        -DHAVE_PTHREAD)
+    else()
+      set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_RELEASE})
+      add_definitions(
+        -DUSE_UDEV
+        -DUSE_AURA=1
+        -DUSE_GLIB=1
+        -DUSE_OZONE=1
+        -D__STDC_CONSTANT_MACROS
+        -D__STDC_FORMAT_MACROS
+        -D_FORTIFY_SOURCE=2
+        -D_FILE_OFFSET_BITS=64
+        -D_LARGEFILE_SOURCE
+        -D_LARGEFILE64_SOURCE
+        -D_GNU_SOURCE
+        -DNVALGRIND
+        -DDYNAMIC_ANNOTATIONS_ENABLED=0
+        -DWEBRTC_ENABLE_PROTOBUF=1
+        -DWEBRTC_STRICT_FIELD_TRIALS=0
+        -DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE
+        -DRTC_ENABLE_VP9
+        -DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY
+        -DWEBRTC_HAVE_SCTP
+        -DWEBRTC_ARCH_ARM64
+        -DWEBRTC_HAS_NEON
+        -DWEBRTC_LIBRARY_IMPL
+        -DWEBRTC_ENABLE_SYMBOL_EXPORT
+        -DWEBRTC_ENABLE_AVX2
+        -DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0
+        -DWEBRTC_POSIX
+        -DWEBRTC_LINUX
+        -DABSL_ALLOCATOR_NOTHROW=1
+        -DWEBRTC_USE_PIPEWIRE
+        -DWEBRTC_USE_GIO
+        -DGOOGLE_PROTOBUF_NO_RTTI
+        -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+        -DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0
+        -DHAVE_PTHREAD)
+    endif()
+  endif()
+elseif(OS_MACOS)
+  if(X86_64)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_DEBUG})
+      add_definitions(
+        -D__STDC_CONSTANT_MACROS
+        -D__STDC_FORMAT_MACROS
+        -DDYNAMIC_ANNOTATIONS_ENABLED=1
+        -DWEBRTC_ENABLE_PROTOBUF=1
+        -DWEBRTC_STRICT_FIELD_TRIALS=0
+        -DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE
+        -DRTC_ENABLE_VP9
+        -DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY
+        -DWEBRTC_HAVE_SCTP
+        -DWEBRTC_LIBRARY_IMPL
+        -DWEBRTC_ENABLE_SYMBOL_EXPORT
+        -DWEBRTC_ENABLE_AVX2
+        -DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0
+        -DWEBRTC_POSIX
+        -DWEBRTC_MAC
+        -DABSL_ALLOCATOR_NOTHROW=1
+        -DLIBYUV_DISABLE_NEON
+        -DGOOGLE_PROTOBUF_NO_RTTI
+        -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+        -DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0
+        -DHAVE_PTHREAD)
+    else()
+      set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_RELEASE})
+      add_definitions(
+        -D__STDC_CONSTANT_MACROS
+        -D__STDC_FORMAT_MACROS
+        -D_FORTIFY_SOURCE=2
+        -DNVALGRIND
+        -DDYNAMIC_ANNOTATIONS_ENABLED=0
+        -DWEBRTC_ENABLE_PROTOBUF=1
+        -DWEBRTC_STRICT_FIELD_TRIALS=0
+        -DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE
+        -DRTC_ENABLE_VP9
+        -DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY
+        -DWEBRTC_HAVE_SCTP
+        -DWEBRTC_LIBRARY_IMPL
+        -DWEBRTC_ENABLE_SYMBOL_EXPORT
+        -DWEBRTC_ENABLE_AVX2
+        -DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0
+        -DWEBRTC_POSIX
+        -DWEBRTC_MAC
+        -DABSL_ALLOCATOR_NOTHROW=1
+        -DLIBYUV_DISABLE_NEON
+        -DGOOGLE_PROTOBUF_NO_RTTI
+        -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+        -DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0
+        -DHAVE_PTHREAD)
+    endif()
+  elseif(AARCH64)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_DEBUG})
+      add_definitions(
+        -D__STDC_CONSTANT_MACROS
+        -D__STDC_FORMAT_MACROS
+        -DDYNAMIC_ANNOTATIONS_ENABLED=1
+        -DWEBRTC_ENABLE_PROTOBUF=1
+        -DWEBRTC_STRICT_FIELD_TRIALS=0
+        -DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE
+        -DRTC_ENABLE_VP9
+        -DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY
+        -DWEBRTC_HAVE_SCTP
+        -DWEBRTC_ARCH_ARM64
+        -DWEBRTC_HAS_NEON
+        -DWEBRTC_LIBRARY_IMPL
+        -DWEBRTC_ENABLE_SYMBOL_EXPORT
+        -DWEBRTC_ENABLE_AVX2
+        -DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0
+        -DWEBRTC_POSIX
+        -DWEBRTC_MAC
+        -DABSL_ALLOCATOR_NOTHROW=1
+        -DGOOGLE_PROTOBUF_NO_RTTI
+        -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+        -DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0
+        -DHAVE_PTHREAD)
+    else()
+      set(WEBRTC_LIBRARY ${WEBRTC_LIBRARY_RELEASE})
+      add_definitions(
+        -D__STDC_CONSTANT_MACROS
+        -D__STDC_FORMAT_MACROS
+        -D_FORTIFY_SOURCE=2
+        -DNVALGRIND
+        -DDYNAMIC_ANNOTATIONS_ENABLED=0
+        -DWEBRTC_ENABLE_PROTOBUF=1
+        -DWEBRTC_STRICT_FIELD_TRIALS=0
+        -DWEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE
+        -DRTC_ENABLE_VP9
+        -DRTC_DAV1D_IN_INTERNAL_DECODER_FACTORY
+        -DWEBRTC_HAVE_SCTP
+        -DWEBRTC_ARCH_ARM64
+        -DWEBRTC_HAS_NEON
+        -DWEBRTC_LIBRARY_IMPL
+        -DWEBRTC_ENABLE_SYMBOL_EXPORT
+        -DWEBRTC_ENABLE_AVX2
+        -DWEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0
+        -DWEBRTC_POSIX
+        -DWEBRTC_MAC
+        -DABSL_ALLOCATOR_NOTHROW=1
+        -DGOOGLE_PROTOBUF_NO_RTTI
+        -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+        -DGOOGLE_PROTOBUF_INTERNAL_DONATE_STEAL_INLINE=0
+        -DHAVE_PTHREAD)
+    endif()
+  endif()
 endif()
 add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS)
 
 if(WEBRTC_INCLUDE_DIR AND (WEBRTC_LIBRARY_DEBUG OR WEBRTC_LIBRARY_RELEASE))
   add_library(WebRTC STATIC IMPORTED)
-  set_target_properties(WebRTC PROPERTIES
-      IMPORTED_LOCATION "${WEBRTC_LIBRARY}"
-      IMPORTED_LOCATION_DEBUG "${WEBRTC_LIBRARY_DEBUG}"
-      IMPORTED_LOCATION_RELEASE "${WEBRTC_LIBRARY_RELEASE}"
-      IMPORTED_INCLUDE_DIRECTORIES "${WEBRTC_INCLUDE_DIR}")
+  set_target_properties(
+    WebRTC
+    PROPERTIES IMPORTED_LOCATION "${WEBRTC_LIBRARY}"
+               IMPORTED_LOCATION_DEBUG "${WEBRTC_LIBRARY_DEBUG}"
+               IMPORTED_LOCATION_RELEASE "${WEBRTC_LIBRARY_RELEASE}"
+               IMPORTED_INCLUDE_DIRECTORIES "${WEBRTC_INCLUDE_DIR}")
 else()
-  message(WARNING "WebRTC library not found. Communication features might be disabled.")
+  message(
+    WARNING
+      "WebRTC library not found. Communication features might be disabled.")
 endif()
-
 
 include_directories(${WEBRTC_INCLUDE_DIR})
 
@@ -240,4 +559,15 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
   target_compile_definitions(qwebrtc PRIVATE QWEBRTC_LIBRARY QT_NO_KEYWORDS)
 endif()
-target_link_libraries(qwebrtc PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Multimedia WebRTC "-framework CoreFoundation")
+
+if(OS_LINUX)
+  target_link_libraries(
+    qwebrtc PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
+                    Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Concurrent WebRTC)
+elseif(OS_MACOS)
+  target_link_libraries(
+    qwebrtc
+    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
+            Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Concurrent WebRTC
+            "-framework CoreFoundation")
+endif()

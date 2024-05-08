@@ -6,6 +6,20 @@
 #include "rtctypes.h"
 #include "rtccodecspecificinfo.h"
 
+namespace webrtc
+{
+
+namespace
+{
+class CVideoEncoder;
+class CVideoEncoderSelector;
+} // namespace
+
+class CVideoDecoderFactory;
+class CVideoEncoderFactory;
+
+} // namespace webrtc
+
 class RTCCodecSpecificInfoH264Private;
 /**
  * @brief The RTCCodecSpecificInfoH264 class.
@@ -33,6 +47,8 @@ class RTCCodecSpecificInfoH264 : public IRTCCodecSpecificInfo
     void setPacketizationMode(RTCH264PacketizationMode packetizationMode);
 
   private:
+    friend class webrtc::CVideoEncoder;
+
     RTCCodecSpecificInfoH264Private *const d_ptr;
     Q_DECLARE_PRIVATE(RTCCodecSpecificInfoH264)
 };

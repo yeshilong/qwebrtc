@@ -7,8 +7,21 @@
 
 #include "rtctypes.h"
 
-class RTCEncodedImagePrivate;
+namespace webrtc
+{
 
+namespace
+{
+class CVideoEncoder;
+class CVideoEncoderSelector;
+} // namespace
+
+class CVideoDecoderFactory;
+class CVideoEncoderFactory;
+
+} // namespace webrtc
+
+class RTCEncodedImagePrivate;
 /**
  * @brief Represents an encoded frame. Corresponds to webrtc::EncodedImage.
  */
@@ -22,6 +35,13 @@ class RTCEncodedImage : public QObject
      * @param parent The parent object.
      */
     explicit RTCEncodedImage(QObject *parent = nullptr);
+
+    /**
+     * @brief RTCEncodedImage constructor.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCEncodedImage(RTCEncodedImagePrivate &d, QObject *parent = nullptr);
 
     QByteArray buffer() const;
     void setBuffer(const QByteArray &buffer);
@@ -62,9 +82,9 @@ class RTCEncodedImage : public QObject
     RTCVideoContentType contentType() const;
     void setContentType(const RTCVideoContentType &contentType);
 
-    RTCEncodedImage(RTCEncodedImagePrivate &d, QObject *parent = nullptr);
+  protected:
+    friend class webrtc::CVideoEncoder;
 
-  private:
     RTCEncodedImagePrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCEncodedImage)
 };
