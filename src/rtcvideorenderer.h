@@ -13,7 +13,7 @@ class IRTCVideoRenderer
 {
   public:
     virtual void setSize(const QSize &size) = 0;
-    virtual void renderFrame(QSharedPointer<RTCVideoFrame> frame) = 0;
+    virtual void renderFrame(std::shared_ptr<RTCVideoFrame> frame) = 0;
 };
 
 /**
@@ -22,7 +22,7 @@ class IRTCVideoRenderer
 class IRTCVideoViewDelegate
 {
   public:
-    virtual void videoView(QSharedPointer<IRTCVideoRenderer> videoView, const QSize &size) = 0;
+    virtual void videoView(std::shared_ptr<IRTCVideoRenderer> videoView, const QSize &size) = 0;
 };
 
 #endif // RTCVIDEORENDERER_H

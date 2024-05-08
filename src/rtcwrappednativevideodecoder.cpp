@@ -33,9 +33,9 @@ int RTCWrappedNativeVideoDecoder::releaseDecoder()
     return 0;
 }
 
-int RTCWrappedNativeVideoDecoder::decode(QSharedPointer<RTCEncodedImage> encodedImage,
+int RTCWrappedNativeVideoDecoder::decode(std::shared_ptr<RTCEncodedImage> encodedImage,
                                          bool missingFrames,
-                                         QSharedPointer<IRTCCodecSpecificInfo> info,
+                                         std::shared_ptr<IRTCCodecSpecificInfo> info,
                                          qint64 renderTimeMs)
 {
     RTC_DCHECK_NOTREACHED();

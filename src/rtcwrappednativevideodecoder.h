@@ -61,8 +61,8 @@ class RTCWrappedNativeVideoDecoder : public IRTCVideoDecoder
      * @param renderTimeMs The render time in milliseconds.
      * @return The result.
      */
-    int decode(QSharedPointer<RTCEncodedImage> encodedImage, bool missingFrames,
-               QSharedPointer<IRTCCodecSpecificInfo> info, qint64 renderTimeMs);
+    int decode(std::shared_ptr<RTCEncodedImage> encodedImage, bool missingFrames,
+               std::shared_ptr<IRTCCodecSpecificInfo> info, qint64 renderTimeMs);
 
     /**
      * @brief Gets the implementation name.

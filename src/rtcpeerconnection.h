@@ -252,9 +252,9 @@ class RTCPeerConnection : public QObject
     /**
      * @brief Limits the bandwidth allocated for all RTP streams sent by this PeerConnection. Nil parameters will be unchanged. Setting `currentBitrateBps` will force the available bitrate estimate to the given value. Returns true if the parameters were successfully updated.
      */
-    bool setBweMinBitrateBps(QSharedPointer<qint64> minBitrateBps,
-                             QSharedPointer<qint64> currentBitrateBps,
-                             QSharedPointer<qint64> maxBitrateBps);
+    bool setBweMinBitrateBps(std::shared_ptr<qint64> minBitrateBps,
+                             std::shared_ptr<qint64> currentBitrateBps,
+                             std::shared_ptr<qint64> maxBitrateBps);
 
     /**
      * @brief Start or stop recording an Rtc EventLog.

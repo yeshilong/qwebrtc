@@ -1,15 +1,15 @@
 #include "rtcdesktopcapturer.h"
 
 RTCDesktopCapturer::RTCDesktopCapturer(
-    QSharedPointer<RTCDesktopSource> desktopSource,
-    QSharedPointer<IRTCDesktopCapturerDelegate> desktopCaptureDelegate,
-    QSharedPointer<IRTCVideoCapturerDelegate> captureDelegate, QObject *parent)
-    : RTCVideoCapturer{captureDelegate, parent}
+    std::shared_ptr<RTCDesktopSource> desktopSource,
+    std::shared_ptr<IRTCDesktopCapturerDelegate> desktopCaptureDelegate,
+    std::shared_ptr<IRTCVideoCapturerDelegate> captureDelegate, QObject *parent)
+    : IRTCVideoCapturer{captureDelegate}
 {
 }
 RTCDesktopCapturer::RTCDesktopCapturer(
-    QSharedPointer<IRTCDesktopCapturerDelegate> desktopCaptureDelegate,
-    QSharedPointer<IRTCVideoCapturerDelegate> captureDelegate, QObject *parent)
-    : RTCVideoCapturer{captureDelegate, parent}
+    std::shared_ptr<IRTCDesktopCapturerDelegate> desktopCaptureDelegate,
+    std::shared_ptr<IRTCVideoCapturerDelegate> captureDelegate, QObject *parent)
+    : IRTCVideoCapturer{captureDelegate}
 {
 }

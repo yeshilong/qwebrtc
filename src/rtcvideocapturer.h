@@ -2,10 +2,9 @@
 #define RTCVIDEOCAPTURER_H
 
 #include <QObject>
-#include <QSharedPointer>
 
 class RTCVideoFrame;
-class RTCVideoCapturer;
+class IRTCVideoCapturer;
 
 /**
  * @brief The IRTCVideoCapturerDelegate class.
@@ -13,23 +12,20 @@ class RTCVideoCapturer;
 class IRTCVideoCapturerDelegate
 {
   public:
-    virtual void capturer(QSharedPointer<RTCVideoCapturer> capturer,
-                          QSharedPointer<RTCVideoFrame> frame) = 0;
+    virtual void capturer(std::shared_ptr<IRTCVideoCapturer> capturer,
+                          std::shared_ptr<RTCVideoFrame> frame) = 0;
 };
 
 /**
- * @brief The RTCVideoCapturer class.
+ * @brief The IRTCVideoCapturer class.
  */
-class RTCVideoCapturer : public QObject
+class IRTCVideoCapturer
 {
-    Q_OBJECT
-
   public:
-    explicit RTCVideoCapturer(QSharedPointer<IRTCVideoCapturerDelegate> videoCapturerDelegate,
-                              QObject *parent = nullptr);
+    explicit IRTCVideoCapturer(std::shared_ptr<IRTCVideoCapturerDelegate> videoCapturerDelegate);
 
-    QSharedPointer<IRTCVideoCapturerDelegate> delegate() const;
-    void setDelegate(const QSharedPointer<IRTCVideoCapturerDelegate> &delegate);
+    std::shared_ptr<IRTCVideoCapturerDelegate> delegate() const;
+    void setDelegate(const std::shared_ptr<IRTCVideoCapturerDelegate> &delegate);
 };
 
 #endif // RTCVIDEOCAPTURER_H

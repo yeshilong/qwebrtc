@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QVector>
-#include <QSharedPointer>
 
 #include "rtcdesktopsource.h"
 #include "rtcvideocapturer.h"
@@ -16,30 +15,30 @@ class RTCDesktopCapturer;
 class IRTCDesktopCapturerDelegate
 {
   public:
-    virtual void didSourceCaptureStart(QSharedPointer<RTCDesktopCapturer> capturer) = 0;
-    virtual void didSourceCapturePaused(QSharedPointer<RTCDesktopCapturer> capturer) = 0;
-    virtual void didSourceCaptureStop(QSharedPointer<RTCDesktopCapturer> capturer) = 0;
-    virtual void didSourceCaptureError(QSharedPointer<RTCDesktopCapturer> capturer) = 0;
+    virtual void didSourceCaptureStart(std::shared_ptr<RTCDesktopCapturer> capturer) = 0;
+    virtual void didSourceCapturePaused(std::shared_ptr<RTCDesktopCapturer> capturer) = 0;
+    virtual void didSourceCaptureStop(std::shared_ptr<RTCDesktopCapturer> capturer) = 0;
+    virtual void didSourceCaptureError(std::shared_ptr<RTCDesktopCapturer> capturer) = 0;
 };
 
 /**
- * @brief Screen capture that implements RTCVideoCapturer. Delivers frames to a
+ * @brief Screen capture that implements IRTCVideoCapturer. Delivers frames to a
  * RTCVideoCapturerDelegate (usually RTCVideoSource).
  */
-class RTCDesktopCapturer : public RTCVideoCapturer
+class RTCDesktopCapturer : public QObject, IRTCVideoCapturer
 {
     Q_OBJECT
 
   public:
-    explicit RTCDesktopCapturer(QSharedPointer<RTCDesktopSource> desktopSource,
-                                QSharedPointer<IRTCDesktopCapturerDelegate> desktopCaptureDelegate,
-                                QSharedPointer<IRTCVideoCapturerDelegate> captureDelegate,
+    explicit RTCDesktopCapturer(std::shared_ptr<RTCDesktopSource> desktopSource,
+                                std::shared_ptr<IRTCDesktopCapturerDelegate> desktopCaptureDelegate,
+                                std::shared_ptr<IRTCVideoCapturerDelegate> captureDelegate,
                                 QObject *parent = nullptr);
-    explicit RTCDesktopCapturer(QSharedPointer<IRTCDesktopCapturerDelegate> desktopCaptureDelegate,
-                                QSharedPointer<IRTCVideoCapturerDelegate> captureDelegate,
+    explicit RTCDesktopCapturer(std::shared_ptr<IRTCDesktopCapturerDelegate> desktopCaptureDelegate,
+                                std::shared_ptr<IRTCVideoCapturerDelegate> captureDelegate,
                                 QObject *parent = nullptr);
 
-    QSharedPointer<RTCDesktopSource> source() const;
+    std::shared_ptr<RTCDesktopSource> source() const;
 
     void startCapture();
     void startCaptureWithFPS(int fps);

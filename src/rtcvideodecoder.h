@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QString>
-#include <QSharedPointer>
 
 #include <functional>
 
@@ -14,7 +13,7 @@ class IRTCCodecSpecificInfo;
 /**
  * @brief The RTCVideoDecoderCallback function pointer.
  */
-using RTCVideoDecoderCallback = std::function<void(QSharedPointer<RTCVideoFrame> frame)>;
+using RTCVideoDecoderCallback = std::function<void(std::shared_ptr<RTCVideoFrame> frame)>;
 
 /**
  * @brief The IRTCVideoDecoder class.
@@ -56,8 +55,8 @@ class IRTCVideoDecoder : public QObject
      * @param renderTimeMs The render time in milliseconds.
      * @return The result.
      */
-    virtual int decode(QSharedPointer<RTCEncodedImage> encodedImage, bool missingFrames,
-                       QSharedPointer<IRTCCodecSpecificInfo> info, qint64 renderTimeMs) = 0;
+    virtual int decode(std::shared_ptr<RTCEncodedImage> encodedImage, bool missingFrames,
+                       std::shared_ptr<IRTCCodecSpecificInfo> info, qint64 renderTimeMs) = 0;
 
     /**
      * @brief Gets the implementation name.
