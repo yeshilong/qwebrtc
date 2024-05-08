@@ -247,7 +247,8 @@ add_library(
   rtcyuvhelper.cpp
   rtcyuvhelper.h
   rtcyuvplanarbuffer.h
-  native/cvideorenderer.h native/cvideorenderer.cpp)
+  native/cvideorenderer.h
+  native/cvideorenderer.cpp)
 
 find_path(
   WEBRTC_INCLUDE_DIR
@@ -562,12 +563,14 @@ endif()
 
 if(OS_LINUX)
   target_link_libraries(
-    qwebrtc PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
-                    Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Concurrent WebRTC)
+    qwebrtc
+    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
+            Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Concurrent
+            WebRTC)
 elseif(OS_MACOS)
   target_link_libraries(
     qwebrtc
     PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
-            Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Concurrent WebRTC
-            "-framework CoreFoundation")
+            Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Concurrent
+            WebRTC "-framework CoreFoundation")
 endif()

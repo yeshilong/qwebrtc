@@ -20,7 +20,7 @@ QVector<RTCMetricsSampleInfo *> RTCMetrics::getAndResetMetrics()
     for (const auto &histogram : histograms)
     {
         auto metric = new RTCMetricsSampleInfoPrivate(*histogram.second);
-        metrics.emplaceBack(new RTCMetricsSampleInfo(*metric));
+        metrics.append(new RTCMetricsSampleInfo(*metric));
     }
     return metrics;
 }

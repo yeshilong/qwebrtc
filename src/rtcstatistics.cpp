@@ -88,7 +88,7 @@ QVariant ValueFromStatsMember(const RTCStatsMemberInterface *member)
         case RTCStatsMemberInterface::kSequenceString: {
             std::vector<std::string> sequence =
                 *member->cast_to<RTCStatsMember<std::vector<std::string>>>();
-            QList<QString> list;
+            QList<QVariant> list;
             for (const auto &item : sequence)
             {
                 list.append(QString::fromStdString(item));

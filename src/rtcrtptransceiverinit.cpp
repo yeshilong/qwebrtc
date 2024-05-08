@@ -2,6 +2,8 @@
 
 #include "rtcrtpencodingparameters_p.h"
 
+#include <QDebug>
+
 RTCRtpTransceiverInitPrivate::RTCRtpTransceiverInitPrivate()
 {
     direction_ = RTCRtpTransceiverDirection::RTCRtpTransceiverDirectionSendRecv;

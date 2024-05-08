@@ -7,6 +7,8 @@
 
 #include "api/media_stream_interface.h"
 
+#include <QDebug>
+
 RTCRtpSenderPrivate::RTCRtpSenderPrivate(
     RTCPeerConnectionFactory *factory,
     const rtc::scoped_refptr<webrtc::RtpSenderInterface> nativeRtpSender)

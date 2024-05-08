@@ -1,7 +1,6 @@
 #ifndef RTCRTPCODECCAPABILITY_H
 #define RTCRTPCODECCAPABILITY_H
 
-#include <QObject>
 #include <QString>
 #include <QMap>
 #include <QVariant>
