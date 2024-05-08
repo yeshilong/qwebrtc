@@ -21,8 +21,8 @@ class RTCDefaultAudioProcessingModule : public RTCAudioProcessingModule
      * @param renderPreProcessingDelegate The render pre-processing delegate.
      */
     RTCDefaultAudioProcessingModule(RTCAudioProcessingConfig config,
-                                    RTCAudioCustomProcessingDelegate capturePostProcessingDelegate,
-                                    RTCAudioCustomProcessingDelegate renderPreProcessingDelegate);
+                                    RTCAudioCustomProcessingDelegate *capturePostProcessingDelegate,
+                                    RTCAudioCustomProcessingDelegate *renderPreProcessingDelegate);
 
     /**
      * @brief Gets and sets the capture post-processing delegate.

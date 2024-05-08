@@ -40,7 +40,7 @@ RTCIceServerPrivate::RTCIceServerPrivate(webrtc::PeerConnectionInterface::IceSer
 
 webrtc::PeerConnectionInterface::IceServer RTCIceServerPrivate::nativeIceServer() const
 {
-    __block webrtc::PeerConnectionInterface::IceServer iceServer;
+    webrtc::PeerConnectionInterface::IceServer iceServer;
     iceServer.username = username_.toStdString();
     iceServer.password = credential_.toStdString();
     iceServer.hostname = hostname_.toStdString();
