@@ -5,8 +5,6 @@ add_library(
   qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
-  native/cframebuffer.cpp
-  native/cframebuffer.h
   native/cnetworkmonitorfactory.cpp
   native/cnetworkmonitorfactory.h
   native/csslcertificateverifieradapter.cpp
@@ -17,6 +15,12 @@ add_library(
   native/cvideoencoderfactory.h
   native/cvideoframe.cpp
   native/cvideoframe.h
+  native/cvideoframebuffer.cpp
+  native/cvideoframebuffer.h
+  native/cvideorenderer.cpp
+  native/cvideorenderer.h
+  native/cvideotracksource.cpp
+  native/cvideotracksource.h
   rtcaudiobuffer.cpp
   rtcaudiobuffer.h
   rtcaudiocustomprocessingdelegate.h
@@ -246,9 +250,7 @@ add_library(
   rtcwrappednativevideoencoder.h
   rtcyuvhelper.cpp
   rtcyuvhelper.h
-  rtcyuvplanarbuffer.h
-  native/cvideorenderer.h
-  native/cvideorenderer.cpp)
+  rtcyuvplanarbuffer.h)
 
 find_path(
   WEBRTC_INCLUDE_DIR

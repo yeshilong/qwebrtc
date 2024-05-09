@@ -1,5 +1,5 @@
 #include "cvideoframe.h"
-#include "cframebuffer.h"
+#include "cvideoframebuffer.h"
 
 #include "rtc_base/time_utils.h"
 

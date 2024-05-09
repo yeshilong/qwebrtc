@@ -5,12 +5,12 @@
 namespace
 {
 // An implementation of EncodedImageBufferInterface that doesn't perform any copies.
-class ObjCEncodedImageBuffer : public webrtc::EncodedImageBufferInterface
+class CEncodedImageBuffer : public webrtc::EncodedImageBufferInterface
 {
   public:
-    static rtc::scoped_refptr<ObjCEncodedImageBuffer> Create(QByteArray data)
+    static rtc::scoped_refptr<CEncodedImageBuffer> Create(QByteArray data)
     {
-        return rtc::make_ref_counted<ObjCEncodedImageBuffer>(data);
+        return rtc::make_ref_counted<CEncodedImageBuffer>(data);
     }
     const uint8_t *data() const override
     {
@@ -27,10 +27,10 @@ class ObjCEncodedImageBuffer : public webrtc::EncodedImageBufferInterface
     }
 
   protected:
-    explicit ObjCEncodedImageBuffer(QByteArray data) : data_(std::move(data))
+    explicit CEncodedImageBuffer(QByteArray data) : data_(std::move(data))
     {
     }
-    ~ObjCEncodedImageBuffer()
+    ~CEncodedImageBuffer()
     {
     }
 
@@ -72,7 +72,7 @@ webrtc::EncodedImage RTCEncodedImagePrivate::nativeEncodedImage() const
     }
     else if (!buffer_.isNull())
     {
-        encodedImage.SetEncodedData(ObjCEncodedImageBuffer::Create(buffer_));
+        encodedImage.SetEncodedData(CEncodedImageBuffer::Create(buffer_));
     }
     encodedImage.set_size(buffer_.size());
     encodedImage._encodedWidth = rtc::dchecked_cast<uint32_t>(encodedWidth_);

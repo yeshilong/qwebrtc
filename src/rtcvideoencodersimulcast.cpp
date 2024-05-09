@@ -11,8 +11,8 @@ IRTCVideoEncoder *RTCVideoEncoderSimulcast::simulcastEncoderWithPrimary(
     IRTCVideoEncoderFactory *primary, IRTCVideoEncoderFactory *fallback,
     RTCVideoCodecInfo *videoCodecInfo)
 {
-    auto nativePrimary = webrtc::ObjCToNativeVideoEncoderFactory(primary);
-    auto nativeFallback = webrtc::ObjCToNativeVideoEncoderFactory(fallback);
+    auto nativePrimary = webrtc::CToNativeVideoEncoderFactory(primary);
+    auto nativeFallback = webrtc::CToNativeVideoEncoderFactory(fallback);
     auto nativeFormat = videoCodecInfo->d_ptr->nativeSdpVideoFormat();
 
     return new RTCWrappedNativeVideoEncoder(std::make_unique<webrtc::SimulcastEncoderAdapter>(

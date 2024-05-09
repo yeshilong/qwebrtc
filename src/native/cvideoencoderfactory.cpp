@@ -239,10 +239,10 @@ std::unique_ptr<webrtc::VideoEncoderFactory::EncoderSelectorInterface> CVideoEnc
     return nullptr;
 }
 
-std::unique_ptr<VideoEncoderFactory> ObjCToNativeVideoEncoderFactory(
-    IRTCVideoEncoderFactory *objc_video_encoder_factory)
+std::unique_ptr<VideoEncoderFactory> CToNativeVideoEncoderFactory(
+    IRTCVideoEncoderFactory *c_video_encoder_factory)
 {
-    return std::make_unique<CVideoEncoderFactory>(objc_video_encoder_factory);
+    return std::make_unique<CVideoEncoderFactory>(c_video_encoder_factory);
 }
 
 } // namespace webrtc

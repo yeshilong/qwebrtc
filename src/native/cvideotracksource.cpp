@@ -1,0 +1,130 @@
+/*
+ * Copyright (C) 2024 Deltarion Systems
+ *
+ * This software is licensed under the terms of the GNU Lesser
+ * General Public License (LGPL) version 3 as published by the Free
+ * Software Foundation. This license is available at:
+ * https://www.gnu.org/licenses/lgpl-3.0.html
+ *
+ * You are free to modify and distribute this software under the
+ * terms of the LGPLv3 license. You are required to make the source
+ * code of any modifications available under the same license.
+ */
+#include "cvideotracksource.h"
+
+#include "rtcvideoframe.h"
+#include "rtcvideoframebuffer.h"
+
+#include "cvideoframebuffer.h"
+
+#include "api/video/i420_buffer.h"
+
+namespace webrtc
+{
+
+CVideoTrackSource::CVideoTrackSource() : CVideoTrackSource(false)
+{
+}
+
+CVideoTrackSource::CVideoTrackSource(bool is_screencast)
+    : AdaptedVideoTrackSource(/* required resolution alignment */ 2), is_screencast_(is_screencast)
+{
+}
+
+CVideoTrackSource::CVideoTrackSource(RTCCVideoSourceAdapter *adapter) : adapter_(adapter)
+{
+    adapter_->cVideoTrackSource = this;
+}
+
+bool CVideoTrackSource::is_screencast() const
+{
+    return is_screencast_;
+}
+
+absl::optional<bool> CVideoTrackSource::needs_denoising() const
+{
+    return false;
+}
+
+MediaSourceInterface::SourceState CVideoTrackSource::state() const
+{
+    return SourceState::kLive;
+}
+
+bool CVideoTrackSource::remote() const
+{
+    return false;
+}
+
+void CVideoTrackSource::OnOutputFormatRequest(int width, int height, int fps)
+{
+    cricket::VideoFormat format(width, height, cricket::VideoFormat::FpsToInterval(fps), 0);
+    video_adapter()->OnOutputFormatRequest(format);
+}
+
+void CVideoTrackSource::OnCapturedFrame(RTCVideoFrame *frame)
+{
+    const int64_t timestamp_us = frame->timeStamp() / rtc::kNumNanosecsPerMicrosec;
+    const int64_t translated_timestamp_us =
+        timestamp_aligner_.TranslateTimestamp(timestamp_us, rtc::TimeMicros());
+
+    int adapted_width;
+    int adapted_height;
+    int crop_width;
+    int crop_height;
+    int crop_x;
+    int crop_y;
+    if (!AdaptFrame(frame->width(), frame->height(), timestamp_us, &adapted_width, &adapted_height,
+                    &crop_width, &crop_height, &crop_x, &crop_y))
+    {
+        return;
+    }
+
+    rtc::scoped_refptr<VideoFrameBuffer> buffer;
+    if (adapted_width == frame->width() && adapted_height == frame->height())
+    {
+        // No adaption - optimized path.
+        buffer = rtc::make_ref_counted<CVideoFrameBuffer>(frame->buffer().get());
+    }
+    // else if ([frame.buffer isKindOfClass:[RTC_C_TYPE(RTCCVPixelBuffer) class]])
+    // {
+    //     // Adapted CVPixelBuffer frame.
+    //     RTC_C_TYPE(RTCCVPixelBuffer) *rtcPixelBuffer =
+    //         (RTC_C_TYPE(RTCCVPixelBuffer) *)frame.buffer;
+    //     buffer = rtc::make_ref_counted<CVideoFrameBuffer>([[RTC_C_TYPE(RTCCVPixelBuffer) alloc]
+    //         initWithPixelBuffer:rtcPixelBuffer.pixelBuffer
+    //                adaptedWidth:adapted_width
+    //               adaptedHeight:adapted_height
+    //                   cropWidth:crop_width
+    //                  cropHeight:crop_height
+    //                       cropX:crop_x + rtcPixelBuffer.cropX
+    //                       cropY:crop_y + rtcPixelBuffer.cropY]);
+    // }
+    // else
+    // {
+    //     // Adapted I420 frame.
+    //     // TODO(magjed): Optimize this I420 path.
+    //     rtc::scoped_refptr<I420Buffer> i420_buffer =
+    //         I420Buffer::Create(adapted_width, adapted_height);
+    //     buffer = rtc::make_ref_counted<CVideoFrameBuffer>(frame.buffer);
+    //     i420_buffer->CropAndScaleFrom(*buffer->ToI420(), crop_x, crop_y, crop_width, crop_height);
+    //     buffer = i420_buffer;
+    // }
+
+    // Applying rotation is only supported for legacy reasons and performance is
+    // not critical here.
+    VideoRotation rotation = static_cast<VideoRotation>(frame->rotation());
+    if (apply_rotation() && rotation != kVideoRotation_0)
+    {
+        buffer = I420Buffer::Rotate(*buffer->ToI420(), rotation);
+        rotation = kVideoRotation_0;
+    }
+
+    OnFrame(VideoFrame::Builder()
+                .set_video_frame_buffer(buffer)
+                .set_rotation(rotation)
+                .set_timestamp_us(translated_timestamp_us)
+                .build());
+}
+
+} // namespace webrtc

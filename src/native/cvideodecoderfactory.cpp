@@ -1,6 +1,6 @@
 #include "cvideodecoderfactory.h"
 
-#include "cframebuffer.h"
+#include "cvideoframebuffer.h"
 
 #include "rtcencodedimage_p.h"
 #include "rtcvideoframe.h"
@@ -44,7 +44,7 @@ class CVideoDecoder : public VideoDecoder
     int32_t RegisterDecodeCompleteCallback(DecodedImageCallback *callback) override
     {
         decoder_->setCallback([callback](std::shared_ptr<RTCVideoFrame> frame) {
-            auto buffer = rtc::make_ref_counted<CFrameBuffer>(frame->buffer().get());
+            auto buffer = rtc::make_ref_counted<CVideoFrameBuffer>(frame->buffer().get());
             VideoFrame videoFrame = VideoFrame::Builder()
                                         .set_video_frame_buffer(buffer)
                                         .set_timestamp_rtp(static_cast<uint32_t>(
@@ -124,10 +124,10 @@ std::vector<SdpVideoFormat> CVideoDecoderFactory::GetSupportedFormats() const
     return supported_formats;
 }
 
-std::unique_ptr<VideoDecoderFactory> ObjCToNativeVideoDecoderFactory(
-    IRTCVideoDecoderFactory *objc_video_decoder_factory)
+std::unique_ptr<VideoDecoderFactory> CToNativeVideoDecoderFactory(
+    IRTCVideoDecoderFactory *c_video_decoder_factory)
 {
-    return std::make_unique<CVideoDecoderFactory>(objc_video_decoder_factory);
+    return std::make_unique<CVideoDecoderFactory>(c_video_decoder_factory);
 }
 
 } // namespace webrtc

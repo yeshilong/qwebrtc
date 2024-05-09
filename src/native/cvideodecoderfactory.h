@@ -26,8 +26,8 @@ class CVideoDecoderFactory : public VideoDecoderFactory
     IRTCVideoDecoderFactory *decoder_factory_;
 };
 
-std::unique_ptr<VideoDecoderFactory> ObjCToNativeVideoDecoderFactory(
-    IRTCVideoDecoderFactory *objc_video_decoder_factory);
+std::unique_ptr<VideoDecoderFactory> CToNativeVideoDecoderFactory(
+    IRTCVideoDecoderFactory *c_video_decoder_factory);
 
 } // namespace webrtc
 

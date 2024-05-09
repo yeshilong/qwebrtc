@@ -1,5 +1,5 @@
-#ifndef CFRAMEBUFFER_H
-#define CFRAMEBUFFER_H
+#ifndef CVIDEOFRAMEBUFFER_H
+#define CVIDEOFRAMEBUFFER_H
 
 #include "api/video/video_frame_buffer.h"
 
@@ -8,11 +8,11 @@ class IRTCVideoFrameBuffer;
 namespace webrtc
 {
 
-class CFrameBuffer : public VideoFrameBuffer
+class CVideoFrameBuffer : public VideoFrameBuffer
 {
   public:
-    explicit CFrameBuffer(IRTCVideoFrameBuffer *frame_buffer);
-    ~CFrameBuffer() override;
+    explicit CVideoFrameBuffer(IRTCVideoFrameBuffer *frame_buffer);
+    ~CVideoFrameBuffer() override;
 
     Type type() const override;
 
@@ -37,4 +37,4 @@ std::shared_ptr<IRTCVideoFrameBuffer> toCVideoFrameBuffer(
 
 } // namespace webrtc
 
-#endif // CFRAMEBUFFER_H
+#endif // CVIDEOFRAMEBUFFER_H
