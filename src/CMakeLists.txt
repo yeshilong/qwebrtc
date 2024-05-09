@@ -239,6 +239,7 @@ add_library(
   rtcvideoframe.h
   rtcvideoframebuffer.h
   rtcvideorenderer.h
+  rtcvideosource_p.h
   rtcvideosource.cpp
   rtcvideosource.h
   rtcvideotrack_p.h

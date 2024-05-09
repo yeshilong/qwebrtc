@@ -6,6 +6,7 @@
 #include "rtcmediasource.h"
 
 class RTCVideoFrame;
+class RTCVideoSourcePrivate;
 
 /**
  * @brief Represents a video source with a method to adapt the output format.
@@ -30,12 +31,20 @@ class RTCVideoSource : public RTCMediaSource
      */
     void adaptOutputFormatToWidth(int width, int height, int fps);
 
-  Q_SIGNALS:
+  public Q_SLOTS:
     /**
-     * @brief Signal that is emitted when a frame is captured.
+     * @brief Slots that is called when a frame is captured.
      * @param frame The captured frame.
      */
-    void frameCaptured(RTCVideoFrame *frame);
+    void didCaptureVideoFrame(RTCVideoFrame *frame);
+
+  protected:
+    /**
+     * @brief Initializes a new instance of the RTCVideoSource class.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCVideoSource(RTCVideoSourcePrivate &d, QObject *parent);
 };
 
 #endif // RTCVIDEOSOURCE_H
