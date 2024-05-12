@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QByteArray>
 
-class IRTCI420Buffer;
+class RTCI420Buffer;
 
 /**
  * @brief Provides methods for handling video frame buffers.
@@ -22,7 +22,7 @@ class IRTCVideoFrameBuffer : public QObject
     }
     virtual int width() const = 0;
     virtual int height() const = 0;
-    virtual IRTCI420Buffer *toI420() = 0;
+    virtual RTCI420Buffer *toI420() = 0;
     virtual IRTCVideoFrameBuffer *cropAndScaleWith(int offsetX, int offsetY, int cropWidth,
                                                    int cropHeight, int scaleWidth,
                                                    int scaleHeight) = 0;

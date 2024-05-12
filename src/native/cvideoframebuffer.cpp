@@ -1,7 +1,7 @@
 #include "cvideoframebuffer.h"
 
-#include "rtcvideoframebuffer.h"
 #include "rtcnativei420buffer_p.h"
+#include "rtcvideoframebuffer.h"
 
 #include "api/make_ref_counted.h"
 
@@ -17,7 +17,7 @@ namespace
 class CI420FrameBuffer : public I420BufferInterface
 {
   public:
-    explicit CI420FrameBuffer(IRTCI420Buffer *frame_buffer)
+    explicit CI420FrameBuffer(RTCI420Buffer *frame_buffer)
         : frame_buffer_(frame_buffer), width_(frame_buffer->width()),
           height_(frame_buffer->height())
     {
@@ -67,7 +67,7 @@ class CI420FrameBuffer : public I420BufferInterface
     }
 
   private:
-    std::shared_ptr<IRTCI420Buffer> frame_buffer_;
+    std::shared_ptr<RTCI420Buffer> frame_buffer_;
     int width_;
     int height_;
 };

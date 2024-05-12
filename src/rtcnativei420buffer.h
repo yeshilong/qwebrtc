@@ -1,15 +1,15 @@
 #ifndef RTCNATIVEI420BUFFER_H
 #define RTCNATIVEI420BUFFER_H
 
-#include <QString>
+#include "rtcyuvplanarbuffer.h"
 
-#include "rtci420buffer.h"
+#include <QString>
 
 class RTCI420BufferPrivate;
 /**
- * @brief Implements the IRTCI420Buffer interface.
+ * @brief Implements the RTCI420Buffer interface.
  */
-class RTCI420Buffer : public IRTCI420Buffer
+class RTCI420Buffer : public virtual IRTCYUVPlanarBuffer
 {
   public:
     RTCI420Buffer();
@@ -17,7 +17,7 @@ class RTCI420Buffer : public IRTCI420Buffer
     /**
      * @brief Constructs an IRTCVideoFrameBuffer object.
      */
-    RTCI420Buffer(QObject *parent = nullptr) : IRTCI420Buffer(parent)
+    RTCI420Buffer(QObject *parent = nullptr) : IRTCYUVPlanarBuffer(parent)
     {
     }
 
@@ -30,7 +30,7 @@ class RTCI420Buffer : public IRTCI420Buffer
     int width() const;
     int height() const;
 
-    IRTCI420Buffer *toI420();
+    RTCI420Buffer *toI420();
     RTCI420Buffer *cropAndScaleWith(int offsetX, int offsetY, int cropWidth, int cropHeight,
                                     int scaleWidth, int scaleHeight);
 

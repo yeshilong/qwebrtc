@@ -91,8 +91,6 @@ add_library(
   rtcframecryptorkeyprovider_p.h
   rtcframecryptorkeyprovider.cpp
   rtcframecryptorkeyprovider.h
-  rtci420buffer.cpp
-  rtci420buffer.h
   rtcicecandidate_p.h
   rtcicecandidate.cpp
   rtcicecandidate.h
@@ -139,6 +137,8 @@ add_library(
   rtcpeerconnectionfactoryoptions_p.h
   rtcpeerconnectionfactoryoptions.cpp
   rtcpeerconnectionfactoryoptions.h
+  rtcqvideoframebuffer.cpp
+  rtcqvideoframebuffer.h
   rtcrtcpparameters_p.h
   rtcrtcpparameters.cpp
   rtcrtcpparameters.h

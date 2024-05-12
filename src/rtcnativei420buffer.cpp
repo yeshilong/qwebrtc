@@ -16,28 +16,29 @@ rtc::scoped_refptr<webrtc::I420BufferInterface> RTCI420BufferPrivate::nativeI420
 }
 
 RTCI420Buffer::RTCI420Buffer(int width, int height, QObject *parent)
-    : IRTCI420Buffer(width, height), d_ptr(new RTCI420BufferPrivate())
+    : IRTCYUVPlanarBuffer(width, height), d_ptr(new RTCI420BufferPrivate())
 {
     d_ptr->nativeI420Buffer_ = webrtc::I420Buffer::Create(width, height);
 }
 
 RTCI420Buffer::RTCI420Buffer(int width, int height, int strideY, int strideU, int strideV,
                              QObject *parent)
-    : IRTCI420Buffer(width, height, strideY, strideU, strideV), d_ptr(new RTCI420BufferPrivate())
+    : IRTCYUVPlanarBuffer(width, height, strideY, strideU, strideV),
+      d_ptr(new RTCI420BufferPrivate())
 {
     d_ptr->nativeI420Buffer_ = webrtc::I420Buffer::Create(width, height, strideY, strideU, strideV);
 }
 
 RTCI420Buffer::RTCI420Buffer(int width, int height, const uint8_t *dataY, const uint8_t *dataU,
                              const uint8_t *dataV, QObject *parent)
-    : IRTCI420Buffer(width, height, dataY, dataU, dataV), d_ptr(new RTCI420BufferPrivate())
+    : IRTCYUVPlanarBuffer(width, height, dataY, dataU, dataV), d_ptr(new RTCI420BufferPrivate())
 {
     d_ptr->nativeI420Buffer_ = webrtc::I420Buffer::Copy(width, height, dataY, width, dataU,
                                                         (width + 1) / 2, dataV, (width + 1) / 2);
 }
 
 RTCI420Buffer::RTCI420Buffer(RTCI420BufferPrivate &d, QObject *parent)
-    : IRTCI420Buffer(parent), d_ptr(&d)
+    : IRTCYUVPlanarBuffer(parent), d_ptr(&d)
 {
 }
 
@@ -53,7 +54,7 @@ int RTCI420Buffer::height() const
     return d->nativeI420Buffer_->height();
 }
 
-IRTCI420Buffer *RTCI420Buffer::toI420()
+RTCI420Buffer *RTCI420Buffer::toI420()
 {
     return this;
 }

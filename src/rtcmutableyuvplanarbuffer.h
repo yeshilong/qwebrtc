@@ -3,7 +3,7 @@
 
 #include "rtcyuvplanarbuffer.h"
 
-class IRTCMutableYUVPlanarBuffer : public IRTCYUVPlanarBuffer
+class IRTCMutableYUVPlanarBuffer : public virtual IRTCYUVPlanarBuffer
 {
   public:
     IRTCMutableYUVPlanarBuffer(QObject *parent = nullptr) : IRTCYUVPlanarBuffer(parent)
@@ -22,9 +22,9 @@ class IRTCMutableYUVPlanarBuffer : public IRTCYUVPlanarBuffer
     {
     }
 
-    virtual const uint8_t *mutableDataY() const = 0;
-    virtual const uint8_t *mutableDataU() const = 0;
-    virtual const uint8_t *mutableDataV() const = 0;
+    virtual uint8_t *mutableDataY() const = 0;
+    virtual uint8_t *mutableDataU() const = 0;
+    virtual uint8_t *mutableDataV() const = 0;
 };
 
 #endif // RTCMUTABLEYUVPLANARBUFFER_H

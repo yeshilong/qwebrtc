@@ -9,7 +9,7 @@
 /**
  * @brief Provides methods for handling YUV planar data.
  */
-class IRTCYUVPlanarBuffer : public IRTCVideoFrameBuffer
+class IRTCYUVPlanarBuffer : public virtual IRTCVideoFrameBuffer
 {
   public:
     IRTCYUVPlanarBuffer(QObject *parent = nullptr) : IRTCVideoFrameBuffer(parent)
