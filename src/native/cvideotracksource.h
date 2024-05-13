@@ -13,64 +13,57 @@
 #ifndef CVIDEOTRACKSOURCE_H
 #define CVIDEOTRACKSOURCE_H
 
-#include "rtcvideocapturer.h"
-
-#include "rtc_base/timestamp_aligner.h"
 #include "media/base/adapted_video_track_source.h"
+#include "rtc_base/timestamp_aligner.h"
+#include "rtcvideocapturer.h"
 
 class RTCCVideoSourceAdapter;
 
-namespace webrtc
-{
+namespace webrtc {
 
-class CVideoTrackSource : public rtc::AdaptedVideoTrackSource
-{
-  public:
-    CVideoTrackSource();
-    explicit CVideoTrackSource(bool is_screencast);
-    explicit CVideoTrackSource(RTCCVideoSourceAdapter *adapter);
+class CVideoTrackSource : public rtc::AdaptedVideoTrackSource {
+ public:
+  CVideoTrackSource();
+  explicit CVideoTrackSource(bool is_screencast);
+  explicit CVideoTrackSource(RTCCVideoSourceAdapter* adapter);
 
-    bool is_screencast() const override;
+  bool is_screencast() const override;
 
-    // Indicates that the encoder should denoise video before encoding it.
-    // If it is not set, the default configuration is used which is different
-    // depending on video codec.
-    absl::optional<bool> needs_denoising() const override;
+  // Indicates that the encoder should denoise video before encoding it.
+  // If it is not set, the default configuration is used which is different
+  // depending on video codec.
+  absl::optional<bool> needs_denoising() const override;
 
-    SourceState state() const override;
+  SourceState state() const override;
 
-    bool remote() const override;
+  bool remote() const override;
 
-    void OnCapturedFrame(RTCVideoFrame *frame);
+  void OnCapturedFrame(RTCVideoFrame* frame);
 
-    // Called by RTCVideoSource.
-    void OnOutputFormatRequest(int width, int height, int fps);
+  // Called by RTCVideoSource.
+  void OnOutputFormatRequest(int width, int height, int fps);
 
-  private:
-    rtc::VideoBroadcaster broadcaster_;
-    rtc::TimestampAligner timestamp_aligner_;
+ private:
+  rtc::VideoBroadcaster broadcaster_;
+  rtc::TimestampAligner timestamp_aligner_;
 
-    RTCCVideoSourceAdapter *adapter_;
-    bool is_screencast_;
+  RTCCVideoSourceAdapter* adapter_;
+  bool is_screencast_;
 };
 
-} // namespace webrtc
+}  // namespace webrtc
 
-class RTCCVideoSourceAdapter : IRTCVideoCapturerDelegate
-{
-  public:
-    explicit RTCCVideoSourceAdapter(webrtc::CVideoTrackSource *cVideoTrackSource)
-        : cVideoTrackSource(cVideoTrackSource)
-    {
-    }
+class RTCCVideoSourceAdapter : IRTCVideoCapturerDelegate {
+ public:
+  explicit RTCCVideoSourceAdapter(webrtc::CVideoTrackSource* cVideoTrackSource)
+      : cVideoTrackSource(cVideoTrackSource) {}
 
-    void capturer(std::shared_ptr<RTCVideoCapturer> capturer,
-                  std::shared_ptr<RTCVideoFrame> frame) override
-    {
-        cVideoTrackSource->OnCapturedFrame(frame.get());
-    }
+  void capturer(std::shared_ptr<RTCVideoCapturer> capturer,
+                std::shared_ptr<RTCVideoFrame> frame) override {
+    cVideoTrackSource->OnCapturedFrame(frame.get());
+  }
 
-    webrtc::CVideoTrackSource *cVideoTrackSource;
+  webrtc::CVideoTrackSource* cVideoTrackSource;
 };
 
-#endif // CVIDEOTRACKSOURCE_H
+#endif  // CVIDEOTRACKSOURCE_H

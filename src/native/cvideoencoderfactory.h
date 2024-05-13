@@ -5,35 +5,32 @@
 
 class IRTCVideoEncoderFactory;
 
-namespace webrtc
-{
+namespace webrtc {
 
-namespace
-{
+namespace {
 class CVideoEncoder;
 class CVideoEncoderSelector;
-} // namespace
+}  // namespace
 
-class CVideoEncoderFactory : public VideoEncoderFactory
-{
-  public:
-    explicit CVideoEncoderFactory(IRTCVideoEncoderFactory *encoder_factory);
-    ~CVideoEncoderFactory() override;
+class CVideoEncoderFactory : public VideoEncoderFactory {
+ public:
+  explicit CVideoEncoderFactory(IRTCVideoEncoderFactory* encoder_factory);
+  ~CVideoEncoderFactory() override;
 
-    IRTCVideoEncoderFactory *wrapped_encoder_factory() const;
+  IRTCVideoEncoderFactory* wrapped_encoder_factory() const;
 
-    std::vector<SdpVideoFormat> GetSupportedFormats() const override;
-    std::vector<SdpVideoFormat> GetImplementations() const override;
-    std::unique_ptr<VideoEncoder> CreateVideoEncoder(const SdpVideoFormat &format) override;
-    std::unique_ptr<EncoderSelectorInterface> GetEncoderSelector() const override;
+  std::vector<SdpVideoFormat> GetSupportedFormats() const override;
+  std::vector<SdpVideoFormat> GetImplementations() const override;
+  std::unique_ptr<VideoEncoder> CreateVideoEncoder(const SdpVideoFormat& format) override;
+  std::unique_ptr<EncoderSelectorInterface> GetEncoderSelector() const override;
 
-  private:
-    IRTCVideoEncoderFactory *encoder_factory_;
+ private:
+  IRTCVideoEncoderFactory* encoder_factory_;
 };
 
 std::unique_ptr<VideoEncoderFactory> CToNativeVideoEncoderFactory(
-    IRTCVideoEncoderFactory *c_video_encoder_factory);
+    IRTCVideoEncoderFactory* c_video_encoder_factory);
 
-} // namespace webrtc
+}  // namespace webrtc
 
-#endif // CVIDEOENCODERFACTORY_H
+#endif  // CVIDEOENCODERFACTORY_H

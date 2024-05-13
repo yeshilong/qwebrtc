@@ -5,36 +5,37 @@
 
 class IRTCVideoFrameBuffer;
 
-namespace webrtc
-{
+namespace webrtc {
 
-class CVideoFrameBuffer : public VideoFrameBuffer
-{
-  public:
-    explicit CVideoFrameBuffer(IRTCVideoFrameBuffer *frame_buffer);
-    ~CVideoFrameBuffer() override;
+class CVideoFrameBuffer : public VideoFrameBuffer {
+ public:
+  explicit CVideoFrameBuffer(IRTCVideoFrameBuffer* frame_buffer);
+  ~CVideoFrameBuffer() override;
 
-    Type type() const override;
+  Type type() const override;
 
-    int width() const override;
-    int height() const override;
+  int width() const override;
+  int height() const override;
 
-    rtc::scoped_refptr<I420BufferInterface> ToI420() override;
-    rtc::scoped_refptr<VideoFrameBuffer> CropAndScale(int offset_x, int offset_y, int crop_width,
-                                                      int crop_height, int scaled_width,
-                                                      int scaled_height) override;
+  rtc::scoped_refptr<I420BufferInterface> ToI420() override;
+  rtc::scoped_refptr<VideoFrameBuffer> CropAndScale(int offset_x,
+                                                    int offset_y,
+                                                    int crop_width,
+                                                    int crop_height,
+                                                    int scaled_width,
+                                                    int scaled_height) override;
 
-    std::shared_ptr<IRTCVideoFrameBuffer> wrapped_frame_buffer() const;
+  std::shared_ptr<IRTCVideoFrameBuffer> wrapped_frame_buffer() const;
 
-  private:
-    std::shared_ptr<IRTCVideoFrameBuffer> frame_buffer_;
-    int width_;
-    int height_;
+ private:
+  std::shared_ptr<IRTCVideoFrameBuffer> frame_buffer_;
+  int width_;
+  int height_;
 };
 
 std::shared_ptr<IRTCVideoFrameBuffer> toCVideoFrameBuffer(
-    const rtc::scoped_refptr<VideoFrameBuffer> &buffer);
+    const rtc::scoped_refptr<VideoFrameBuffer>& buffer);
 
-} // namespace webrtc
+}  // namespace webrtc
 
-#endif // CVIDEOFRAMEBUFFER_H
+#endif  // CVIDEOFRAMEBUFFER_H

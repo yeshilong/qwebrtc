@@ -8,27 +8,25 @@
 
 class IRTCVideoDecoderFactory;
 
-namespace webrtc
-{
+namespace webrtc {
 
-class CVideoDecoderFactory : public VideoDecoderFactory
-{
-  public:
-    explicit CVideoDecoderFactory(IRTCVideoDecoderFactory *decoder_factory);
-    ~CVideoDecoderFactory() override;
+class CVideoDecoderFactory : public VideoDecoderFactory {
+ public:
+  explicit CVideoDecoderFactory(IRTCVideoDecoderFactory* decoder_factory);
+  ~CVideoDecoderFactory() override;
 
-    IRTCVideoDecoderFactory *wrapped_decoder_factory() const;
+  IRTCVideoDecoderFactory* wrapped_decoder_factory() const;
 
-    std::vector<SdpVideoFormat> GetSupportedFormats() const override;
-    std::unique_ptr<VideoDecoder> CreateVideoDecoder(const SdpVideoFormat &format) override;
+  std::vector<SdpVideoFormat> GetSupportedFormats() const override;
+  std::unique_ptr<VideoDecoder> CreateVideoDecoder(const SdpVideoFormat& format) override;
 
-  private:
-    IRTCVideoDecoderFactory *decoder_factory_;
+ private:
+  IRTCVideoDecoderFactory* decoder_factory_;
 };
 
 std::unique_ptr<VideoDecoderFactory> CToNativeVideoDecoderFactory(
-    IRTCVideoDecoderFactory *c_video_decoder_factory);
+    IRTCVideoDecoderFactory* c_video_decoder_factory);
 
-} // namespace webrtc
+}  // namespace webrtc
 
-#endif // QTVIDEODECODERFACTORY_H
+#endif  // QTVIDEODECODERFACTORY_H

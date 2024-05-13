@@ -26,53 +26,43 @@
 
 class CDesktopCapturerDelegate;
 
-namespace webrtc
-{
+namespace webrtc {
 
-enum DesktopType
-{
-    kScreen,
-    kWindow
+enum DesktopType { kScreen, kWindow };
+
+class ObjCDesktopCapturer : public DesktopCapturer::Callback {
+ public:
+  enum CaptureState { CS_RUNNING, CS_STOPPED, CS_FAILED };
+
+ public:
+  ObjCDesktopCapturer(DesktopType type,
+                      webrtc::DesktopCapturer::SourceId source_id,
+                      CDesktopCapturerDelegate* delegate);
+  virtual ~ObjCDesktopCapturer();
+
+  virtual CaptureState Start(uint32_t fps);
+
+  virtual void Stop();
+
+  virtual bool IsRunning();
+
+ protected:
+  virtual void OnCaptureResult(webrtc::DesktopCapturer::Result result,
+                               std::unique_ptr<webrtc::DesktopFrame> frame) override;
+
+ private:
+  void CaptureFrame();
+  webrtc::DesktopCaptureOptions options_;
+  std::unique_ptr<webrtc::DesktopAndCursorComposer> capturer_;
+  std::unique_ptr<rtc::Thread> thread_;
+  CaptureState capture_state_ = CS_STOPPED;
+  DesktopType type_;
+  webrtc::DesktopCapturer::SourceId source_id_;
+  CDesktopCapturerDelegate* delegate_;
+  uint32_t capture_delay_ = 1000;  // 1s
+  webrtc::DesktopCapturer::Result result_ = webrtc::DesktopCapturer::Result::SUCCESS;
 };
 
-class ObjCDesktopCapturer : public DesktopCapturer::Callback
-{
-  public:
-    enum CaptureState
-    {
-        CS_RUNNING,
-        CS_STOPPED,
-        CS_FAILED
-    };
+}  // namespace webrtc
 
-  public:
-    ObjCDesktopCapturer(DesktopType type, webrtc::DesktopCapturer::SourceId source_id,
-                        CDesktopCapturerDelegate *delegate);
-    virtual ~ObjCDesktopCapturer();
-
-    virtual CaptureState Start(uint32_t fps);
-
-    virtual void Stop();
-
-    virtual bool IsRunning();
-
-  protected:
-    virtual void OnCaptureResult(webrtc::DesktopCapturer::Result result,
-                                 std::unique_ptr<webrtc::DesktopFrame> frame) override;
-
-  private:
-    void CaptureFrame();
-    webrtc::DesktopCaptureOptions options_;
-    std::unique_ptr<webrtc::DesktopAndCursorComposer> capturer_;
-    std::unique_ptr<rtc::Thread> thread_;
-    CaptureState capture_state_ = CS_STOPPED;
-    DesktopType type_;
-    webrtc::DesktopCapturer::SourceId source_id_;
-    CDesktopCapturerDelegate *delegate_;
-    uint32_t capture_delay_ = 1000; // 1s
-    webrtc::DesktopCapturer::Result result_ = webrtc::DesktopCapturer::Result::SUCCESS;
-};
-
-} // namespace webrtc
-
-#endif // SDK_OBJC_NATIVE_SRC_OBJC_DESKTOP_CAPTURE_H_
+#endif  // SDK_OBJC_NATIVE_SRC_OBJC_DESKTOP_CAPTURE_H_

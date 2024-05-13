@@ -1,15 +1,13 @@
 #ifndef CVIDEOFRAME_H
 #define CVIDEOFRAME_H
 
+#include "api/video/video_frame.h"
 #include "rtcvideoframe.h"
 
-#include "api/video/video_frame.h"
+namespace webrtc {
 
-namespace webrtc
-{
+RTCVideoFrame* toCVideoFrame(const VideoFrame& frame);
 
-RTCVideoFrame *toCVideoFrame(const VideoFrame &frame);
+}  // namespace webrtc
 
-} // namespace webrtc
-
-#endif // CVIDEOFRAME_H
+#endif  // CVIDEOFRAME_H

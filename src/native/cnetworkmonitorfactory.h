@@ -5,11 +5,10 @@
 
 #include "rtc_base/network_monitor_factory.h"
 
-namespace webrtc
-{
+namespace webrtc {
 
 std::unique_ptr<rtc::NetworkMonitorFactory> CreateNetworkMonitorFactory();
 
-} // namespace webrtc
+}  // namespace webrtc
 
-#endif // CNETWORKMONITORFACTORY_H
+#endif  // CNETWORKMONITORFACTORY_H

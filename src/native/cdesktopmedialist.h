@@ -19,126 +19,94 @@
 
 #include "api/video/i420_buffer.h"
 #include "api/video/video_frame.h"
+#include "cdesktopcapture.h"
 #include "modules/desktop_capture/desktop_capture_options.h"
 #include "modules/desktop_capture/desktop_capturer.h"
 #include "modules/desktop_capture/desktop_frame.h"
 #include "rtc_base/thread.h"
-
-#include "cdesktopcapture.h"
-
 #include "rtcdesktopmedialist_p.h"
 
 class ObjCDesktopMediaList;
 
-namespace webrtc
-{
+namespace webrtc {
 
-class MediaSource
-{
-  public:
-    MediaSource(ObjCDesktopMediaList *mediaList, DesktopCapturer::Source src, DesktopType type)
-        : source(src), mediaList_(mediaList), type_(type)
-    {
-    }
-    virtual ~MediaSource()
-    {
-    }
+class MediaSource {
+ public:
+  MediaSource(ObjCDesktopMediaList* mediaList, DesktopCapturer::Source src, DesktopType type)
+      : source(src), mediaList_(mediaList), type_(type) {}
+  virtual ~MediaSource() {}
 
-    DesktopCapturer::Source source;
+  DesktopCapturer::Source source;
 
-    // source id
-    DesktopCapturer::SourceId id() const
-    {
-        return source.id;
-    }
+  // source id
+  DesktopCapturer::SourceId id() const { return source.id; }
 
-    // source name
-    std::string name() const
-    {
-        return source.title;
-    }
+  // source name
+  std::string name() const { return source.title; }
 
-    // Returns the thumbnail of the source, jpeg format.
-    std::vector<unsigned char> thumbnail() const
-    {
-        return thumbnail_;
-    }
+  // Returns the thumbnail of the source, jpeg format.
+  std::vector<unsigned char> thumbnail() const { return thumbnail_; }
 
-    DesktopType type() const
-    {
-        return type_;
-    }
+  DesktopType type() const { return type_; }
 
-    bool UpdateThumbnail();
+  bool UpdateThumbnail();
 
-    void SaveCaptureResult(webrtc::DesktopCapturer::Result result,
-                           std::unique_ptr<webrtc::DesktopFrame> frame);
+  void SaveCaptureResult(webrtc::DesktopCapturer::Result result,
+                         std::unique_ptr<webrtc::DesktopFrame> frame);
 
-  private:
-    std::vector<unsigned char> thumbnail_;
-    ObjCDesktopMediaList *mediaList_;
-    DesktopType type_;
+ private:
+  std::vector<unsigned char> thumbnail_;
+  ObjCDesktopMediaList* mediaList_;
+  DesktopType type_;
 };
 
-class ObjCDesktopMediaList
-{
-  public:
-    enum CaptureState
-    {
-        CS_RUNNING,
-        CS_STOPPED,
-        CS_FAILED
-    };
+class ObjCDesktopMediaList {
+ public:
+  enum CaptureState { CS_RUNNING, CS_STOPPED, CS_FAILED };
 
-  public:
-    ObjCDesktopMediaList(DesktopType type, RTCDesktopMediaList *objcMediaList);
+ public:
+  ObjCDesktopMediaList(DesktopType type, RTCDesktopMediaList* objcMediaList);
 
-    virtual ~ObjCDesktopMediaList();
+  virtual ~ObjCDesktopMediaList();
 
-    virtual int32_t UpdateSourceList(bool force_reload = false, bool get_thumbnail = true);
+  virtual int32_t UpdateSourceList(bool force_reload = false, bool get_thumbnail = true);
 
-    virtual int GetSourceCount() const;
+  virtual int GetSourceCount() const;
 
-    virtual MediaSource *GetSource(int index);
+  virtual MediaSource* GetSource(int index);
 
-    virtual bool GetThumbnail(MediaSource *source, bool notify);
+  virtual bool GetThumbnail(MediaSource* source, bool notify);
 
-  private:
-    class CallbackProxy : public DesktopCapturer::Callback
-    {
-      public:
-        CallbackProxy()
-        {
-        }
-        void SetCallback(std::function<void(webrtc::DesktopCapturer::Result result,
-                                            std::unique_ptr<webrtc::DesktopFrame> frame)>
-                             on_capture_result)
-        {
-            on_capture_result_ = on_capture_result;
-        }
-
-      private:
-        void OnCaptureResult(webrtc::DesktopCapturer::Result result,
-                             std::unique_ptr<webrtc::DesktopFrame> frame) override
-        {
-            if (on_capture_result_)
-                on_capture_result_(result, std::move(frame));
-        }
+ private:
+  class CallbackProxy : public DesktopCapturer::Callback {
+   public:
+    CallbackProxy() {}
+    void SetCallback(
         std::function<void(webrtc::DesktopCapturer::Result result,
-                           std::unique_ptr<webrtc::DesktopFrame> frame)>
-            on_capture_result_ = nullptr;
-    };
+                           std::unique_ptr<webrtc::DesktopFrame> frame)> on_capture_result) {
+      on_capture_result_ = on_capture_result;
+    }
 
-  private:
-    std::unique_ptr<CallbackProxy> callback_;
-    webrtc::DesktopCaptureOptions options_;
-    std::unique_ptr<webrtc::DesktopCapturer> capturer_;
-    std::unique_ptr<rtc::Thread> thread_;
-    std::vector<std::shared_ptr<MediaSource>> sources_;
-    RTCDesktopMediaList *objcMediaList_;
-    DesktopType type_;
+   private:
+    void OnCaptureResult(webrtc::DesktopCapturer::Result result,
+                         std::unique_ptr<webrtc::DesktopFrame> frame) override {
+      if (on_capture_result_) on_capture_result_(result, std::move(frame));
+    }
+    std::function<void(webrtc::DesktopCapturer::Result result,
+                       std::unique_ptr<webrtc::DesktopFrame> frame)>
+        on_capture_result_ = nullptr;
+  };
+
+ private:
+  std::unique_ptr<CallbackProxy> callback_;
+  webrtc::DesktopCaptureOptions options_;
+  std::unique_ptr<webrtc::DesktopCapturer> capturer_;
+  std::unique_ptr<rtc::Thread> thread_;
+  std::vector<std::shared_ptr<MediaSource>> sources_;
+  RTCDesktopMediaList* objcMediaList_;
+  DesktopType type_;
 };
 
-} // namespace webrtc
+}  // namespace webrtc
 
-#endif // SDK_OBJC_NATIVE_SRC_OBJC_DESKTOP_MEDIA_LIST_H_
+#endif  // SDK_OBJC_NATIVE_SRC_OBJC_DESKTOP_MEDIA_LIST_H_

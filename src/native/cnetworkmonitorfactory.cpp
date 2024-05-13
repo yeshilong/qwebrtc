@@ -6,17 +6,15 @@
 
 #include "rtc_base/logging.h"
 
-namespace webrtc
-{
+namespace webrtc {
 
-std::unique_ptr<rtc::NetworkMonitorFactory> CreateNetworkMonitorFactory()
-{
-    RTC_DLOG(LS_INFO) << __FUNCTION__;
+std::unique_ptr<rtc::NetworkMonitorFactory> CreateNetworkMonitorFactory() {
+  RTC_DLOG(LS_INFO) << __FUNCTION__;
 #if defined(WEBRTC_IOS)
-    return std::make_unique<CNetworkMonitorFactory>();
+  return std::make_unique<CNetworkMonitorFactory>();
 #else
-    return nullptr;
+  return nullptr;
 #endif
 }
 
-}
+}  // namespace webrtc

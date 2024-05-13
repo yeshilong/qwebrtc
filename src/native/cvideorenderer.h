@@ -11,22 +11,20 @@
 
 class IRTCVideoRenderer;
 
-namespace webrtc
-{
+namespace webrtc {
 
-class CVideoRenderer : public rtc::VideoSinkInterface<VideoFrame>
-{
-  public:
-    CVideoRenderer(IRTCVideoRenderer *renderer);
-    void OnFrame(const VideoFrame &nativeVideoFrame) override;
+class CVideoRenderer : public rtc::VideoSinkInterface<VideoFrame> {
+ public:
+  CVideoRenderer(IRTCVideoRenderer* renderer);
+  void OnFrame(const VideoFrame& nativeVideoFrame) override;
 
-  private:
-    IRTCVideoRenderer *renderer_;
-    QSize size_;
+ private:
+  IRTCVideoRenderer* renderer_;
+  QSize size_;
 };
 
-} // namespace webrtc
+}  // namespace webrtc
 
-#endif // SDK_CPP_NATIVE_SRC_CPP_VIDEO_RENDERER_H_
+#endif  // SDK_CPP_NATIVE_SRC_CPP_VIDEO_RENDERER_H_
 
-#endif // CVIDEORENDERER_H
+#endif  // CVIDEORENDERER_H
