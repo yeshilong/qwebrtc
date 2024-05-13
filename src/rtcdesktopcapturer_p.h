@@ -15,7 +15,7 @@
 
 #include "rtcdesktopcapturer.h"
 
-#include "native/cdesktopcapture.h"
+#include "native/objc_desktop_capture.h"
 
 class RTCDesktopCapturerPrivate
 {

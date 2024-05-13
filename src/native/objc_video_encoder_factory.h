@@ -8,14 +8,14 @@ class IRTCVideoEncoderFactory;
 namespace webrtc {
 
 namespace {
-class CVideoEncoder;
-class CVideoEncoderSelector;
+class ObjCVideoEncoder;
+class ObjCVideoEncoderSelector;
 }  // namespace
 
-class CVideoEncoderFactory : public VideoEncoderFactory {
+class ObjCVideoEncoderFactory : public VideoEncoderFactory {
  public:
-  explicit CVideoEncoderFactory(IRTCVideoEncoderFactory* encoder_factory);
-  ~CVideoEncoderFactory() override;
+  explicit ObjCVideoEncoderFactory(IRTCVideoEncoderFactory* encoder_factory);
+  ~ObjCVideoEncoderFactory() override;
 
   IRTCVideoEncoderFactory* wrapped_encoder_factory() const;
 

@@ -13,9 +13,9 @@ class IRTCVideoRenderer;
 
 namespace webrtc {
 
-class CVideoRenderer : public rtc::VideoSinkInterface<VideoFrame> {
+class ObjCVideoRenderer : public rtc::VideoSinkInterface<VideoFrame> {
  public:
-  CVideoRenderer(IRTCVideoRenderer* renderer);
+  ObjCVideoRenderer(IRTCVideoRenderer* renderer);
   void OnFrame(const VideoFrame& nativeVideoFrame) override;
 
  private:

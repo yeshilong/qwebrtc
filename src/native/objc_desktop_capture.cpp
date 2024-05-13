@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include "cdesktopcapture.h"
+#include "objc_desktop_capture.h"
 
 #include <QTime>
 #include <QVideoFrame>
 
 #include "api/sequence_checker.h"
-#include "cdesktopcapture.h"
-#include "cvideoframe.h"
+#include "objc_desktop_capture.h"
+#include "objc_video_frame.h"
 #include "rtc_base/checks.h"
 #include "rtcdesktopcapturer_p.h"
 #include "rtcqimagebuffer.h"

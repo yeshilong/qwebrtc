@@ -7,10 +7,10 @@ class IRTCVideoFrameBuffer;
 
 namespace webrtc {
 
-class CVideoFrameBuffer : public VideoFrameBuffer {
+class ObjCFrameBuffer : public VideoFrameBuffer {
  public:
-  explicit CVideoFrameBuffer(IRTCVideoFrameBuffer* frame_buffer);
-  ~CVideoFrameBuffer() override;
+  explicit ObjCFrameBuffer(IRTCVideoFrameBuffer* frame_buffer);
+  ~ObjCFrameBuffer() override;
 
   Type type() const override;
 
@@ -33,7 +33,7 @@ class CVideoFrameBuffer : public VideoFrameBuffer {
   int height_;
 };
 
-std::shared_ptr<IRTCVideoFrameBuffer> toCVideoFrameBuffer(
+std::shared_ptr<IRTCVideoFrameBuffer> ToObjCVideoFrameBuffer(
     const rtc::scoped_refptr<VideoFrameBuffer>& buffer);
 
 }  // namespace webrtc

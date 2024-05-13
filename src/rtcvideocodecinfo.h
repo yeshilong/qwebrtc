@@ -11,12 +11,12 @@ namespace webrtc
 
 namespace
 {
-class CVideoEncoder;
-class CVideoEncoderSelector;
+class ObjCVideoEncoder;
+class ObjCVideoEncoderSelector;
 } // namespace
 
-class CVideoDecoderFactory;
-class CVideoEncoderFactory;
+class ObjCVideoDecoderFactory;
+class ObjCVideoEncoderFactory;
 
 } // namespace webrtc
 
@@ -77,9 +77,9 @@ class RTCVideoCodecInfo : public QObject
     QVector<QString> scalabilityModes() const;
 
   protected:
-    friend class webrtc::CVideoEncoderSelector;
-    friend class webrtc::CVideoDecoderFactory;
-    friend class webrtc::CVideoEncoderFactory;
+    friend class webrtc::ObjCVideoEncoderSelector;
+    friend class webrtc::ObjCVideoDecoderFactory;
+    friend class webrtc::ObjCVideoEncoderFactory;
 
     friend class RTCVideoEncoderSimulcast;
 

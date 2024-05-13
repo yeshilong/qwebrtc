@@ -10,10 +10,10 @@ class IRTCVideoDecoderFactory;
 
 namespace webrtc {
 
-class CVideoDecoderFactory : public VideoDecoderFactory {
+class ObjCVideoDecoderFactory : public VideoDecoderFactory {
  public:
-  explicit CVideoDecoderFactory(IRTCVideoDecoderFactory* decoder_factory);
-  ~CVideoDecoderFactory() override;
+  explicit ObjCVideoDecoderFactory(IRTCVideoDecoderFactory* decoder_factory);
+  ~ObjCVideoDecoderFactory() override;
 
   IRTCVideoDecoderFactory* wrapped_decoder_factory() const;
 

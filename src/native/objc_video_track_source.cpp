@@ -10,49 +10,49 @@
  * terms of the LGPLv3 license. You are required to make the source
  * code of any modifications available under the same license.
  */
-#include "cvideotracksource.h"
+#include "objc_video_track_source.h"
 
 #include "api/video/i420_buffer.h"
-#include "cvideoframebuffer.h"
+#include "objc_frame_buffer.h"
 #include "rtcqimagebuffer.h"
 #include "rtcvideoframe.h"
 #include "rtcvideoframebuffer.h"
 
 namespace webrtc {
 
-CVideoTrackSource::CVideoTrackSource() : CVideoTrackSource(false) {}
+ObjCVideoTrackSource::ObjCVideoTrackSource() : ObjCVideoTrackSource(false) {}
 
-CVideoTrackSource::CVideoTrackSource(bool is_screencast)
+ObjCVideoTrackSource::ObjCVideoTrackSource(bool is_screencast)
     : AdaptedVideoTrackSource(/* required resolution alignment */ 2),
       is_screencast_(is_screencast) {}
 
-CVideoTrackSource::CVideoTrackSource(RTCCVideoSourceAdapter* adapter) : adapter_(adapter) {
-  adapter_->cVideoTrackSource = this;
+ObjCVideoTrackSource::ObjCVideoTrackSource(RTCCVideoSourceAdapter* adapter) : adapter_(adapter) {
+  adapter_->objCVideoTrackSource = this;
 }
 
-bool CVideoTrackSource::is_screencast() const {
+bool ObjCVideoTrackSource::is_screencast() const {
   return is_screencast_;
 }
 
-absl::optional<bool> CVideoTrackSource::needs_denoising() const {
+absl::optional<bool> ObjCVideoTrackSource::needs_denoising() const {
   return false;
 }
 
-MediaSourceInterface::SourceState CVideoTrackSource::state() const {
+MediaSourceInterface::SourceState ObjCVideoTrackSource::state() const {
   return SourceState::kLive;
 }
 
-bool CVideoTrackSource::remote() const {
+bool ObjCVideoTrackSource::remote() const {
   return false;
 }
 
-void CVideoTrackSource::OnOutputFormatRequest(int width, int height, int fps) {
+void ObjCVideoTrackSource::OnOutputFormatRequest(int width, int height, int fps) {
   cricket::VideoFormat format(width, height, cricket::VideoFormat::FpsToInterval(fps), 0);
   video_adapter()->OnOutputFormatRequest(format);
 }
 
-void CVideoTrackSource::OnCapturedFrame(RTCVideoFrame* frame) {
-  const int64_t timestamp_us = frame->timeStamp() / rtc::kNumNanosecsPerMicrosec;
+void ObjCVideoTrackSource::OnCapturedFrame(RTCVideoFrame* frame) {
+  const int64_t timestamp_us = frame->timeStampNs() / rtc::kNumNanosecsPerMicrosec;
   const int64_t translated_timestamp_us =
       timestamp_aligner_.TranslateTimestamp(timestamp_us, rtc::TimeMicros());
 
@@ -77,11 +77,11 @@ void CVideoTrackSource::OnCapturedFrame(RTCVideoFrame* frame) {
   rtc::scoped_refptr<VideoFrameBuffer> buffer;
   if (adapted_width == frame->width() && adapted_height == frame->height()) {
     // No adaption - optimized path.
-    buffer = rtc::make_ref_counted<CVideoFrameBuffer>(frame->buffer().get());
+    buffer = rtc::make_ref_counted<ObjCFrameBuffer>(frame->buffer().get());
   } else if (dynamic_cast<RTCQImageBuffer*>(frame->buffer().get())) {
     // Adapted QVideoFrameBuffer frame.
     RTCQImageBuffer* rtcPixelBuffer = dynamic_cast<RTCQImageBuffer*>(frame->buffer().get());
-    buffer = rtc::make_ref_counted<CVideoFrameBuffer>(
+    buffer = rtc::make_ref_counted<ObjCFrameBuffer>(
         new RTCQImageBuffer(rtcPixelBuffer->pixelBuffer(),
                             adapted_width,
                             adapted_height,
@@ -93,7 +93,7 @@ void CVideoTrackSource::OnCapturedFrame(RTCVideoFrame* frame) {
     // Adapted I420 frame.
     // TODO(magjed): Optimize this I420 path.
     rtc::scoped_refptr<I420Buffer> i420_buffer = I420Buffer::Create(adapted_width, adapted_height);
-    buffer = rtc::make_ref_counted<CVideoFrameBuffer>(frame->buffer().get());
+    buffer = rtc::make_ref_counted<ObjCFrameBuffer>(frame->buffer().get());
     i420_buffer->CropAndScaleFrom(*buffer->ToI420(), crop_x, crop_y, crop_width, crop_height);
     buffer = i420_buffer;
   }

@@ -1,4 +1,4 @@
-#include "cvideoframebuffer.h"
+#include "objc_frame_buffer.h"
 
 #include "api/make_ref_counted.h"
 #include "rtcnativei420buffer_p.h"
@@ -10,15 +10,15 @@ namespace webrtc {
 
 namespace {
 
-/** CVideoFrameBuffer that conforms to I420BufferInterface by wrapping
+/** ObjCFrameBuffer that conforms to I420BufferInterface by wrapping
  * RTC_C_TYPE(RTCI420Buffer) */
-class CI420FrameBuffer : public I420BufferInterface {
+class ObjCI420FrameBuffer : public I420BufferInterface {
  public:
-  explicit CI420FrameBuffer(RTCI420Buffer* frame_buffer)
+  explicit ObjCI420FrameBuffer(RTCI420Buffer* frame_buffer)
       : frame_buffer_(frame_buffer),
         width_(frame_buffer->width()),
         height_(frame_buffer->height()) {}
-  ~CI420FrameBuffer() override {}
+  ~ObjCI420FrameBuffer() override {}
 
   int width() const override { return width_; }
 
@@ -44,36 +44,36 @@ class CI420FrameBuffer : public I420BufferInterface {
 
 }  // namespace
 
-CVideoFrameBuffer::CVideoFrameBuffer(IRTCVideoFrameBuffer* frame_buffer)
+ObjCFrameBuffer::ObjCFrameBuffer(IRTCVideoFrameBuffer* frame_buffer)
     : frame_buffer_(frame_buffer), width_(frame_buffer->width()), height_(frame_buffer->height()) {}
 
-CVideoFrameBuffer::~CVideoFrameBuffer() {}
+ObjCFrameBuffer::~ObjCFrameBuffer() {}
 
-VideoFrameBuffer::Type CVideoFrameBuffer::type() const {
+VideoFrameBuffer::Type ObjCFrameBuffer::type() const {
   return Type::kNative;
 }
 
-int CVideoFrameBuffer::width() const {
+int ObjCFrameBuffer::width() const {
   return width_;
 }
 
-int CVideoFrameBuffer::height() const {
+int ObjCFrameBuffer::height() const {
   return height_;
 }
 
-rtc::scoped_refptr<I420BufferInterface> CVideoFrameBuffer::ToI420() {
-  return rtc::make_ref_counted<CI420FrameBuffer>(frame_buffer_->toI420());
+rtc::scoped_refptr<I420BufferInterface> ObjCFrameBuffer::ToI420() {
+  return rtc::make_ref_counted<ObjCI420FrameBuffer>(frame_buffer_->toI420());
 }
 
-rtc::scoped_refptr<VideoFrameBuffer> CVideoFrameBuffer::CropAndScale(int offset_x,
-                                                                     int offset_y,
-                                                                     int crop_width,
-                                                                     int crop_height,
-                                                                     int scaled_width,
-                                                                     int scaled_height) {
+rtc::scoped_refptr<VideoFrameBuffer> ObjCFrameBuffer::CropAndScale(int offset_x,
+                                                                   int offset_y,
+                                                                   int crop_width,
+                                                                   int crop_height,
+                                                                   int scaled_width,
+                                                                   int scaled_height) {
   if (frame_buffer_->cropAndScaleWith(
           offset_x, offset_y, crop_width, crop_height, scaled_width, scaled_height) != nullptr) {
-    return rtc::make_ref_counted<CVideoFrameBuffer>(frame_buffer_->cropAndScaleWith(
+    return rtc::make_ref_counted<ObjCFrameBuffer>(frame_buffer_->cropAndScaleWith(
         offset_x, offset_y, crop_width, crop_height, scaled_width, scaled_height));
   }
 
@@ -82,14 +82,14 @@ rtc::scoped_refptr<VideoFrameBuffer> CVideoFrameBuffer::CropAndScale(int offset_
       offset_x, offset_y, crop_width, crop_height, scaled_width, scaled_height);
 }
 
-std::shared_ptr<IRTCVideoFrameBuffer> CVideoFrameBuffer::wrapped_frame_buffer() const {
+std::shared_ptr<IRTCVideoFrameBuffer> ObjCFrameBuffer::wrapped_frame_buffer() const {
   return frame_buffer_;
 }
 
-std::shared_ptr<IRTCVideoFrameBuffer> toCVideoFrameBuffer(
+std::shared_ptr<IRTCVideoFrameBuffer> ToObjCVideoFrameBuffer(
     const rtc::scoped_refptr<webrtc::VideoFrameBuffer>& buffer) {
   if (buffer->type() == webrtc::VideoFrameBuffer::Type::kNative) {
-    return static_cast<CVideoFrameBuffer*>(buffer.get())->wrapped_frame_buffer();
+    return static_cast<ObjCFrameBuffer*>(buffer.get())->wrapped_frame_buffer();
   } else {
     auto privateBuffer = new RTCI420BufferPrivate(buffer->ToI420());
     return std::make_shared<RTCI420Buffer>(*privateBuffer);

@@ -5,26 +5,26 @@ add_library(
   qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
-  native/cdesktopcapture.cpp
-  native/cdesktopcapture.h
-  native/cdesktopmedialist.cpp
-  native/cdesktopmedialist.h
-  native/cnetworkmonitorfactory.cpp
-  native/cnetworkmonitorfactory.h
-  native/csslcertificateverifieradapter.cpp
-  native/csslcertificateverifieradapter.h
-  native/cvideodecoderfactory.cpp
-  native/cvideodecoderfactory.h
-  native/cvideoencoderfactory.cpp
-  native/cvideoencoderfactory.h
-  native/cvideoframe.cpp
-  native/cvideoframe.h
-  native/cvideoframebuffer.cpp
-  native/cvideoframebuffer.h
-  native/cvideorenderer.cpp
-  native/cvideorenderer.h
-  native/cvideotracksource.cpp
-  native/cvideotracksource.h
+  native/objc_desktop_capture.cpp
+  native/objc_desktop_capture.h
+  native/objc_desktop_media_list.cpp
+  native/objc_desktop_media_list.h
+  native/network_monitor_factory.cpp
+  native/network_monitor_factory.h
+  native/ssl_certificate_verifier.cpp
+  native/ssl_certificate_verifier.h
+  native/objc_video_decoder_factory.cpp
+  native/objc_video_decoder_factory.h
+  native/objc_video_encoder_factory.cpp
+  native/objc_video_encoder_factory.h
+  native/objc_video_frame.cpp
+  native/objc_video_frame.h
+  native/objc_frame_buffer.cpp
+  native/objc_frame_buffer.h
+  native/objc_video_renderer.cpp
+  native/objc_video_renderer.h
+  native/objc_video_track_source.cpp
+  native/objc_video_track_source.h
   rtcaudiobuffer.cpp
   rtcaudiobuffer.h
   rtcaudiocustomprocessingdelegate.h

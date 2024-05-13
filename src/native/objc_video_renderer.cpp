@@ -1,14 +1,15 @@
-#include "cvideorenderer.h"
+#include "objc_video_renderer.h"
 
-#include "cvideoframe.h"
+#include "objc_video_frame.h"
 #include "rtcvideorenderer.h"
 
 namespace webrtc {
 
-CVideoRenderer::CVideoRenderer(IRTCVideoRenderer* renderer) : renderer_(renderer), size_(QSize()) {}
+ObjCVideoRenderer::ObjCVideoRenderer(IRTCVideoRenderer* renderer)
+    : renderer_(renderer), size_(QSize()) {}
 
-void CVideoRenderer::OnFrame(const webrtc::VideoFrame& nativeVideoFrame) {
-  RTCVideoFrame* videoFrame = toCVideoFrame(nativeVideoFrame);
+void ObjCVideoRenderer::OnFrame(const webrtc::VideoFrame& nativeVideoFrame) {
+  RTCVideoFrame* videoFrame = ToObjCVideoFrame(nativeVideoFrame);
 
   QSize current_size = (static_cast<int>(videoFrame->rotation()) % 180 == 0) ?
       QSize(videoFrame->width(), videoFrame->height()) :

@@ -3,7 +3,7 @@
 #include "rtcwrappednativevideoencoder.h"
 #include "rtcvideocodecinfo_p.h"
 
-#include "native/cvideoencoderfactory.h"
+#include "native/objc_video_encoder_factory.h"
 
 #include "media/engine/simulcast_encoder_adapter.h"
 

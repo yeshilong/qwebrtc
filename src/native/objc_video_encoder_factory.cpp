@@ -1,13 +1,13 @@
-#include "cvideoencoderfactory.h"
+#include "objc_video_encoder_factory.h"
 
 #include <QVector>
 
 #include "api/video/video_frame.h"
 #include "api/video_codecs/sdp_video_format.h"
 #include "api/video_codecs/video_encoder.h"
-#include "cvideoframe.h"
 #include "modules/video_coding/include/video_codec_interface.h"
 #include "modules/video_coding/include/video_error_codes.h"
+#include "objc_video_frame.h"
 #include "rtccodecspecificinfoh264_p.h"
 #include "rtcencodedimage_p.h"
 #include "rtcvideocodecinfo_p.h"
@@ -20,9 +20,9 @@ namespace webrtc {
 
 namespace {
 
-class CVideoEncoder : public VideoEncoder {
+class ObjCVideoEncoder : public VideoEncoder {
  public:
-  CVideoEncoder(IRTCVideoEncoder* encoder)
+  ObjCVideoEncoder(IRTCVideoEncoder* encoder)
       : encoder_(encoder), implementation_name_(encoder->implementationName().toStdString()) {}
 
   int32_t InitEncode(const VideoCodec* codec_settings, const Settings& encoder_settings) override {
@@ -62,7 +62,7 @@ class CVideoEncoder : public VideoEncoder {
       rtcFrameTypes.push_back(static_cast<int>(frame_types->at(i)));
     }
 
-    return encoder_->encode(toCVideoFrame(frame), nullptr, rtcFrameTypes);
+    return encoder_->encode(ToObjCVideoFrame(frame), nullptr, rtcFrameTypes);
   }
 
   void SetRates(const RateControlParameters& parameters) override {
@@ -93,9 +93,9 @@ class CVideoEncoder : public VideoEncoder {
   const std::string implementation_name_;
 };
 
-class CVideoEncoderSelector : public VideoEncoderFactory::EncoderSelectorInterface {
+class ObjCVideoEncoderSelector : public VideoEncoderFactory::EncoderSelectorInterface {
  public:
-  CVideoEncoderSelector(IRTCVideoEncoderSelector* selector) { selector_ = selector; }
+  ObjCVideoEncoderSelector(IRTCVideoEncoderSelector* selector) { selector_ = selector; }
   void OnCurrentEncoder(const SdpVideoFormat& format) override {
     RTCVideoCodecInfoPrivate* privateInfo = new RTCVideoCodecInfoPrivate(format);
     RTCVideoCodecInfo* info = new RTCVideoCodecInfo(*privateInfo);
@@ -137,16 +137,16 @@ class CVideoEncoderSelector : public VideoEncoderFactory::EncoderSelectorInterfa
 
 }  // namespace
 
-CVideoEncoderFactory::CVideoEncoderFactory(IRTCVideoEncoderFactory* encoder_factory)
+ObjCVideoEncoderFactory::ObjCVideoEncoderFactory(IRTCVideoEncoderFactory* encoder_factory)
     : encoder_factory_(encoder_factory) {}
 
-CVideoEncoderFactory::~CVideoEncoderFactory() {}
+ObjCVideoEncoderFactory::~ObjCVideoEncoderFactory() {}
 
-IRTCVideoEncoderFactory* CVideoEncoderFactory::wrapped_encoder_factory() const {
+IRTCVideoEncoderFactory* ObjCVideoEncoderFactory::wrapped_encoder_factory() const {
   return encoder_factory_;
 }
 
-std::vector<SdpVideoFormat> CVideoEncoderFactory::GetSupportedFormats() const {
+std::vector<SdpVideoFormat> ObjCVideoEncoderFactory::GetSupportedFormats() const {
   std::vector<SdpVideoFormat> supported_formats;
 
   for (auto& supportedCodec : encoder_factory_->supportedCodecs()) {
@@ -157,7 +157,7 @@ std::vector<SdpVideoFormat> CVideoEncoderFactory::GetSupportedFormats() const {
   return supported_formats;
 }
 
-std::vector<SdpVideoFormat> CVideoEncoderFactory::GetImplementations() const {
+std::vector<SdpVideoFormat> ObjCVideoEncoderFactory::GetImplementations() const {
   if (!encoder_factory_->implementations().empty()) {
     std::vector<SdpVideoFormat> supported_formats;
     for (auto& supportedCodec : encoder_factory_->implementations()) {
@@ -170,7 +170,7 @@ std::vector<SdpVideoFormat> CVideoEncoderFactory::GetImplementations() const {
   return GetSupportedFormats();
 }
 
-std::unique_ptr<VideoEncoder> CVideoEncoderFactory::CreateVideoEncoder(
+std::unique_ptr<VideoEncoder> ObjCVideoEncoderFactory::CreateVideoEncoder(
     const SdpVideoFormat& format) {
   RTCVideoCodecInfoPrivate* privateInfo = new RTCVideoCodecInfoPrivate(format);
   RTCVideoCodecInfo* info = new RTCVideoCodecInfo(*privateInfo);
@@ -180,14 +180,14 @@ std::unique_ptr<VideoEncoder> CVideoEncoderFactory::CreateVideoEncoder(
   if (dynamic_cast<RTCWrappedNativeVideoEncoder*>(encoder) != nullptr) {
     return ((RTCWrappedNativeVideoEncoder*)encoder)->releaseWrappedEncoder();
   } else {
-    return std::unique_ptr<CVideoEncoder>(new CVideoEncoder(encoder));
+    return std::unique_ptr<ObjCVideoEncoder>(new ObjCVideoEncoder(encoder));
   }
 }
 
 std::unique_ptr<webrtc::VideoEncoderFactory::EncoderSelectorInterface>
-    CVideoEncoderFactory::GetEncoderSelector() const {
+    ObjCVideoEncoderFactory::GetEncoderSelector() const {
   if (encoder_factory_->encoderSelector() != nullptr) {
-    return absl::make_unique<CVideoEncoderSelector>(encoder_factory_->encoderSelector());
+    return absl::make_unique<ObjCVideoEncoderSelector>(encoder_factory_->encoderSelector());
   }
 
   return nullptr;
@@ -195,7 +195,7 @@ std::unique_ptr<webrtc::VideoEncoderFactory::EncoderSelectorInterface>
 
 std::unique_ptr<VideoEncoderFactory> CToNativeVideoEncoderFactory(
     IRTCVideoEncoderFactory* c_video_encoder_factory) {
-  return std::make_unique<CVideoEncoderFactory>(c_video_encoder_factory);
+  return std::make_unique<ObjCVideoEncoderFactory>(c_video_encoder_factory);
 }
 
 }  // namespace webrtc

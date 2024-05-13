@@ -21,11 +21,11 @@ class RTCCVideoSourceAdapter;
 
 namespace webrtc {
 
-class CVideoTrackSource : public rtc::AdaptedVideoTrackSource {
+class ObjCVideoTrackSource : public rtc::AdaptedVideoTrackSource {
  public:
-  CVideoTrackSource();
-  explicit CVideoTrackSource(bool is_screencast);
-  explicit CVideoTrackSource(RTCCVideoSourceAdapter* adapter);
+  ObjCVideoTrackSource();
+  explicit ObjCVideoTrackSource(bool is_screencast);
+  explicit ObjCVideoTrackSource(RTCCVideoSourceAdapter* adapter);
 
   bool is_screencast() const override;
 
@@ -55,15 +55,15 @@ class CVideoTrackSource : public rtc::AdaptedVideoTrackSource {
 
 class RTCCVideoSourceAdapter : IRTCVideoCapturerDelegate {
  public:
-  explicit RTCCVideoSourceAdapter(webrtc::CVideoTrackSource* cVideoTrackSource)
-      : cVideoTrackSource(cVideoTrackSource) {}
+  explicit RTCCVideoSourceAdapter(webrtc::ObjCVideoTrackSource* objCVideoTrackSource)
+      : objCVideoTrackSource(objCVideoTrackSource) {}
 
   void capturer(std::shared_ptr<RTCVideoCapturer> capturer,
                 std::shared_ptr<RTCVideoFrame> frame) override {
-    cVideoTrackSource->OnCapturedFrame(frame.get());
+    objCVideoTrackSource->OnCapturedFrame(frame.get());
   }
 
-  webrtc::CVideoTrackSource* cVideoTrackSource;
+  webrtc::ObjCVideoTrackSource* objCVideoTrackSource;
 };
 
 #endif  // CVIDEOTRACKSOURCE_H

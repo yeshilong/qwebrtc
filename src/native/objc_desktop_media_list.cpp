@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "cdesktopmedialist.h"
+#include "objc_desktop_media_list.h"
 
-#include "cvideoframe.h"
+#include "objc_video_frame.h"
 #include "rtc_base/checks.h"
 #include "third_party/libyuv/include/libyuv.h"
 extern "C" {

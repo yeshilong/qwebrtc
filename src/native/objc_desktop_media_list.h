@@ -19,10 +19,10 @@
 
 #include "api/video/i420_buffer.h"
 #include "api/video/video_frame.h"
-#include "cdesktopcapture.h"
 #include "modules/desktop_capture/desktop_capture_options.h"
 #include "modules/desktop_capture/desktop_capturer.h"
 #include "modules/desktop_capture/desktop_frame.h"
+#include "objc_desktop_capture.h"
 #include "rtc_base/thread.h"
 #include "rtcdesktopmedialist_p.h"
 

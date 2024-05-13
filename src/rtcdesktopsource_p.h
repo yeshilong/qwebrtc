@@ -15,7 +15,7 @@
 
 #include "rtcdesktopsource.h"
 
-#include "native/cdesktopmedialist.h"
+#include "native/objc_desktop_media_list.h"
 
 class RTCDesktopSourcePrivate
 {

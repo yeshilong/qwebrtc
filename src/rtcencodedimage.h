@@ -12,12 +12,12 @@ namespace webrtc
 
 namespace
 {
-class CVideoEncoder;
-class CVideoEncoderSelector;
+class ObjCVideoEncoder;
+class ObjCVideoEncoderSelector;
 } // namespace
 
-class CVideoDecoderFactory;
-class CVideoEncoderFactory;
+class ObjCVideoDecoderFactory;
+class ObjCVideoEncoderFactory;
 
 } // namespace webrtc
 
@@ -83,7 +83,7 @@ class RTCEncodedImage : public QObject
     void setContentType(const RTCVideoContentType &contentType);
 
   protected:
-    friend class webrtc::CVideoEncoder;
+    friend class webrtc::ObjCVideoEncoder;
 
     RTCEncodedImagePrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCEncodedImage)

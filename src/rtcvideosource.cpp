@@ -1,16 +1,16 @@
 #include "rtcvideosource_p.h"
 
-#include "native/cvideotracksource.h"
+#include "native/objc_video_track_source.h"
 
 #include "rtc_base/checks.h"
 #include "pc/video_track_source_proxy.h"
 
-static webrtc::CVideoTrackSource *getObjCVideoSource(
+static webrtc::ObjCVideoTrackSource *getObjCVideoSource(
     const rtc::scoped_refptr<webrtc::VideoTrackSourceInterface> nativeSource)
 {
     webrtc::VideoTrackSourceProxy *proxy_source =
         static_cast<webrtc::VideoTrackSourceProxy *>(nativeSource.get());
-    return static_cast<webrtc::CVideoTrackSource *>(proxy_source->internal());
+    return static_cast<webrtc::ObjCVideoTrackSource *>(proxy_source->internal());
 }
 
 RTCVideoSourcePrivate::RTCVideoSourcePrivate(
@@ -35,10 +35,10 @@ RTCVideoSourcePrivate::RTCVideoSourcePrivate(RTCPeerConnectionFactory *factory,
                                              rtc::Thread *workerThread)
 {
     RTC_DCHECK(factory);
-    rtc::scoped_refptr<webrtc::CVideoTrackSource> cVideoTrackSource =
-        rtc::make_ref_counted<webrtc::CVideoTrackSource>(false);
+    rtc::scoped_refptr<webrtc::ObjCVideoTrackSource> objCVideoTrackSource =
+        rtc::make_ref_counted<webrtc::ObjCVideoTrackSource>(false);
     nativeVideoSource_ =
-        webrtc::VideoTrackSourceProxy::Create(signalingThread, workerThread, cVideoTrackSource);
+        webrtc::VideoTrackSourceProxy::Create(signalingThread, workerThread, objCVideoTrackSource);
 }
 
 RTCVideoSourcePrivate::RTCVideoSourcePrivate(RTCPeerConnectionFactory *factory,
@@ -46,10 +46,10 @@ RTCVideoSourcePrivate::RTCVideoSourcePrivate(RTCPeerConnectionFactory *factory,
                                              rtc::Thread *workerThread, bool isScreenCast)
 {
     RTC_DCHECK(factory);
-    rtc::scoped_refptr<webrtc::CVideoTrackSource> cVideoTrackSource =
-        rtc::make_ref_counted<webrtc::CVideoTrackSource>(isScreenCast);
+    rtc::scoped_refptr<webrtc::ObjCVideoTrackSource> objCVideoTrackSource =
+        rtc::make_ref_counted<webrtc::ObjCVideoTrackSource>(isScreenCast);
     nativeVideoSource_ =
-        webrtc::VideoTrackSourceProxy::Create(signalingThread, workerThread, cVideoTrackSource);
+        webrtc::VideoTrackSourceProxy::Create(signalingThread, workerThread, objCVideoTrackSource);
 }
 
 rtc::scoped_refptr<webrtc::VideoTrackSourceInterface> RTCVideoSourcePrivate::nativeVideoSource()

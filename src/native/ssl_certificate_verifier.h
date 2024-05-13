@@ -8,7 +8,7 @@
 
 namespace webrtc {
 
-std::unique_ptr<rtc::SSLCertificateVerifier> CToNativeCertificateVerifier(
+std::unique_ptr<rtc::SSLCertificateVerifier> ObjCToNativeCertificateVerifier(
     IRTCSSLCertificateVerifier* qt_certificate_verifier);
 
 }  // namespace webrtc

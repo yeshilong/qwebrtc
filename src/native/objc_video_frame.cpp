@@ -1,12 +1,12 @@
-#include "cvideoframe.h"
+#include "objc_video_frame.h"
 
-#include "cvideoframebuffer.h"
+#include "objc_frame_buffer.h"
 #include "rtc_base/time_utils.h"
 
 namespace webrtc {
 
-RTCVideoFrame* toCVideoFrame(const VideoFrame& frame) {
-  auto videoFrame = new RTCVideoFrame(toCVideoFrameBuffer(frame.video_frame_buffer()),
+RTCVideoFrame* ToObjCVideoFrame(const VideoFrame& frame) {
+  auto videoFrame = new RTCVideoFrame(ToObjCVideoFrameBuffer(frame.video_frame_buffer()),
                                       RTCVideoRotation(frame.rotation()),
                                       frame.timestamp_us() * rtc::kNumNanosecsPerMicrosec);
   videoFrame->setTimeStamp(frame.timestamp());
@@ -14,8 +14,8 @@ RTCVideoFrame* toCVideoFrame(const VideoFrame& frame) {
   return videoFrame;
 }
 
-RTCVideoFrame* NativetoCVideoFrame(const VideoFrame& frame) {
-  return toCVideoFrame(frame);
+RTCVideoFrame* NativeToObjCVideoFrame(const VideoFrame& frame) {
+  return ToObjCVideoFrame(frame);
 }
 
 }  // namespace webrtc
