@@ -11,13 +11,13 @@ RTCVideoFrame::RTCVideoFrame(std::shared_ptr<IRTCVideoFrameBuffer> frameBuffer,
     timeStampNs_ = timeStampNs;
 }
 
-RTCVideoFrame::RTCVideoFrame(QObject *pixelBuffer, RTCVideoRotation rotation, qint64 timeStampNs)
+RTCVideoFrame::RTCVideoFrame(QImage *pixelBuffer, RTCVideoRotation rotation, qint64 timeStampNs)
     : QObject(nullptr)
 {
     // Deprecated.
 }
 
-RTCVideoFrame::RTCVideoFrame(QObject *pixelBuffer, const QSize &scaledSize, const QRect &cropRect,
+RTCVideoFrame::RTCVideoFrame(QImage *pixelBuffer, const QSize &scaledSize, const QRect &cropRect,
                              RTCVideoRotation rotation, qint64 timeStampNs)
     : QObject(nullptr)
 {

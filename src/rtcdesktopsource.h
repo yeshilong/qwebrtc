@@ -7,6 +7,7 @@
 
 #include "rtctypes.h"
 
+class RTCDesktopSourcePrivate;
 /**
  * @brief The RTCDesktopSource class represents a desktop source, such as the entire screen or a specific window.
  */
@@ -16,6 +17,7 @@ class RTCDesktopSource : public QObject
 
   public:
     explicit RTCDesktopSource(QObject *parent = nullptr);
+    RTCDesktopSource(RTCDesktopSourcePrivate &d, QObject *parent = nullptr);
 
     QString sourceId() const;
     QString name() const;
@@ -25,10 +27,15 @@ class RTCDesktopSource : public QObject
     QImage updateThumbnail();
 
   private:
-    QString sourceId_;
-    QString name_;
-    QImage thumbnail_;
-    RTCDesktopSourceType sourceType_;
+    RTCDesktopSourcePrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCDesktopSource)
+
+    void setName(const QString &name);
+    void setThumbnail(const QImage &thumbnail);
+
+    friend class RTCDesktopCapturer;
+    friend class RTCDesktopMediaList;
+    friend class RTCDesktopMediaListPrivate;
 };
 
 #endif // RTCDESKTOPSOURCE_H

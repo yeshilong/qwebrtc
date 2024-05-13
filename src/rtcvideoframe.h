@@ -2,6 +2,7 @@
 #define RTCVIDEOFRAME_H
 
 #include <QObject>
+#include <QImage>
 #include <QSize>
 
 #include "rtctypes.h"
@@ -35,7 +36,7 @@ class RTCVideoFrame : public QObject
      * @param rotation The rotation.
      * @param timeStampNs The timestamp in nanoseconds.
      */
-    RTCVideoFrame(QObject *pixelBuffer, RTCVideoRotation rotation, qint64 timeStampNs);
+    RTCVideoFrame(QImage *pixelBuffer, RTCVideoRotation rotation, qint64 timeStampNs);
 
     /**
      * @brief Initialize an RTCVideoFrame from a pixel buffer combined with cropping and
@@ -47,7 +48,7 @@ class RTCVideoFrame : public QObject
      * @param rotation The rotation.
      * @param timeStampNs The timestamp in nanoseconds.
      */
-    RTCVideoFrame(QObject *pixelBuffer, const QSize &scaledSize, const QRect &cropRect,
+    RTCVideoFrame(QImage *pixelBuffer, const QSize &scaledSize, const QRect &cropRect,
                   RTCVideoRotation rotation, qint64 timeStampNs);
 
     /**

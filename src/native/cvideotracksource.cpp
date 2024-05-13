@@ -14,6 +14,7 @@
 
 #include "rtcvideoframe.h"
 #include "rtcvideoframebuffer.h"
+#include "rtcqimagebuffer.h"
 
 #include "cvideoframebuffer.h"
 
@@ -86,30 +87,24 @@ void CVideoTrackSource::OnCapturedFrame(RTCVideoFrame *frame)
         // No adaption - optimized path.
         buffer = rtc::make_ref_counted<CVideoFrameBuffer>(frame->buffer().get());
     }
-    // else if ([frame.buffer isKindOfClass:[RTC_C_TYPE(RTCCVPixelBuffer) class]])
-    // {
-    //     // Adapted CVPixelBuffer frame.
-    //     RTC_C_TYPE(RTCCVPixelBuffer) *rtcPixelBuffer =
-    //         (RTC_C_TYPE(RTCCVPixelBuffer) *)frame.buffer;
-    //     buffer = rtc::make_ref_counted<CVideoFrameBuffer>([[RTC_C_TYPE(RTCCVPixelBuffer) alloc]
-    //         initWithPixelBuffer:rtcPixelBuffer.pixelBuffer
-    //                adaptedWidth:adapted_width
-    //               adaptedHeight:adapted_height
-    //                   cropWidth:crop_width
-    //                  cropHeight:crop_height
-    //                       cropX:crop_x + rtcPixelBuffer.cropX
-    //                       cropY:crop_y + rtcPixelBuffer.cropY]);
-    // }
-    // else
-    // {
-    //     // Adapted I420 frame.
-    //     // TODO(magjed): Optimize this I420 path.
-    //     rtc::scoped_refptr<I420Buffer> i420_buffer =
-    //         I420Buffer::Create(adapted_width, adapted_height);
-    //     buffer = rtc::make_ref_counted<CVideoFrameBuffer>(frame.buffer);
-    //     i420_buffer->CropAndScaleFrom(*buffer->ToI420(), crop_x, crop_y, crop_width, crop_height);
-    //     buffer = i420_buffer;
-    // }
+    else if (dynamic_cast<RTCQImageBuffer *>(frame->buffer().get()))
+    {
+        // Adapted QVideoFrameBuffer frame.
+        RTCQImageBuffer *rtcPixelBuffer = dynamic_cast<RTCQImageBuffer *>(frame->buffer().get());
+        buffer = rtc::make_ref_counted<CVideoFrameBuffer>(new RTCQImageBuffer(
+            rtcPixelBuffer->pixelBuffer(), adapted_width, adapted_height, crop_width, crop_height,
+            crop_x + rtcPixelBuffer->cropX(), crop_y + rtcPixelBuffer->cropY()));
+    }
+    else
+    {
+        // Adapted I420 frame.
+        // TODO(magjed): Optimize this I420 path.
+        rtc::scoped_refptr<I420Buffer> i420_buffer =
+            I420Buffer::Create(adapted_width, adapted_height);
+        buffer = rtc::make_ref_counted<CVideoFrameBuffer>(frame->buffer().get());
+        i420_buffer->CropAndScaleFrom(*buffer->ToI420(), crop_x, crop_y, crop_width, crop_height);
+        buffer = i420_buffer;
+    }
 
     // Applying rotation is only supported for legacy reasons and performance is
     // not critical here.

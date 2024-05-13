@@ -26,6 +26,9 @@ class IRTCVideoCapturer
 
     std::shared_ptr<IRTCVideoCapturerDelegate> delegate() const;
     void setDelegate(const std::shared_ptr<IRTCVideoCapturerDelegate> &delegate);
+
+  private:
+    std::shared_ptr<IRTCVideoCapturerDelegate> delegate_;
 };
 
 #endif // RTCVIDEOCAPTURER_H

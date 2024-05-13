@@ -7,6 +7,22 @@
 #include "rtcdesktopsource.h"
 #include "rtctypes.h"
 
+namespace webrtc
+{
+class ObjCDesktopMediaList;
+class MediaSource;
+} // namespace webrtc
+
+class RTCDesktopMediaListDelegate
+{
+  public:
+    virtual void desktopSourceAdded(RTCDesktopSource *source) = 0;
+    virtual void desktopSourceRemoved(RTCDesktopSource *source) = 0;
+    virtual void desktopSourceNameChanged(RTCDesktopSource *source) = 0;
+    virtual void desktopSourceThumbnailChanged(RTCDesktopSource *source) = 0;
+};
+
+class RTCDesktopMediaListPrivate;
 /**
  * @brief RTCDesktopMediaList containing various properties and methods.
  */
@@ -18,7 +34,8 @@ class RTCDesktopMediaList : public QObject
     /**
      * @brief Initializes a new instance of the RTCDesktopMediaList class with the specified type and delegate.
      */
-    RTCDesktopMediaList(RTCDesktopSourceType type, QObject *parent = nullptr);
+    RTCDesktopMediaList(RTCDesktopSourceType type, RTCDesktopMediaListDelegate *delegate,
+                        QObject *parent = nullptr);
 
     /**
      * @brief Gets the source type.
@@ -43,6 +60,15 @@ class RTCDesktopMediaList : public QObject
     void desktopSourceRemoved(RTCDesktopSource *source);
     void desktopSourceNameChanged(RTCDesktopSource *source);
     void desktopSourceThumbnailChanged(RTCDesktopSource *source);
+
+  protected:
+    RTCDesktopMediaList(RTCDesktopMediaListPrivate &d, QObject *parent = nullptr);
+
+  private:
+    friend class webrtc::ObjCDesktopMediaList;
+
+    RTCDesktopMediaListPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCDesktopMediaList)
 };
 
 #endif // RTCDESKTOPMEDIALIST_H

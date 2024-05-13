@@ -5,6 +5,10 @@ add_library(
   qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
+  native/cdesktopcapture.cpp
+  native/cdesktopcapture.h
+  native/cdesktopmedialist.cpp
+  native/cdesktopmedialist.h
   native/cnetworkmonitorfactory.cpp
   native/cnetworkmonitorfactory.h
   native/csslcertificateverifieradapter.cpp
@@ -47,8 +51,6 @@ add_library(
   rtcconfiguration.h
   rtccryptooptions.cpp
   rtccryptooptions.h
-  rtccvpixelbuffer.cpp
-  rtccvpixelbuffer.h
   rtcdatabuffer_p.h
   rtcdatabuffer.cpp
   rtcdatabuffer.h
@@ -64,10 +66,13 @@ add_library(
   rtcdefaultvideodecoderfactory.h
   rtcdefaultvideoencoderfactory.cpp
   rtcdefaultvideoencoderfactory.h
+  rtcdesktopcapturer_p.h
   rtcdesktopcapturer.cpp
   rtcdesktopcapturer.h
+  rtcdesktopmedialist_p.h
   rtcdesktopmedialist.cpp
   rtcdesktopmedialist.h
+  rtcdesktopsource_p.h
   rtcdesktopsource.cpp
   rtcdesktopsource.h
   rtcdtmfsender_p.h
@@ -137,8 +142,8 @@ add_library(
   rtcpeerconnectionfactoryoptions_p.h
   rtcpeerconnectionfactoryoptions.cpp
   rtcpeerconnectionfactoryoptions.h
-  rtcqvideoframebuffer.cpp
-  rtcqvideoframebuffer.h
+  rtcqimagebuffer.h
+  rtcqimagebuffer.cpp
   rtcrtcpparameters_p.h
   rtcrtcpparameters.cpp
   rtcrtcpparameters.h
@@ -557,6 +562,8 @@ else()
 endif()
 
 include_directories(${WEBRTC_INCLUDE_DIR})
+include_directories("/usr/include/glib-2.0")
+include_directories("/usr/lib/x86_64-linux-gnu/glib-2.0/include")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_compile_definitions(qwebrtc PRIVATE QWEBRTC_LIBRARY QT_NO_KEYWORDS)
@@ -575,5 +582,5 @@ elseif(OS_MACOS)
     qwebrtc
     PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
             Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Concurrent
-            WebRTC "-framework CoreFoundation")
+            WebRTC "-framework CoreFoundation -framework IOSurface")
 endif()
