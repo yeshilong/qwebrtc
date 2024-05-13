@@ -33,10 +33,10 @@ class IRTCDesktopCapturerDelegate
 
 class RTCDesktopCapturerPrivate;
 /**
- * @brief Screen capture that implements IRTCVideoCapturer. Delivers frames to a
+ * @brief Screen capture that implements RTCVideoCapturer. Delivers frames to a
  * RTCVideoCapturerDelegate (usually RTCVideoSource).
  */
-class RTCDesktopCapturer : public QObject, public IRTCVideoCapturer, public CDesktopCapturerDelegate
+class RTCDesktopCapturer : public QObject, public RTCVideoCapturer, public CDesktopCapturerDelegate
 {
     Q_OBJECT
 

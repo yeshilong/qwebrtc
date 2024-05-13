@@ -112,12 +112,12 @@ class RTCPeerConnectionFactory : public QObject
     RTCAudioTrack *audioTrackWithSource(RTCAudioSource *source, QString trackId);
 
     /**
-     * @brief Initialize a generic RTCVideoSource. The RTCVideoSource should be passed to a IRTCVideoCapturer implementation, e.g. RTCCameraVideoCapturer, in order to produce frames.
+     * @brief Initialize a generic RTCVideoSource. The RTCVideoSource should be passed to a RTCVideoCapturer implementation, e.g. RTCCameraVideoCapturer, in order to produce frames.
      */
     RTCVideoSource *videoSource();
 
     /**
-     * @brief Initialize a generic RTCVideoSource with the possibility of marking it as usable for screen sharing. The RTCVideoSource should be passed to a IRTCVideoCapturer implementation, e.g. RTCCameraVideoCapturer, in order to produce frames.
+     * @brief Initialize a generic RTCVideoSource with the possibility of marking it as usable for screen sharing. The RTCVideoSource should be passed to a RTCVideoCapturer implementation, e.g. RTCCameraVideoCapturer, in order to produce frames.
      */
     RTCVideoSource *videoSourceForScreenCast(bool forScreenCast);
 

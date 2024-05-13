@@ -4,7 +4,7 @@
 #include <QObject>
 
 class RTCVideoFrame;
-class IRTCVideoCapturer;
+class RTCVideoCapturer;
 
 /**
  * @brief The IRTCVideoCapturerDelegate class.
@@ -12,17 +12,17 @@ class IRTCVideoCapturer;
 class IRTCVideoCapturerDelegate
 {
   public:
-    virtual void capturer(std::shared_ptr<IRTCVideoCapturer> capturer,
+    virtual void capturer(std::shared_ptr<RTCVideoCapturer> capturer,
                           std::shared_ptr<RTCVideoFrame> frame) = 0;
 };
 
 /**
- * @brief The IRTCVideoCapturer class.
+ * @brief The RTCVideoCapturer class.
  */
-class IRTCVideoCapturer
+class RTCVideoCapturer
 {
   public:
-    explicit IRTCVideoCapturer(std::shared_ptr<IRTCVideoCapturerDelegate> videoCapturerDelegate);
+    explicit RTCVideoCapturer(std::shared_ptr<IRTCVideoCapturerDelegate> videoCapturerDelegate);
 
     std::shared_ptr<IRTCVideoCapturerDelegate> delegate() const;
     void setDelegate(const std::shared_ptr<IRTCVideoCapturerDelegate> &delegate);

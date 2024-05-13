@@ -64,7 +64,7 @@ class RTCCVideoSourceAdapter : IRTCVideoCapturerDelegate
     {
     }
 
-    void capturer(std::shared_ptr<IRTCVideoCapturer> capturer,
+    void capturer(std::shared_ptr<RTCVideoCapturer> capturer,
                   std::shared_ptr<RTCVideoFrame> frame) override
     {
         cVideoTrackSource->OnCapturedFrame(frame.get());

@@ -117,7 +117,7 @@ QList<QVideoFrame::PixelFormat> CVideoSink::supportedPixelFormats(
 
 RTCFileVideoCapturer::RTCFileVideoCapturer(
     std::shared_ptr<IRTCVideoCapturerDelegate> videoCapturerDelegate, QObject *parent)
-    : QObject(parent), IRTCVideoCapturer{videoCapturerDelegate}
+    : QObject(parent), RTCVideoCapturer{videoCapturerDelegate}
 {
     mediaPlayer_ = new QMediaPlayer;
     videoSink_ = new CVideoSink(this);

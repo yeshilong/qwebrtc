@@ -6,7 +6,7 @@ RTCDesktopCapturer::RTCDesktopCapturer(std::shared_ptr<RTCDesktopSource> desktop
                                        std::shared_ptr<IRTCDesktopCapturerDelegate> delegate,
                                        std::shared_ptr<IRTCVideoCapturerDelegate> captureDelegate,
                                        QObject *parent)
-    : IRTCVideoCapturer{captureDelegate}
+    : RTCVideoCapturer{captureDelegate}
 {
     webrtc::DesktopType captureType = webrtc::kScreen;
     if (desktopSource->sourceType() == RTCDesktopSourceType::Window)
@@ -23,7 +23,7 @@ RTCDesktopCapturer::RTCDesktopCapturer(std::shared_ptr<RTCDesktopSource> desktop
 RTCDesktopCapturer::RTCDesktopCapturer(std::shared_ptr<IRTCDesktopCapturerDelegate> delegate,
                                        std::shared_ptr<IRTCVideoCapturerDelegate> captureDelegate,
                                        QObject *parent)
-    : IRTCVideoCapturer{captureDelegate}
+    : RTCVideoCapturer{captureDelegate}
 {
     d_ptr->nativeDesktopCapturer_ =
         std::make_shared<webrtc::ObjCDesktopCapturer>(webrtc::kScreen, -1, this);

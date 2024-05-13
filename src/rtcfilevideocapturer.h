@@ -50,7 +50,7 @@ class CVideoSink : public QAbstractVideoSurface
 /**
  * @brief Captures buffers from bundled video file.
  */
-class RTCFileVideoCapturer : public QObject, IRTCVideoCapturer
+class RTCFileVideoCapturer : public QObject, RTCVideoCapturer
 {
     Q_OBJECT
 
