@@ -1,14 +1,13 @@
 #ifndef RTCVIDEOTRACK_H
 #define RTCVIDEOTRACK_H
 
-#include <QObject>
-
 #include "rtcmediastreamtrack.h"
-#include "rtcvideorenderer.h"
-#include "rtcvideosource.h"
+
+class IRTCVideoRenderer;
+class RTCPeerConnectionFactory;
+class RTCVideoSource;
 
 class RTCVideoTrackPrivate;
-
 /**
  * @brief Represents a video track with a source and methods to add and remove renderers.
  */
@@ -23,10 +22,15 @@ class RTCVideoTrack : public RTCMediaStreamTrack
     explicit RTCVideoTrack(RTCVideoTrackPrivate &d, QObject *parent = nullptr);
 
     /**
+     * @brief Destroys the instance of the RTCVideoTrack class.
+     */
+    ~RTCVideoTrack() override;
+
+    /**
      * @brief Returns the video source for this video track.
      * @return The video source.
      */
-    RTCVideoSource source() const;
+    RTCVideoSource *source();
 
     /**
      * @brief Gets and sets the receive state, if this is a remote video track.

@@ -23,10 +23,15 @@ class RTCAudioTrack : public RTCMediaStreamTrack
     explicit RTCAudioTrack(RTCAudioTrackPrivate &d, QObject *parent = nullptr);
 
     /**
+     * @brief Destroys the instance.
+     */
+    ~RTCAudioTrack() override;
+
+    /**
      * @brief Returns the audio source for this audio track.
      * @return The audio source.
      */
-    RTCAudioSource source() const;
+    RTCAudioSource *source();
 
     /**
      * @brief Registers a renderer that will receive all audio sample buffers on this track.
@@ -39,6 +44,12 @@ class RTCAudioTrack : public RTCMediaStreamTrack
      * @param renderer The renderer.
      */
     void removeRenderer(IRTCAudioRenderer *renderer);
+
+    /**
+     * @brief called when a new sample buffer is captured.
+     * @return The audio sample buffer.
+     */
+    void didCaptureSampleBuffer(QAudioBuffer sampleBuffer);
 };
 
 #endif // RTCAUDIOTRACK_H

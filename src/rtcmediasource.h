@@ -21,21 +21,24 @@ class RTCMediaSource : public QObject
     explicit RTCMediaSource(QObject *parent = nullptr);
 
     /**
-     * @brief Returns the current state of the RTCMediaSource.
-     * @return The current state.
-     */
-    RTCSourceState state() const;
-
-  protected:
-    /**
      * @brief Initializes a new instance of the RTCMediaSource class.
      * @param d The private implementation.
      * @param parent The parent object.
      */
     RTCMediaSource(RTCMediaSourcePrivate &d, QObject *parent = nullptr);
 
+    /**
+     * @brief Returns the current state of the RTCMediaSource.
+     * @return The current state.
+     */
+    RTCSourceState state() const;
+
+  protected:
     RTCMediaSourcePrivate *const d_ptr;
     Q_DECLARE_PRIVATE(RTCMediaSource)
+
+    friend class RTCVideoTrackPrivate;
+    friend class RTCAudioTrackPrivate;
 };
 
 #endif // RTCMEDIASOURCE_H

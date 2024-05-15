@@ -3,26 +3,29 @@
 
 #include <QObject>
 
+#include "rtcvideotrack.h"
 #include "rtcmediastreamtrack_p.h"
+#include "rtcvideosource_p.h"
+#include "rtcvideorendereradapter_p.h"
+
+#include "rtc_base/thread.h"
 
 class RTCVideoTrack;
-
 class RTCVideoTrackPrivate : public RTCMediaStreamTrackPrivate
 {
   public:
+    explicit RTCVideoTrackPrivate(RTCPeerConnectionFactory *factory, RTCVideoSource *source,
+                                  QString trackId);
     explicit RTCVideoTrackPrivate(
-        const rtc::scoped_refptr<webrtc::VideoTrackInterface> nativeVideoTrack,
-        RTCPeerConnectionFactory *factory);
-    RTCVideoTrackPrivate(const rtc::scoped_refptr<webrtc::VideoTrackInterface> nativeVideoTrack,
-                         RTCPeerConnectionFactory *factory, RTCMediaStreamTrackType type);
+        RTCPeerConnectionFactory *factory,
+        const rtc::scoped_refptr<webrtc::MediaStreamTrackInterface> nativeVideoTrack,
+        RTCMediaStreamTrackType type);
 
     rtc::scoped_refptr<webrtc::VideoTrackInterface> nativeVideoTrack() const;
-    bool isEqualToTrack(RTCVideoTrackPrivate *other) const;
-    static RTCVideoTrack *videoTrackForNativeVideoTrack(
-        const rtc::scoped_refptr<webrtc::VideoTrackInterface> nativeVideoTrack,
-        RTCPeerConnectionFactory *factory);
 
-    rtc::scoped_refptr<webrtc::VideoTrackInterface> nativeVideoTrack_;
+    rtc::Thread *workerThread_;
+    RTCVideoSource *source_;
+    QVector<RTCVideoRendererAdapter *> adapters_;
 };
 
 #endif // RTCVIDEOTRACK_P_H
