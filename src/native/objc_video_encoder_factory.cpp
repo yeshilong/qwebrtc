@@ -62,7 +62,7 @@ class ObjCVideoEncoder : public VideoEncoder {
       rtcFrameTypes.push_back(static_cast<int>(frame_types->at(i)));
     }
 
-    return encoder_->encode(ToObjCVideoFrame(frame), nullptr, rtcFrameTypes);
+    return encoder_->encode(NativeToObjCVideoFrame(frame), nullptr, rtcFrameTypes);
   }
 
   void SetRates(const RateControlParameters& parameters) override {

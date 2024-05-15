@@ -9,7 +9,7 @@ ObjCVideoRenderer::ObjCVideoRenderer(IRTCVideoRenderer* renderer)
     : renderer_(renderer), size_(QSize()) {}
 
 void ObjCVideoRenderer::OnFrame(const webrtc::VideoFrame& nativeVideoFrame) {
-  RTCVideoFrame* videoFrame = ToObjCVideoFrame(nativeVideoFrame);
+  RTCVideoFrame* videoFrame = NativeToObjCVideoFrame(nativeVideoFrame);
 
   QSize current_size = (static_cast<int>(videoFrame->rotation()) % 180 == 0) ?
       QSize(videoFrame->width(), videoFrame->height()) :
