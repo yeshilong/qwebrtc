@@ -53,6 +53,13 @@ class RTCRtpReceiver : public QObject
     explicit RTCRtpReceiver(QObject *parent = nullptr);
 
     /**
+     * @brief Constructs an RTCRtpReceiver object.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCRtpReceiver(RTCRtpReceiverPrivate &d, QObject *parent = nullptr);
+
+    /**
      * @brief Gets the receiver ID.
      * @return The receiver ID.
      */
@@ -76,9 +83,6 @@ class RTCRtpReceiver : public QObject
      * @param mediaType The media type.
      */
     void rtpReceiverDidReceiveFirstPacketForMediaType(RTCRtpMediaType mediaType);
-
-  protected:
-    RTCRtpReceiver(RTCRtpReceiverPrivate &d, QObject *parent = nullptr);
 
   private:
     friend class RTCRtpTransceiverPrivate;

@@ -21,6 +21,12 @@ class RTCSessionDescription : public QObject
     RTCSessionDescription(QObject *parent = nullptr) = delete;
 
     /**
+     * @brief Constructs an RTCSessionDescription object.
+     * @param d The private implementation.
+     */
+    explicit RTCSessionDescription(RTCSessionDescriptionPrivate &d, QObject *parent = nullptr);
+
+    /**
      * @brief Initialize a session description with a type and SDP string.
      * @param type The type of session description.
      * @param sdp The SDP string representation of this session description.
@@ -52,9 +58,6 @@ class RTCSessionDescription : public QObject
      * @return The session description type for a string representation.
      */
     static RTCSdpType typeForString(QString string);
-
-  protected:
-    RTCSessionDescription(RTCSessionDescriptionPrivate &d, QObject *parent = nullptr);
 
   private:
     RTCSessionDescriptionPrivate *d_ptr;

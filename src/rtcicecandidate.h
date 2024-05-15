@@ -5,7 +5,6 @@
 #include <QString>
 
 class RTCIceCandidatePrivate;
-
 /**
  * @brief The RTCIceCandidate class.
  */
@@ -14,6 +13,18 @@ class RTCIceCandidate : public QObject
     Q_OBJECT
 
   public:
+    /**
+     * @brief Initializes a new instance of the RTCIceCandidate class.
+     */
+    RTCIceCandidate(QObject *parent = nullptr) = delete;
+
+    /**
+     * @brief Initializes a new instance of the RTCIceCandidate class.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCIceCandidate(RTCIceCandidatePrivate &d, QObject *parent = nullptr);
+
     /**
      * @brief Initializes an RTCIceCandidate from the provided SDP string, media line index, and optional SDP Mid.
      * @param sdp The SDP string representation of the candidate.

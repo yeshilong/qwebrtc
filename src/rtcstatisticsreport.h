@@ -24,6 +24,13 @@ class RTCStatisticsReport : public QObject
     RTCStatisticsReport(QObject *parent = nullptr) = delete;
 
     /**
+     * @brief Constructs an RTCStatisticsReport object.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    explicit RTCStatisticsReport(RTCStatisticsReportPrivate &d, QObject *parent = nullptr);
+
+    /**
      * @brief Gets the timestamp of the report in microseconds since 1970-01-01T00:00:00Z.
      * @return The timestamp of the report.
      */
@@ -34,9 +41,6 @@ class RTCStatisticsReport : public QObject
      * @return The RTCStatistics objects by id.
      */
     QMap<QString, RTCStatistics *> statistics() const;
-
-  protected:
-    RTCStatisticsReport(RTCStatisticsReportPrivate &d, QObject *parent = nullptr);
 
   private:
     RTCStatisticsReportPrivate *d_ptr;

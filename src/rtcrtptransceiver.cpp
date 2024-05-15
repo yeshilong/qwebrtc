@@ -38,6 +38,11 @@ RTCRtpTransceiver::RTCRtpTransceiver(QObject *parent) : QObject{parent}
 {
 }
 
+RTCRtpTransceiver::RTCRtpTransceiver(RTCRtpTransceiverPrivate &d, QObject *parent)
+    : QObject{parent}, d_ptr{&d}
+{
+}
+
 RTCRtpMediaType RTCRtpTransceiver::mediaType() const
 {
     Q_D(const RTCRtpTransceiver);

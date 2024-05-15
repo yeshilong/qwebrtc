@@ -1,4 +1,3 @@
-#include "rtcicecandidate.h"
 #include "rtcicecandidate_p.h"
 
 #include <QDebug>
@@ -44,6 +43,11 @@ std::unique_ptr<webrtc::IceCandidateInterface> RTCIceCandidatePrivate::nativeIce
 RTCIceCandidate::RTCIceCandidate(const QString &sdp, int sdpMLineIndex, const QString &sdpMid,
                                  QObject *parent)
     : QObject(parent), d_ptr(new RTCIceCandidatePrivate(sdp, sdpMLineIndex, sdpMid))
+{
+}
+
+RTCIceCandidate::RTCIceCandidate(RTCIceCandidatePrivate &d, QObject *parent)
+    : QObject(parent), d_ptr(&d)
 {
 }
 

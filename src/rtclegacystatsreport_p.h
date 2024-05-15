@@ -4,6 +4,8 @@
 #include <QString>
 #include <QMap>
 
+#include "rtclegacystatsreport.h"
+
 #include "api/legacy_stats_types.h"
 
 class RTCLegacyStatsReportPrivate

@@ -1,4 +1,3 @@
-#include "rtclegacystatsreport.h"
 #include "rtclegacystatsreport_p.h"
 
 RTCLegacyStatsReportPrivate::RTCLegacyStatsReportPrivate()

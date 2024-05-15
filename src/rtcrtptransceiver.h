@@ -92,6 +92,13 @@ class RTCRtpTransceiver : public QObject, public IRTCRtpTransceiver
     explicit RTCRtpTransceiver(QObject *parent = nullptr);
 
     /**
+     * @brief Constructs an RTCRtpTransceiver object.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCRtpTransceiver(RTCRtpTransceiverPrivate &d, QObject *parent = nullptr);
+
+    /**
      * @brief Gets the media type of the transceiver.
      * @return The media type.
      */

@@ -5,6 +5,8 @@
 
 #include "qwebrtcglobal.h"
 
+#include "rtcicecandidate.h"
+
 #include "api/jsep.h"
 
 class QWEBRTC_EXPORT RTCIceCandidatePrivate

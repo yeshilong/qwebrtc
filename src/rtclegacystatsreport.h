@@ -19,6 +19,13 @@ class RTCLegacyStatsReport : public QObject
     explicit RTCLegacyStatsReport(QObject *parent = nullptr);
 
     /**
+     * @brief Constructs an RTCLegacyStatsReport object.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCLegacyStatsReport(RTCLegacyStatsReportPrivate &d, QObject *parent = nullptr);
+
+    /**
      * @brief Gets the timestamp.
      * @return The timestamp.
      */
@@ -41,9 +48,6 @@ class RTCLegacyStatsReport : public QObject
      * @return The dictionary holding the actual stats.
      */
     QMap<QString, QString> values() const;
-
-  protected:
-    RTCLegacyStatsReport(RTCLegacyStatsReportPrivate &d, QObject *parent = nullptr);
 
   private:
     RTCLegacyStatsReportPrivate *const d_ptr;
