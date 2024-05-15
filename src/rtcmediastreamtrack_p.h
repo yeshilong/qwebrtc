@@ -20,8 +20,9 @@ class RTCMediaStreamTrackPrivate
      * @param type The type of the media stream track.
      */
     explicit RTCMediaStreamTrackPrivate(
+        RTCPeerConnectionFactory *factory,
         const rtc::scoped_refptr<webrtc::MediaStreamTrackInterface> nativeMediaStreamTrack,
-        RTCPeerConnectionFactory *factory, RTCMediaStreamTrackType type);
+        RTCMediaStreamTrackType type);
 
     /**
      * @brief RTCMediaStreamTrackPrivate
@@ -29,8 +30,8 @@ class RTCMediaStreamTrackPrivate
      * @param factory The peer connection factory.
      */
     RTCMediaStreamTrackPrivate(
-        const rtc::scoped_refptr<webrtc::MediaStreamTrackInterface> nativeMediaStreamTrack,
-        RTCPeerConnectionFactory *factory);
+        RTCPeerConnectionFactory *factory,
+        const rtc::scoped_refptr<webrtc::MediaStreamTrackInterface> nativeMediaStreamTrack);
 
     /**
      * @brief Returns the native media stream track.

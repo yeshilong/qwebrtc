@@ -6,8 +6,12 @@
 
 #include "rtctypes.h"
 
-class RTCMediaStreamTrackPrivate;
+namespace webrtc
+{
+class AudioSinkConverter;
+} // namespace webrtc
 
+class RTCMediaStreamTrackPrivate;
 /**
  * @brief Represents a media stream track with multiple properties.
  */
@@ -16,6 +20,13 @@ class RTCMediaStreamTrack : public QObject
     Q_OBJECT
 
   public:
+    /**
+     * @brief Initializes a new instance of the RTCMediaSource class.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCMediaStreamTrack(RTCMediaStreamTrackPrivate &d, QObject *parent = nullptr);
+
     /**
      * @brief Returns the kind of track. For example, "audio" if this track represents an audio track and "video" if this track represents a video track.
      * @return The kind of track.
@@ -54,19 +65,13 @@ class RTCMediaStreamTrack : public QObject
     static QString RTCMediaStreamTrackKindVideo();
 
   protected:
-    /**
-     * @brief Initializes a new instance of the RTCMediaSource class.
-     * @param d The private implementation.
-     * @param parent The parent object.
-     */
-    RTCMediaStreamTrack(RTCMediaStreamTrackPrivate &nativeMediaStreamTrack,
-                        QObject *parent = nullptr);
-
     RTCMediaStreamTrackPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCMediaStreamTrack)
 
   private:
     friend class RTCRtpSender;
+    friend class RTCMediaStreamPrivate;
+    friend class webrtc::AudioSinkConverter;
 };
 
 #endif // RTCMEDIASTREAMTRACK_H

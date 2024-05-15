@@ -5,26 +5,26 @@ add_library(
   qwebrtcglobal.h
   qwebrtc.cpp
   qwebrtc.h
+  native/network_monitor_factory.cpp
+  native/network_monitor_factory.h
   native/objc_desktop_capture.cpp
   native/objc_desktop_capture.h
   native/objc_desktop_media_list.cpp
   native/objc_desktop_media_list.h
-  native/network_monitor_factory.cpp
-  native/network_monitor_factory.h
-  native/ssl_certificate_verifier.cpp
-  native/ssl_certificate_verifier.h
+  native/objc_frame_buffer.cpp
+  native/objc_frame_buffer.h
   native/objc_video_decoder_factory.cpp
   native/objc_video_decoder_factory.h
   native/objc_video_encoder_factory.cpp
   native/objc_video_encoder_factory.h
   native/objc_video_frame.cpp
   native/objc_video_frame.h
-  native/objc_frame_buffer.cpp
-  native/objc_frame_buffer.h
   native/objc_video_renderer.cpp
   native/objc_video_renderer.h
   native/objc_video_track_source.cpp
   native/objc_video_track_source.h
+  native/ssl_certificate_verifier.cpp
+  native/ssl_certificate_verifier.h
   rtcaudiobuffer.cpp
   rtcaudiobuffer.h
   rtcaudiocustomprocessingdelegate.h
@@ -142,8 +142,8 @@ add_library(
   rtcpeerconnectionfactoryoptions_p.h
   rtcpeerconnectionfactoryoptions.cpp
   rtcpeerconnectionfactoryoptions.h
-  rtcqimagebuffer.h
   rtcqimagebuffer.cpp
+  rtcqimagebuffer.h
   rtcrtcpparameters_p.h
   rtcrtcpparameters.cpp
   rtcrtcpparameters.h
@@ -244,6 +244,9 @@ add_library(
   rtcvideoframe.h
   rtcvideoframebuffer.h
   rtcvideorenderer.h
+  rtcvideorendereradapter_p.h
+  rtcvideorendereradapter.cpp
+  rtcvideorendereradapter.h
   rtcvideosource_p.h
   rtcvideosource.cpp
   rtcvideosource.h

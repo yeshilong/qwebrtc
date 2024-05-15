@@ -4,17 +4,20 @@
 #include <QDebug>
 
 RTCMediaStreamTrackPrivate::RTCMediaStreamTrackPrivate(
+    RTCPeerConnectionFactory *factory,
     const rtc::scoped_refptr<webrtc::MediaStreamTrackInterface> nativeMediaStreamTrack,
-    RTCPeerConnectionFactory *factory, RTCMediaStreamTrackType type)
+    RTCMediaStreamTrackType type)
 {
     Q_ASSERT(nativeMediaStreamTrack);
     Q_ASSERT(factory);
+    factory_ = factory;
+    nativeMediaStreamTrack_ = nativeMediaStreamTrack;
     type_ = type;
 }
 
 RTCMediaStreamTrackPrivate::RTCMediaStreamTrackPrivate(
-    const rtc::scoped_refptr<webrtc::MediaStreamTrackInterface> nativeMediaStreamTrack,
-    RTCPeerConnectionFactory *factory)
+    RTCPeerConnectionFactory *factory,
+    const rtc::scoped_refptr<webrtc::MediaStreamTrackInterface> nativeMediaStreamTrack)
 {
     Q_ASSERT(nativeMediaStreamTrack);
     Q_ASSERT(factory);
@@ -59,14 +62,14 @@ RTCMediaStreamTrack *RTCMediaStreamTrackPrivate::mediaStreamTrackForNativeMediaS
         std::string(webrtc::MediaStreamTrackInterface::kAudioKind))
     {
         auto p = new RTCMediaStreamTrackPrivate(
-            nativeMediaStreamTrack, factory, RTCMediaStreamTrackType::RTCMediaStreamTrackTypeAudio);
+            factory, nativeMediaStreamTrack, RTCMediaStreamTrackType::RTCMediaStreamTrackTypeAudio);
         return new RTCMediaStreamTrack{*p};
     }
     else if (nativeMediaStreamTrack->kind() ==
              std::string(webrtc::MediaStreamTrackInterface::kVideoKind))
     {
         auto p = new RTCMediaStreamTrackPrivate(
-            nativeMediaStreamTrack, factory, RTCMediaStreamTrackType::RTCMediaStreamTrackTypeVideo);
+            factory, nativeMediaStreamTrack, RTCMediaStreamTrackType::RTCMediaStreamTrackTypeVideo);
         return new RTCMediaStreamTrack{*p};
     }
     else
@@ -76,9 +79,8 @@ RTCMediaStreamTrack *RTCMediaStreamTrackPrivate::mediaStreamTrackForNativeMediaS
     }
 }
 
-RTCMediaStreamTrack::RTCMediaStreamTrack(RTCMediaStreamTrackPrivate &nativeMediaStreamTrack,
-                                         QObject *parent)
-    : QObject{parent}, d_ptr{&nativeMediaStreamTrack}
+RTCMediaStreamTrack::RTCMediaStreamTrack(RTCMediaStreamTrackPrivate &d, QObject *parent)
+    : QObject{parent}, d_ptr{&d}
 {
 }
 
