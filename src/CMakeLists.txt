@@ -117,6 +117,7 @@ add_library(
   rtcmediasource_p.h
   rtcmediasource.cpp
   rtcmediasource.h
+  rtcmediastream_p.h
   rtcmediastream.cpp
   rtcmediastream.h
   rtcmediastreamtrack_p.h

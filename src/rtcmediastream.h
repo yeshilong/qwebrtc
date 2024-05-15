@@ -5,9 +5,11 @@
 #include <QVector>
 #include <QString>
 
-#include "rtcaudiotrack.h"
-#include "rtcvideotrack.h"
+class RTCAudioTrack;
+class RTCVideoTrack;
+class RTCPeerConnectionFactory;
 
+class RTCMediaStreamPrivate;
 /**
  * @brief Represents a media stream.
  */
@@ -20,6 +22,13 @@ class RTCMediaStream : public QObject
      * @brief Initializes a new instance of the RTCMediaStream class.
      */
     explicit RTCMediaStream(QObject *parent = nullptr);
+
+    /**
+     * @brief Initializes a new instance of the RTCMediaStream class.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    explicit RTCMediaStream(RTCMediaStreamPrivate &d, QObject *parent = nullptr);
 
     /**
      * @brief Gets the audio tracks in this stream.
@@ -62,6 +71,10 @@ class RTCMediaStream : public QObject
      * @param videoTrack The video track.
      */
     void removeVideoTrack(RTCVideoTrack *videoTrack);
+
+  private:
+    RTCMediaStreamPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCMediaStream)
 };
 
 #endif // RTCMEDIASTREAM_H
