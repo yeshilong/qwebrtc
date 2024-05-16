@@ -46,6 +46,9 @@ class RTCMediaConstraints : public QObject
   private:
     RTCMediaConstraintsPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCMediaConstraints)
+
+    friend class RTCPeerConnectionPrivate;
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCMEDIACONSTRAINTS_H

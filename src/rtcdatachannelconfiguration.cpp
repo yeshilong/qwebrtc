@@ -1,4 +1,3 @@
-#include "rtcdatachannelconfiguration.h"
 #include "rtcdatachannelconfiguration_p.h"
 
 RTCDataChannelConfigurationPrivate::RTCDataChannelConfigurationPrivate()

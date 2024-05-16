@@ -62,6 +62,8 @@ class RTCSessionDescription : public QObject
   private:
     RTCSessionDescriptionPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCSessionDescription)
+
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCSESSIONDESCRIPTION_H

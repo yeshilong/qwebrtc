@@ -42,6 +42,7 @@ class RTCDataChannelPrivate
     rtc::scoped_refptr<webrtc::DataChannelInterface> nativeDataChannel_;
     std::unique_ptr<webrtc::DataChannelDelegateAdapter> observer_;
     bool _isObserverRegistered;
+    RTCDataChannel *q_ptr;
 
     unsigned short maxPacketLifeTime_;
     int channelId_;

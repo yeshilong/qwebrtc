@@ -85,10 +85,11 @@ class RTCRtpReceiver : public QObject
     void rtpReceiverDidReceiveFirstPacketForMediaType(RTCRtpMediaType mediaType);
 
   private:
-    friend class RTCRtpTransceiverPrivate;
-
     RTCRtpReceiverPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtpReceiver)
+
+    friend class RTCRtpTransceiverPrivate;
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCRTPRECEIVER_H

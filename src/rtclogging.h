@@ -36,7 +36,7 @@ class RTCLogging : public QObject
 
 #define RTCLogString(format, ...)                                                                  \
     QString("(%1:%2 %3): " format)                                                                 \
-        .arg(RTCFileName(__FILE__))                                                                \
+        .arg(RTCLogging::rtcFileName(QString(__FILE__)))                                           \
         .arg(__LINE__)                                                                             \
         .arg(__FUNCTION__)                                                                         \
         .arg(__VA_ARGS__)
@@ -45,16 +45,16 @@ class RTCLogging : public QObject
     do                                                                                             \
     {                                                                                              \
         QString log_string = RTCLogString(format, ##__VA_ARGS__);                                  \
-        RTCLogEx(severity, log_string);                                                            \
+        RTCLogging::rtcLogEx(severity, log_string);                                                \
     } while (false)
 
-#define RTCLogVerbose(format, ...) RTCLogFormat(RTCLoggingSeverityVerbose, format, ##__VA_ARGS__)
+#define RTCLogVerbose(format, ...) RTCLogFormat(RTCLoggingSeverity::Verbose, format, ##__VA_ARGS__)
 
-#define RTCLogInfo(format, ...) RTCLogFormat(RTCLoggingSeverityInfo, format, ##__VA_ARGS__)
+#define RTCLogInfo(format, ...) RTCLogFormat(RTCLoggingSeverity::Info, format, ##__VA_ARGS__)
 
-#define RTCLogWarning(format, ...) RTCLogFormat(RTCLoggingSeverityWarning, format, ##__VA_ARGS__)
+#define RTCLogWarning(format, ...) RTCLogFormat(RTCLoggingSeverity::Warning, format, ##__VA_ARGS__)
 
-#define RTCLogError(format, ...) RTCLogFormat(RTCLoggingSeverityError, format, ##__VA_ARGS__)
+#define RTCLogError(format, ...) RTCLogFormat(RTCLoggingSeverity::Error, format, ##__VA_ARGS__)
 
 #if !defined(NDEBUG)
 #define RTCLogDebug(format, ...) RTCLogInfo(format, ##__VA_ARGS__)

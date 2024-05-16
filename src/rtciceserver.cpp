@@ -126,6 +126,10 @@ RTCIceServer::RTCIceServer(QVector<QString> urlStrings, QString username, QStrin
          tlsEllipticCurves);
 }
 
+RTCIceServer::RTCIceServer(RTCIceServerPrivate &d, QObject *parent) : QObject{parent}, d_ptr{&d}
+{
+}
+
 QVector<QString> RTCIceServer::urlStrings() const
 {
     Q_D(const RTCIceServer);

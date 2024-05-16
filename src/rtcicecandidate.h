@@ -61,6 +61,8 @@ class RTCIceCandidate : public QObject
   private:
     RTCIceCandidatePrivate *const d_ptr;
     Q_DECLARE_PRIVATE(RTCIceCandidate)
+
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCICECANDIDATE_H

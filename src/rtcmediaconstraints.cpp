@@ -1,4 +1,3 @@
-#include "rtcmediaconstraints.h"
 #include "rtcmediaconstraints_p.h"
 
 RTCMediaConstraintsPrivate::RTCMediaConstraintsPrivate(QMap<QString, QString> mandatory,

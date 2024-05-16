@@ -1,6 +1,8 @@
 #ifndef RTCMEDIACONSTRAINTS_P_H
 #define RTCMEDIACONSTRAINTS_P_H
 
+#include "rtcmediaconstraints.h"
+
 #include <QObject>
 #include <QMap>
 

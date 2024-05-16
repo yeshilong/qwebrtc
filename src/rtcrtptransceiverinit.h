@@ -61,6 +61,8 @@ class RTCRtpTransceiverInit : public QObject
   private:
     RTCRtpTransceiverInitPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtpTransceiverInit)
+
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCRTPTRANSCEIVERINIT_H

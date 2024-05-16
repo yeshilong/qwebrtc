@@ -71,6 +71,7 @@ class RTCMediaStreamTrack : public QObject
   private:
     friend class RTCRtpSender;
     friend class RTCMediaStreamPrivate;
+    friend class RTCPeerConnection;
     friend class webrtc::AudioSinkConverter;
 };
 

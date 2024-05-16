@@ -47,6 +47,7 @@ add_library(
   rtccodecspecificinfoh264_p.h
   rtccodecspecificinfoh264.cpp
   rtccodecspecificinfoh264.h
+  rtcconfiguration_p.h
   rtcconfiguration.cpp
   rtcconfiguration.h
   rtccryptooptions.cpp
@@ -135,9 +136,11 @@ add_library(
   rtcnativemutablei420buffer_p.h
   rtcnativemutablei420buffer.cpp
   rtcnativemutablei420buffer.h
+  rtcpeerconnection_p.h
   rtcpeerconnection.cpp
   rtcpeerconnection.h
   rtcpeerconnectiondelegate.h
+  rtcpeerconnectionfactory_p.h
   rtcpeerconnectionfactory.cpp
   rtcpeerconnectionfactory.h
   rtcpeerconnectionfactoryoptions_p.h

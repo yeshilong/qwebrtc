@@ -1,4 +1,6 @@
 #include "rtcdatachannel.h"
+
+#include <memory>
 #include "rtcdatachannel_p.h"
 
 namespace webrtc
@@ -54,14 +56,19 @@ RTCDataChannelPrivate::RTCDataChannelPrivate(
     factory_ = factory;
     nativeDataChannel_ = nativeDataChannel;
 
-    auto q = std::make_shared<RTCDataChannel>();
-    q->d_ptr = this;
-    observer_.reset(new webrtc::DataChannelDelegateAdapter(q));
+    observer_ = std::make_unique<webrtc::DataChannelDelegateAdapter>(
+        std::shared_ptr<RTCDataChannel>(q_ptr));
 }
 
 RTCDataChannelPrivate::~RTCDataChannelPrivate()
 {
     nativeDataChannel_->UnregisterObserver();
+}
+
+RTCDataChannel::RTCDataChannel(RTCDataChannelPrivate &d, QObject *parent)
+    : QObject(parent), d_ptr(&d)
+{
+    d_ptr->q_ptr = this;
 }
 
 QString RTCDataChannel::label() const

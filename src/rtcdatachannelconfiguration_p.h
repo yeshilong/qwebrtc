@@ -1,6 +1,8 @@
 #ifndef RTCDATACHANNELCONFIGURATION_P_H
 #define RTCDATACHANNELCONFIGURATION_P_H
 
+#include "rtcdatachannelconfiguration.h"
+
 #include <QString>
 
 #include "api/data_channel_interface.h"

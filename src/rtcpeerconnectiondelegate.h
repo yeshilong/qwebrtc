@@ -47,7 +47,7 @@ class IRTCPeerConnectionDelegate : public QObject
      * @brief Called when negotiation is needed, for example ICE has restarted.
      * @param peerConnection The peer connection.
      */
-    virtual void shouldNegotiate(RTCPeerConnection *peerConnection) = 0;
+    virtual void peerConnectionShouldNegotiate(RTCPeerConnection *peerConnection) = 0;
 
     /**
      * @brief Called any time the IceConnectionState changes.

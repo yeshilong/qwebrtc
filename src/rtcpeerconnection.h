@@ -2,28 +2,29 @@
 #define RTCPEERCONNECTION_H
 
 #include <QObject>
+#include <QVector>
+#include <QVariant>
 
 #include "rtctypes.h"
-#include "rtcconfiguration.h"
 
 class IRTCPeerConnectionDelegate;
-class RTCMediaStream;
-class RTCSessionDescription;
-class RTCIceCandidate;
-class RTCMediaStream;
-class RTCMediaStreamTrack;
-class RTCRtpSender;
-class RTCMediaStreamTrack;
-class RTCRtpTransceiver;
-class RTCRtpTransceiverInit;
-class RTCMediaConstraints;
-class RTCSessionDescription;
-class RTCError;
-class RTCStatisticsReport;
-class RTCRtpReceiver;
+class RTCConfiguration;
 class RTCDataChannel;
 class RTCDataChannelConfiguration;
+class RTCError;
+class RTCIceCandidate;
+class RTCIceCandidateErrorEvent;
 class RTCLegacyStatsReport;
+class RTCMediaConstraints;
+class RTCMediaStream;
+class RTCMediaStreamTrack;
+class RTCPeerConnectionFactory;
+class RTCRtpReceiver;
+class RTCRtpSender;
+class RTCRtpTransceiver;
+class RTCRtpTransceiverInit;
+class RTCSessionDescription;
+class RTCStatisticsReport;
 
 /**
  * @brief Represents the completion handler for creating a session description.
@@ -40,8 +41,17 @@ using RTCSetSessionDescriptionCompletionHandler = std::function<void(RTCError *e
  * @brief Represents the completion handler for adding an ICE candidate.
  */
 using RTCIceCandidateCompletionHandler = std::function<void(RTCError *error)>;
-using RTCStatisticsCompletionHandler = std::function<void(RTCStatisticsReport *report)>;
+using RTCStatisticsCompletionHandler = std::function<void(std::shared_ptr<RTCStatisticsReport>)>;
+using RTCLegacyStatsReportCompletionHandler =
+    std::function<void(std::vector<std::shared_ptr<RTCLegacyStatsReport>>)>;
 
+namespace webrtc
+{
+
+class PeerConnectionDelegateAdapter;
+
+} // namespace webrtc
+class RTCPeerConnectionPrivate;
 /**
  * @brief The RTCPeerConnection class represents a peer connection.
  */
@@ -55,6 +65,13 @@ class RTCPeerConnection : public QObject
      * @param parent The parent object.
      */
     explicit RTCPeerConnection(QObject *parent = nullptr);
+
+    /**
+     * @brief Constructs an RTCPeerConnection object.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    explicit RTCPeerConnection(RTCPeerConnectionPrivate &d, QObject *parent = nullptr);
 
     /**
      * @brief The object that will be notified about events such as state changes and streams being added or removed.
@@ -141,23 +158,23 @@ class RTCPeerConnection : public QObject
      * @brief Provide a remote candidate to the ICE Agent.
      * This method is deprecated. Use addIceCandidateWithCompletionHandler instead.
      */
-    Q_DECL_DEPRECATED void addIceCandidate(RTCIceCandidate *candidate);
+    Q_DECL_DEPRECATED void addIceCandidate(RTCIceCandidate *iceCandidate);
 
     /**
      * @brief Provide a remote candidate to the ICE Agent.
      */
-    void addIceCandidateWithCompletionHandler(RTCIceCandidate *candidate,
-                                              RTCIceCandidateCompletionHandler *completionHandler);
+    void addIceCandidateWithCompletionHandler(RTCIceCandidate *iceCandidate,
+                                              RTCIceCandidateCompletionHandler completionHandler);
 
     /**
      * @brief Remove a group of remote candidates from the ICE Agent.
      */
-    void removeIceCandidates(QVector<RTCIceCandidate *> candidates);
+    void removeIceCandidates(QVector<RTCIceCandidate *> iceCandidates);
 
     /**
      * @brief Add a new media stream to be sent on this peer connection.
      * This method is not supported with RTCSdpSemanticsUnifiedPlan. Please use
-     * addTrack instead.
+     * addTrack instead.std::shared_ptr<qint64>
      */
     void addStream(RTCMediaStream *stream);
 
@@ -207,8 +224,8 @@ class RTCPeerConnection : public QObject
      * @brief Adds a transceiver with the given kind. Can either be RTCRtpMediaTypeAudio
      * or RTCRtpMediaTypeVideo.
      */
-    RTCRtpTransceiver *addTransceiverOfType(RTCRtpMediaType *mediaType);
-    RTCRtpTransceiver *addTransceiverOfTypeAndInit(RTCRtpMediaType *mediaType,
+    RTCRtpTransceiver *addTransceiverOfType(RTCRtpMediaType mediaType);
+    RTCRtpTransceiver *addTransceiverOfTypeAndInit(RTCRtpMediaType mediaType,
                                                    RTCRtpTransceiverInit *init);
 
     /**
@@ -222,39 +239,38 @@ class RTCPeerConnection : public QObject
      * @brief Generate an SDP offer.
      */
     void offerForConstraints(RTCMediaConstraints *constraints,
-                             RTCCreateSessionDescriptionCompletionHandler *completionHandler);
+                             RTCCreateSessionDescriptionCompletionHandler completionHandler);
 
     /**
      * @brief Generate an SDP answer.
      */
     void answerForConstraints(RTCMediaConstraints *constraints,
-                              RTCCreateSessionDescriptionCompletionHandler *completionHandler);
+                              RTCCreateSessionDescriptionCompletionHandler completionHandler);
 
     /**
      * @brief Apply the supplied RTCSessionDescription as the local description.
      */
     void setLocalDescription(RTCSessionDescription *sdp,
-                             RTCSetSessionDescriptionCompletionHandler *completionHandler);
+                             RTCSetSessionDescriptionCompletionHandler completionHandler);
 
     /**
      * @brief Creates an offer or answer (depending on current signaling state) and sets
      * it as the local session description.
      */
     void setLocalDescriptionWithCompletionHandler(
-        RTCSetSessionDescriptionCompletionHandler *completionHandler);
+        RTCSetSessionDescriptionCompletionHandler completionHandler);
 
     /**
      * @brief Apply the supplied RTCSessionDescription as the remote description.
      */
     void setRemoteDescription(RTCSessionDescription *sdp,
-                              RTCSetSessionDescriptionCompletionHandler *completionHandler);
+                              RTCSetSessionDescriptionCompletionHandler completionHandler);
 
     /**
      * @brief Limits the bandwidth allocated for all RTP streams sent by this PeerConnection. Nil parameters will be unchanged. Setting `currentBitrateBps` will force the available bitrate estimate to the given value. Returns true if the parameters were successfully updated.
      */
-    bool setBweMinBitrateBps(std::shared_ptr<qint64> minBitrateBps,
-                             std::shared_ptr<qint64> currentBitrateBps,
-                             std::shared_ptr<qint64> maxBitrateBps);
+    bool setBweMinBitrateBps(QVariant minBitrateBps, QVariant currentBitrateBps,
+                             QVariant maxBitrateBps);
 
     /**
      * @brief Start or stop recording an Rtc EventLog.
@@ -276,25 +292,31 @@ class RTCPeerConnection : public QObject
     /**
      * @brief Gather stats for the given RTCMediaStreamTrack. If `mediaStreamTrack` is null statistics are gathered for all tracks.
      */
-    void statsForTrack(RTCMediaStreamTrack *mediaStreamTrack, RTCStatsOutputLevel *statsOutputLevel,
-                       QVector<RTCLegacyStatsReport *> stats);
+    void statsForTrack(RTCMediaStreamTrack *mediaStreamTrack, RTCStatsOutputLevel statsOutputLevel,
+                       RTCLegacyStatsReportCompletionHandler completionHandler);
 
     /**
      * @brief Gather statistic through the v2 statistics API.
      */
-    void statisticsWithCompletionHandler(RTCStatisticsCompletionHandler *completionHandler);
+    void statisticsWithCompletionHandler(RTCStatisticsCompletionHandler completionHandler);
 
     /**
      * @brief Spec-compliant getStats() performing the stats selection algorithm with the sender.
      */
     void statisticsForSender(RTCRtpSender *sender,
-                             RTCStatisticsCompletionHandler *completionHandler);
+                             RTCStatisticsCompletionHandler completionHandler);
 
     /**
      * @brief Spec-compliant getStats() performing the stats selection algorithm with the receiver.
      */
     void statisticsForReceiver(RTCRtpReceiver *receiver,
-                               RTCStatisticsCompletionHandler *completionHandler);
+                               RTCStatisticsCompletionHandler completionHandler);
+
+  private:
+    RTCPeerConnectionPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCPeerConnection)
+
+    friend class webrtc::PeerConnectionDelegateAdapter;
 };
 
 #endif // RTCPEERCONNECTION_H

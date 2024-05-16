@@ -5,25 +5,25 @@
 
 #include "rtctypes.h"
 
-class IRTCVideoEncoderFactory;
-class IRTCVideoDecoderFactory;
-class IRTCAudioDevice;
-class IRTCAudioProcessingModule;
-class RTCAudioDeviceModule;
-class RTCRtpCapabilities;
 class RTCAudioSource;
-class RTCMediaConstraints;
 class RTCAudioTrack;
-class RTCVideoSource;
-class RTCVideoTrack;
-class RTCMediaStream;
 class RTCConfiguration;
 class RTCMediaConstraints;
-class IRTCPeerConnectionDelegate;
-class IRTCSSLCertificateVerifier;
+class RTCMediaStream;
 class RTCPeerConnection;
+class RTCVideoSource;
+class RTCVideoTrack;
 class RTCPeerConnectionFactoryOptions;
+class RTCAudioDeviceModule;
+class RTCRtpCapabilities;
+class IRTCPeerConnectionDelegate;
+class IRTCVideoDecoderFactory;
+class IRTCVideoEncoderFactory;
+class IRTCSSLCertificateVerifier;
+class IRTCAudioDevice;
+class IRTCAudioProcessingModule;
 
+class RTCPeerConnectionFactoryPrivate;
 /**
  * @brief The RTCPeerConnectionFactory class is responsible for creating the peer connection factory.
  */
@@ -36,6 +36,9 @@ class RTCPeerConnectionFactory : public QObject
      * @brief Initialize object with default H264 video encoder/decoder factories and default ADM.
      */
     explicit RTCPeerConnectionFactory(QObject *parent = nullptr);
+
+    explicit RTCPeerConnectionFactory(RTCPeerConnectionFactoryPrivate &d,
+                                      QObject *parent = nullptr);
 
     /**
      * @brief Initialize object with injectable video encoder/decoder factories and default ADM.
@@ -160,6 +163,15 @@ class RTCPeerConnectionFactory : public QObject
      * @brief Stop an active AecDump recording.
      */
     void stopAecDump();
+
+  private:
+    RTCPeerConnectionFactoryPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCPeerConnectionFactory)
+
+    friend class RTCMediaStreamPrivate;
+    friend class RTCVideoTrackPrivate;
+    friend class RTCAudioTrackPrivate;
+    friend class RTCPeerConnectionPrivate;
 };
 
 #endif // RTCPEERCONNECTIONFACTORY_H

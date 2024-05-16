@@ -16,6 +16,7 @@ class RTCDataChannel : public QObject
 {
     Q_OBJECT
   public:
+    explicit RTCDataChannel(RTCDataChannelPrivate &d, QObject *parent = nullptr);
     ~RTCDataChannel();
 
     QString label() const;

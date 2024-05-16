@@ -3,13 +3,14 @@
 
 #include <QObject>
 #include <QVector>
+#include <QVariant>
 
 #include "rtctypes.h"
-
 #include "rtccertificate.h"
 #include "rtccryptooptions.h"
 #include "rtciceserver.h"
 
+class RTCConfigurationPrivate;
 /**
  * @brief Represents the RTCConfiguration.
  */
@@ -24,6 +25,13 @@ class RTCConfiguration : public QObject
     explicit RTCConfiguration(QObject *parent = nullptr);
 
     /**
+     * @brief Construct a new RTCConfiguration object.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    explicit RTCConfiguration(RTCConfigurationPrivate &d, QObject *parent = nullptr);
+
+    /**
      * @brief Gets and sets the DSCP codes on outgoing packets.
      * @return The DSCP codes.
      */
@@ -34,14 +42,14 @@ class RTCConfiguration : public QObject
      * @brief Gets and sets the Ice Servers available to be used by ICE.
      * @return The Ice Servers.
      */
-    QVector<RTCIceServer> iceServers() const;
-    void setIceServers(const QVector<RTCIceServer> &iceServers);
+    QVector<RTCIceServer *> iceServers() const;
+    void setIceServers(const QVector<RTCIceServer *> iceServers);
 
     /**
      * @brief Gets and sets the RTCCertificate for 're' use.
      * @return The RTCCertificate.
      */
-    RTCCertificate certificate() const;
+    RTCCertificate *certificate() const;
     void setCertificate(const RTCCertificate &certificate);
 
     /**
@@ -175,8 +183,8 @@ class RTCConfiguration : public QObject
      * @brief Gets and sets the minimal interval between consecutive ICE check packets.
      * @return The minimal interval between consecutive ICE check packets.
      */
-    int iceCheckMinInterval() const;
-    void setIceCheckMinInterval(int iceCheckMinInterval);
+    QVariant iceCheckMinInterval() const;
+    void setIceCheckMinInterval(QVariant iceCheckMinInterval);
 
     /**
      * @brief Gets and sets the SDP semantics used by this PeerConnection.
@@ -203,7 +211,7 @@ class RTCConfiguration : public QObject
      * @brief Gets and sets the advanced optional cryptographic settings related to SRTP and frame encryption.
      * @return The cryptographic settings.
      */
-    RTCCryptoOptions cryptoOptions() const;
+    RTCCryptoOptions *cryptoOptions() const;
     void setCryptoOptions(const RTCCryptoOptions &cryptoOptions);
 
     /**
@@ -245,36 +253,50 @@ class RTCConfiguration : public QObject
      * @brief Gets and sets the ICE check interval for strong connectivity.
      * @return The ICE check interval for strong connectivity.
      */
-    int iceCheckIntervalStrongConnectivity() const;
-    void setIceCheckIntervalStrongConnectivity(int iceCheckIntervalStrongConnectivity);
+    QVariant iceCheckIntervalStrongConnectivity() const;
+    void setIceCheckIntervalStrongConnectivity(QVariant iceCheckIntervalStrongConnectivity);
 
     /**
      * @brief Gets and sets the ICE check interval for weak connectivity.
      * @return The ICE check interval for weak connectivity.
      */
-    int iceCheckIntervalWeakConnectivity() const;
-    void setIceCheckIntervalWeakConnectivity(int iceCheckIntervalWeakConnectivity);
+    QVariant iceCheckIntervalWeakConnectivity() const;
+    void setIceCheckIntervalWeakConnectivity(QVariant iceCheckIntervalWeakConnectivity);
 
     /**
      * @brief Gets and sets the ICE unwritable timeout.
      * @return The ICE unwritable timeout.
      */
-    int iceUnwritableTimeout() const;
-    void setIceUnwritableTimeout(int iceUnwritableTimeout);
+    QVariant iceUnwritableTimeout() const;
+    void setIceUnwritableTimeout(QVariant iceUnwritableTimeout);
 
     /**
      * @brief Gets and sets the ICE unwritable minimum checks.
      * @return The ICE unwritable minimum checks.
      */
-    int iceUnwritableMinChecks() const;
-    void setIceUnwritableMinChecks(int iceUnwritableMinChecks);
+    QVariant iceUnwritableMinChecks() const;
+    void setIceUnwritableMinChecks(QVariant iceUnwritableMinChecks);
 
     /**
      * @brief Gets and sets the ICE inactive timeout.
      * @return The ICE inactive timeout.
      */
-    int iceInactiveTimeout() const;
-    void setIceInactiveTimeout(int iceInactiveTimeout);
+    QVariant iceInactiveTimeout() const;
+    void setIceInactiveTimeout(QVariant iceInactiveTimeout);
+
+    /**
+     * @brief Gets and sets the state of enabling ICE gathering on any address ports.
+     * @return The state of enabling ICE gathering on any address ports.
+     */
+    bool enableIceGatheringOnAnyAddressPorts() const;
+    void setEnableIceGatheringOnAnyAddressPorts(bool enableIceGatheringOnAnyAddressPorts);
+
+  private:
+    RTCConfigurationPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCConfiguration)
+
+    friend class RTCPeerConnectionPrivate;
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCCONFIGURATION_H

@@ -80,6 +80,13 @@ class RTCRtpSender : public QObject, public IRTCRtpSender
     explicit RTCRtpSender(QObject *parent = nullptr);
 
     /**
+     * @brief Constructs an RTCRtpSender object.
+     * @param d The RTCRtpSenderPrivate object.
+     * @param parent The parent object.
+     */
+    RTCRtpSender(RTCRtpSenderPrivate &d, QObject *parent = nullptr);
+
+    /**
      * @brief Gets the sender ID.
      * @return The sender ID.
      */
@@ -127,14 +134,12 @@ class RTCRtpSender : public QObject, public IRTCRtpSender
      */
     IRTCDtmfSender *dtmfSender() const;
 
-  protected:
-    RTCRtpSender(RTCRtpSenderPrivate &d, QObject *parent = nullptr);
-
   private:
-    friend class RTCRtpTransceiverPrivate;
-
     RTCRtpSenderPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCRtpSender)
+
+    friend class RTCRtpTransceiverPrivate;
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCRTPSENDER_H

@@ -75,6 +75,8 @@ class RTCMediaStream : public QObject
   private:
     RTCMediaStreamPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCMediaStream)
+
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCMEDIASTREAM_H

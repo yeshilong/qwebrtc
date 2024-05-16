@@ -42,6 +42,8 @@ class RTCDataChannelConfiguration : public QObject
   private:
     RTCDataChannelConfigurationPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCDataChannelConfiguration)
+
+    friend class RTCPeerConnection;
 };
 
 #endif // RTCDATACHANNELCONFIGURATION_H

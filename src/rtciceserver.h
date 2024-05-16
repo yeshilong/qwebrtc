@@ -8,7 +8,6 @@
 #include "rtctypes.h"
 
 class RTCIceServerPrivate;
-
 /**
  * @brief The RTCIceServer class represents an ICE server.
  */
@@ -57,6 +56,13 @@ class RTCIceServer : public QObject
                  RTCTlsCertPolicy tlsCertPolicy, QString hostname,
                  QVector<QString> tlsAlpnProtocols, QVector<QString> tlsEllipticCurves,
                  QObject *parent = nullptr);
+
+    /**
+     * @brief Initializes an RTCIceServer with private implementation.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    RTCIceServer(RTCIceServerPrivate &d, QObject *parent = nullptr);
 
     /**
      * @brief Gets the URI(s) for this server represented as Strings.
@@ -109,6 +115,8 @@ class RTCIceServer : public QObject
 
     RTCIceServerPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCIceServer)
+
+    friend class RTCConfigurationPrivate;
 };
 
 #endif // RTCICESERVER_H
