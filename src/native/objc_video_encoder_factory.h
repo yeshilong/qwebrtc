@@ -28,7 +28,7 @@ class ObjCVideoEncoderFactory : public VideoEncoderFactory {
   IRTCVideoEncoderFactory* encoder_factory_;
 };
 
-std::unique_ptr<VideoEncoderFactory> CToNativeVideoEncoderFactory(
+std::unique_ptr<VideoEncoderFactory> ObjCToNativeVideoEncoderFactory(
     IRTCVideoEncoderFactory* c_video_encoder_factory);
 
 }  // namespace webrtc

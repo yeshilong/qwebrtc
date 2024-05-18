@@ -1,5 +1,7 @@
 #include "rtcfieldtrials.h"
 
+#include <mutex>
+
 #include <QDebug>
 
 #include "system_wrappers/include/field_trial.h"
@@ -7,6 +9,7 @@
 // InitFieldTrialsFromString stores the char*, so the char array must outlive
 // the application.
 static char *gFieldTrialInitString = nullptr;
+std::mutex fieldTrialLock;
 
 RTCFieldTrials::RTCFieldTrials(QObject *parent) : QObject{parent}
 {
@@ -63,6 +66,10 @@ void RTCFieldTrials::RTCInitFieldTrialDictionary(QMap<QString, QString> fieldTri
         fieldTrialInitString.append(fieldTrialEntry);
     }
     QByteArray byteArray = fieldTrialInitString.toUtf8();
+
+    // Lock before modifying global variable
+    std::lock_guard<std::mutex> lock(fieldTrialLock);
+
     gFieldTrialInitString = byteArray.data();
     webrtc::field_trial::InitFieldTrialsFromString(gFieldTrialInitString);
 }

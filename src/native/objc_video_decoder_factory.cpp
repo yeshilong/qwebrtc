@@ -98,7 +98,7 @@ std::vector<SdpVideoFormat> ObjCVideoDecoderFactory::GetSupportedFormats() const
   return supported_formats;
 }
 
-std::unique_ptr<VideoDecoderFactory> CToNativeVideoDecoderFactory(
+std::unique_ptr<VideoDecoderFactory> ObjCToNativeVideoDecoderFactory(
     IRTCVideoDecoderFactory* c_video_decoder_factory) {
   return std::make_unique<ObjCVideoDecoderFactory>(c_video_decoder_factory);
 }

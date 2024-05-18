@@ -22,7 +22,7 @@ ContinuationIndentWidth: 4
 ObjCSpaceBeforeProtocolList: true
 ---
 Language: Cpp
-BasedOnStyle: Google
+BasedOnStyle: Chromium
 BinPackParameters: false
 BinPackArguments: false
 ColumnLimit: 100
@@ -35,3 +35,4 @@ BreakBeforeTernaryOperators: false
 IndentWrappedFunctionNames: true
 ContinuationIndentWidth: 4
 ObjCSpaceBeforeProtocolList: true
+SortIncludes: false
