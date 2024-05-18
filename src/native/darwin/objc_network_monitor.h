@@ -32,10 +32,12 @@ class ObjCNetworkMonitorFactory : public rtc::NetworkMonitorFactory {
   ObjCNetworkMonitorFactory() = default;
   ~ObjCNetworkMonitorFactory() override = default;
 
-  rtc::NetworkMonitorInterface* CreateNetworkMonitor(const FieldTrialsView& field_trials) override;
+  rtc::NetworkMonitorInterface* CreateNetworkMonitor(
+      const FieldTrialsView& field_trials) override;
 };
 
-class ObjCNetworkMonitor : public rtc::NetworkMonitorInterface, public NetworkMonitorObserver {
+class ObjCNetworkMonitor : public rtc::NetworkMonitorInterface,
+                           public NetworkMonitorObserver {
  public:
   ObjCNetworkMonitor();
   ~ObjCNetworkMonitor() override;
@@ -47,14 +49,15 @@ class ObjCNetworkMonitor : public rtc::NetworkMonitorInterface, public NetworkMo
 
   // NetworkMonitorObserver override.
   // Fans out updates to observers on the correct thread.
-  void OnPathUpdate(std::map<std::string, rtc::AdapterType, rtc::AbslStringViewCmp>
-                        adapter_type_by_name) override;
+  void OnPathUpdate(
+      std::map<std::string, rtc::AdapterType, rtc::AbslStringViewCmp>
+          adapter_type_by_name) override;
 
  private:
   rtc::Thread* thread_ = nullptr;
   bool started_ = false;
-  std::map<std::string, rtc::AdapterType, rtc::AbslStringViewCmp> adapter_type_by_name_
-      RTC_GUARDED_BY(thread_);
+  std::map<std::string, rtc::AdapterType, rtc::AbslStringViewCmp>
+      adapter_type_by_name_ RTC_GUARDED_BY(thread_);
   rtc::scoped_refptr<PendingTaskSafetyFlag> safety_flag_;
   RTC_OBJC_TYPE(RTCNetworkMonitor) * network_monitor_ = nil;
 };

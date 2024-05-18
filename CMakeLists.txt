@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(qwebrtc LANGUAGES CXX)
+project(
+  qwebrtc
+  LANGUAGES CXX C
+  VERSION 0.1.0)
+
+enable_language(OBJC)
+enable_language(OBJCXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
