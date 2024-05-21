@@ -49,6 +49,7 @@ class RTCMediaConstraints : public QObject
 
     friend class RTCPeerConnectionPrivate;
     friend class RTCPeerConnection;
+    friend class RTCPeerConnectionFactory;
 };
 
 #endif // RTCMEDIACONSTRAINTS_H

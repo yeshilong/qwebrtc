@@ -14,7 +14,7 @@
 #include "rtc_base/logging.h"
 
 #if defined(WEBRTC_IOS)
-#include "sdk/objc/native/src/audio/audio_device_module_ios.h"
+#include "audio/audio_device_module_ios.h"
 #endif
 
 #include "modules/audio_device/include/audio_device.h"

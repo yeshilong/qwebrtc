@@ -20,7 +20,7 @@
 #include "rtc_base/logging.h"
 #include "rtc_base/thread.h"
 
-namespace {
+// namespace {
 
 constexpr double kPreferredInputSampleRate = 48000.0;
 constexpr double kPreferredOutputSampleRate = 48000.0;
@@ -53,82 +53,86 @@ class AudioDeviceDelegateImpl final : public rtc::RefCountedNonVirtual<AudioDevi
   rtc::Thread* thread_;
 };
 
-}  // namespace
+// }  // namespace
 
-@implementation RTC_OBJC_TYPE(ObjCAudioDeviceDelegate) {
-  rtc::scoped_refptr<AudioDeviceDelegateImpl> impl_;
-}
-
-@synthesize getPlayoutData = getPlayoutData_;
-
-@synthesize deliverRecordedData = deliverRecordedData_;
-
-@synthesize preferredInputSampleRate = preferredInputSampleRate_;
-
-@synthesize preferredInputIOBufferDuration = preferredInputIOBufferDuration_;
-
-@synthesize preferredOutputSampleRate = preferredOutputSampleRate_;
-
-@synthesize preferredOutputIOBufferDuration = preferredOutputIOBufferDuration_;
-
-- (instancetype)initWithAudioDeviceModule:
-                    (rtc::scoped_refptr<webrtc::objc_adm::ObjCAudioDeviceModule>)audioDeviceModule
-                        audioDeviceThread:(rtc::Thread*)thread {
+ObjCAudioDeviceDelegate::ObjCAudioDeviceDelegate(
+    rtc::scoped_refptr<webrtc::objc_adm::ObjCAudioDeviceModule> audioDeviceModule,
+    rtc::Thread* thread) {
   RTC_DCHECK_RUN_ON(thread);
-  if (self = [super init]) {
-    impl_ = rtc::make_ref_counted<AudioDeviceDelegateImpl>(audioDeviceModule, thread);
-    preferredInputSampleRate_ = kPreferredInputSampleRate;
-    preferredInputIOBufferDuration_ = kPeferredInputIOBufferDuration;
-    preferredOutputSampleRate_ = kPreferredOutputSampleRate;
-    preferredOutputIOBufferDuration_ = kPeferredOutputIOBufferDuration;
+  impl_ = rtc::make_ref_counted<AudioDeviceDelegateImpl>(audioDeviceModule, thread);
+  preferredInputSampleRate_ = kPreferredInputSampleRate;
+  preferredInputIOBufferDuration_ = kPeferredInputIOBufferDuration;
+  preferredOutputSampleRate_ = kPreferredOutputSampleRate;
+  preferredOutputIOBufferDuration_ = kPeferredOutputIOBufferDuration;
 
-    rtc::scoped_refptr<AudioDeviceDelegateImpl> playout_delegate = impl_;
-    getPlayoutData_ = ^OSStatus(AudioUnitRenderActionFlags* _Nonnull actionFlags,
-                                const AudioTimeStamp* _Nonnull timestamp,
-                                NSInteger inputBusNumber,
-                                UInt32 frameCount,
-                                AudioBufferList* _Nonnull outputData) {
-      webrtc::objc_adm::ObjCAudioDeviceModule* audio_device =
-          playout_delegate->audio_device_module();
-      if (audio_device) {
-        return audio_device->OnGetPlayoutData(
-            actionFlags, timestamp, inputBusNumber, frameCount, outputData);
-      } else {
-        *actionFlags |= kAudioUnitRenderAction_OutputIsSilence;
-        RTC_LOG(LS_VERBOSE) << "No alive audio device";
-        return noErr;
-      }
-    };
+  rtc::scoped_refptr<AudioDeviceDelegateImpl> playout_delegate = impl_;
+  getPlayoutDataBlock_ = [playout_delegate](AudioUnitRenderActionFlags* actionFlags,
+                                            const AudioTimeStamp* timestamp,
+                                            NSInteger inputBusNumber,
+                                            UInt32 frameCount,
+                                            AudioBufferList* outputData) {
+    webrtc::objc_adm::ObjCAudioDeviceModule* audio_device = playout_delegate->audio_device_module();
+    if (audio_device) {
+      return audio_device->OnGetPlayoutData(
+          actionFlags, timestamp, inputBusNumber, frameCount, outputData);
+    } else {
+      *actionFlags |= kAudioUnitRenderAction_OutputIsSilence;
+      RTC_LOG(LS_VERBOSE) << "No alive audio device";
+      return OSStatus(noErr);
+    }
+  };
 
-    rtc::scoped_refptr<AudioDeviceDelegateImpl> record_delegate = impl_;
-    deliverRecordedData_ =
-        ^OSStatus(AudioUnitRenderActionFlags* _Nonnull actionFlags,
-                  const AudioTimeStamp* _Nonnull timestamp,
-                  NSInteger inputBusNumber,
-                  UInt32 frameCount,
-                  const AudioBufferList* _Nullable inputData,
-                  void* renderContext,
-                  RTC_OBJC_TYPE(RTCAudioDeviceRenderRecordedDataBlock) _Nullable renderBlock) {
-          webrtc::objc_adm::ObjCAudioDeviceModule* audio_device =
-              record_delegate->audio_device_module();
-          if (audio_device) {
-            return audio_device->OnDeliverRecordedData(actionFlags,
-                                                       timestamp,
-                                                       inputBusNumber,
-                                                       frameCount,
-                                                       inputData,
-                                                       renderContext,
-                                                       renderBlock);
-          } else {
-            RTC_LOG(LS_VERBOSE) << "No alive audio device";
-            return noErr;
-          }
-        };
-  }
-  return self;
+  rtc::scoped_refptr<AudioDeviceDelegateImpl> record_delegate = impl_;
+  deliverRecordedDataBlock_ = [record_delegate](AudioUnitRenderActionFlags* actionFlags,
+                                                const AudioTimeStamp* timestamp,
+                                                NSInteger inputBusNumber,
+                                                UInt32 frameCount,
+                                                const AudioBufferList* inputData,
+                                                void* renderContext,
+                                                RTCAudioDeviceRenderRecordedDataBlock renderBlock) {
+    webrtc::objc_adm::ObjCAudioDeviceModule* audio_device = record_delegate->audio_device_module();
+    if (audio_device) {
+      return audio_device->OnDeliverRecordedData(actionFlags,
+                                                 timestamp,
+                                                 inputBusNumber,
+                                                 frameCount,
+                                                 inputData,
+                                                 renderContext,
+                                                 renderBlock);
+    } else {
+      RTC_LOG(LS_VERBOSE) << "No alive audio device";
+      return OSStatus(noErr);
+    }
+  };
 }
 
-- (void)notifyAudioInputParametersChange {
+ObjCAudioDeviceDelegate::~ObjCAudioDeviceDelegate() {}
+
+double ObjCAudioDeviceDelegate::preferredInputSampleRate() const {
+  return preferredInputSampleRate_;
+}
+
+double ObjCAudioDeviceDelegate::preferredInputIOBufferDuration() const {
+  return preferredInputIOBufferDuration_;
+}
+
+double ObjCAudioDeviceDelegate::preferredOutputSampleRate() const {
+  return preferredOutputSampleRate_;
+}
+
+double ObjCAudioDeviceDelegate::preferredOutputIOBufferDuration() const {
+  return preferredOutputIOBufferDuration_;
+}
+
+RTCAudioDeviceDeliverRecordedDataBlock ObjCAudioDeviceDelegate::deliverRecordedData() {
+  return deliverRecordedDataBlock_;
+}
+
+RTCAudioDeviceGetPlayoutDataBlock ObjCAudioDeviceDelegate::getPlayoutData() {
+  return getPlayoutDataBlock_;
+}
+
+void ObjCAudioDeviceDelegate::notifyAudioInputParametersChange() {
   RTC_DCHECK_RUN_ON(impl_->thread());
   webrtc::objc_adm::ObjCAudioDeviceModule* audio_device_module = impl_->audio_device_module();
   if (audio_device_module) {
@@ -136,7 +140,7 @@ class AudioDeviceDelegateImpl final : public rtc::RefCountedNonVirtual<AudioDevi
   }
 }
 
-- (void)notifyAudioOutputParametersChange {
+void ObjCAudioDeviceDelegate::notifyAudioOutputParametersChange() {
   RTC_DCHECK_RUN_ON(impl_->thread());
   webrtc::objc_adm::ObjCAudioDeviceModule* audio_device_module = impl_->audio_device_module();
   if (audio_device_module) {
@@ -144,7 +148,7 @@ class AudioDeviceDelegateImpl final : public rtc::RefCountedNonVirtual<AudioDevi
   }
 }
 
-- (void)notifyAudioInputInterrupted {
+void ObjCAudioDeviceDelegate::notifyAudioInputInterrupted() {
   RTC_DCHECK_RUN_ON(impl_->thread());
   webrtc::objc_adm::ObjCAudioDeviceModule* audio_device_module = impl_->audio_device_module();
   if (audio_device_module) {
@@ -152,7 +156,7 @@ class AudioDeviceDelegateImpl final : public rtc::RefCountedNonVirtual<AudioDevi
   }
 }
 
-- (void)notifyAudioOutputInterrupted {
+void ObjCAudioDeviceDelegate::notifyAudioOutputInterrupted() {
   RTC_DCHECK_RUN_ON(impl_->thread());
   webrtc::objc_adm::ObjCAudioDeviceModule* audio_device_module = impl_->audio_device_module();
   if (audio_device_module) {
@@ -160,35 +164,23 @@ class AudioDeviceDelegateImpl final : public rtc::RefCountedNonVirtual<AudioDevi
   }
 }
 
-- (void)dispatchAsync:(dispatch_block_t)block {
+void ObjCAudioDeviceDelegate::dispatchAsync(std::function<void()> block) {
   rtc::Thread* thread = impl_->thread();
   RTC_DCHECK(thread);
-  thread->PostTask([block] {
-    @autoreleasepool {
-      block();
-    }
-  });
+  thread->PostTask(block);
 }
 
-- (void)dispatchSync:(dispatch_block_t)block {
+void ObjCAudioDeviceDelegate::dispatchSync(std::function<void()> block) {
   rtc::Thread* thread = impl_->thread();
   RTC_DCHECK(thread);
   if (thread->IsCurrent()) {
-    @autoreleasepool {
-      block();
-    }
+    block();
   } else {
-    thread->BlockingCall([block] {
-      @autoreleasepool {
-        block();
-      }
-    });
+    thread->BlockingCall(block);
   }
 }
 
-- (void)resetAudioDeviceModule {
+void ObjCAudioDeviceDelegate::resetAudioDeviceModule() {
   RTC_DCHECK_RUN_ON(impl_->thread());
   impl_->reset_audio_device_module();
 }
-
-@end

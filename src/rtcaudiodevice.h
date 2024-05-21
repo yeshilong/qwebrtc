@@ -17,6 +17,7 @@
 
 #include <QByteArray>
 
+#ifdef Q_OS_MAC
 #include <AudioUnit/AudioUnit.h>
 
 typedef std::function<OSStatus(AudioUnitRenderActionFlags *actionFlags,
@@ -34,6 +35,7 @@ typedef std::function<OSStatus(
     UInt32 frameCount, const AudioBufferList *inputData, void *renderContext,
     RTCAudioDeviceRenderRecordedDataBlock renderBlock)>
     RTCAudioDeviceDeliverRecordedDataBlock;
+#endif // Q_OS_MAC
 
 /**
  * Delegate object provided by native ADM during RTCAudioDevice initialization.
@@ -45,6 +47,7 @@ class RTCAudioDeviceDelegate
   public:
     virtual ~RTCAudioDeviceDelegate() = default;
 
+#ifdef Q_OS_MAC
     /**
      * Implementation of RTCAudioSource should call this method to feed recorded PCM (16-bit integer)
      * into native ADM. Stereo data is expected to be interleaved starting with the left channel.
@@ -57,6 +60,17 @@ class RTCAudioDeviceDelegate
      * can call the method on a different thread.
      */
     virtual RTCAudioDeviceDeliverRecordedDataBlock deliverRecordedData() = 0;
+
+    /**
+     * Implementation of RTCAudioDevice should call this method to request PCM (16-bit integer)
+     * from native ADM to play. Stereo data is interleaved starting with the left channel.
+     *
+     * NOTE: Implementation of RTCAudioDevice is expected to invoke of this method on the
+     * same thread until `notifyAudioInterrupted` is called. When `notifyAudioInterrupted` is called
+     * implementation can call the method from a different thread.
+     */
+    virtual RTCAudioDeviceGetPlayoutDataBlock getPlayoutData() = 0;
+#endif // Q_OS_MAC
 
     /**
      * Provides input sample rate preference as it preferred by native ADM.
@@ -77,16 +91,6 @@ class RTCAudioDeviceDelegate
      * Provides output IO buffer duration preference as it preferred by native ADM.
      */
     virtual double preferredOutputIOBufferDuration() const = 0;
-
-    /**
-     * Implementation of RTCAudioDevice should call this method to request PCM (16-bit integer)
-     * from native ADM to play. Stereo data is interleaved starting with the left channel.
-     *
-     * NOTE: Implementation of RTCAudioDevice is expected to invoke of this method on the
-     * same thread until `notifyAudioInterrupted` is called. When `notifyAudioInterrupted` is called
-     * implementation can call the method from a different thread.
-     */
-    virtual RTCAudioDeviceGetPlayoutDataBlock getPlayoutData() = 0;
 
     /**
      * Notifies native ADM that some of the audio input parameters of RTCAudioDevice like

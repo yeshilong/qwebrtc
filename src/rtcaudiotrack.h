@@ -23,11 +23,6 @@ class RTCAudioTrack : public RTCMediaStreamTrack
     explicit RTCAudioTrack(RTCAudioTrackPrivate &d, QObject *parent = nullptr);
 
     /**
-     * @brief Destroys the instance.
-     */
-    ~RTCAudioTrack() override;
-
-    /**
      * @brief Returns the audio source for this audio track.
      * @return The audio source.
      */

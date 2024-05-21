@@ -11,7 +11,7 @@
 #include "objc_audio_device.h"
 #include "objc_audio_device_delegate.h"
 
-#import "components/audio/RTCAudioDevice.h"
+#include "rtcaudiodevice.h"
 #include "modules/audio_device/fine_audio_buffer.h"
 
 #include "api/task_queue/default_task_queue_factory.h"
@@ -21,19 +21,19 @@
 
 namespace {
 
-webrtc::AudioParameters RecordParameters(id<RTC_OBJC_TYPE(RTCAudioDevice)> audio_device) {
-  const double sample_rate = static_cast<int>([audio_device deviceInputSampleRate]);
-  const size_t channels = static_cast<size_t>([audio_device inputNumberOfChannels]);
+webrtc::AudioParameters RecordParameters(std::shared_ptr<RTCAudioDevice> audio_device) {
+  const double sample_rate = static_cast<int>(audio_device->deviceInputSampleRate());
+  const size_t channels = static_cast<size_t>(audio_device->inputNumberOfChannels());
   const size_t frames_per_buffer =
-      static_cast<size_t>(sample_rate * [audio_device inputIOBufferDuration] + .5);
+      static_cast<size_t>(sample_rate * audio_device->inputIOBufferDuration() + .5);
   return webrtc::AudioParameters(sample_rate, channels, frames_per_buffer);
 }
 
-webrtc::AudioParameters PlayoutParameters(id<RTC_OBJC_TYPE(RTCAudioDevice)> audio_device) {
-  const double sample_rate = static_cast<int>([audio_device deviceOutputSampleRate]);
-  const size_t channels = static_cast<size_t>([audio_device outputNumberOfChannels]);
+webrtc::AudioParameters PlayoutParameters(std::shared_ptr<RTCAudioDevice> audio_device) {
+  const double sample_rate = static_cast<int>(audio_device->deviceOutputSampleRate());
+  const size_t channels = static_cast<size_t>(audio_device->outputNumberOfChannels());
   const size_t frames_per_buffer =
-      static_cast<size_t>(sample_rate * [audio_device outputIOBufferDuration] + .5);
+      static_cast<size_t>(sample_rate * audio_device->outputIOBufferDuration() + .5);
   return webrtc::AudioParameters(sample_rate, channels, frames_per_buffer);
 }
 
@@ -42,7 +42,7 @@ webrtc::AudioParameters PlayoutParameters(id<RTC_OBJC_TYPE(RTCAudioDevice)> audi
 namespace webrtc {
 namespace objc_adm {
 
-ObjCAudioDeviceModule::ObjCAudioDeviceModule(id<RTC_OBJC_TYPE(RTCAudioDevice)> audio_device)
+ObjCAudioDeviceModule::ObjCAudioDeviceModule(std::shared_ptr<RTCAudioDevice> audio_device)
     : audio_device_(audio_device), task_queue_factory_(CreateDefaultTaskQueueFactory()) {
   RTC_DLOG_F(LS_VERBOSE) << "";
   RTC_DCHECK(audio_device_);
@@ -75,25 +75,25 @@ int32_t ObjCAudioDeviceModule::Init() {
   thread_ = rtc::Thread::Current();
   audio_device_buffer_.reset(new webrtc::AudioDeviceBuffer(task_queue_factory_.get()));
 
-  if (![audio_device_ isInitialized]) {
-    if (audio_device_delegate_ == nil) {
-      audio_device_delegate_ = [[RTC_OBJC_TYPE(ObjCAudioDeviceDelegate) alloc]
-          initWithAudioDeviceModule:rtc::scoped_refptr<ObjCAudioDeviceModule>(this)
-                  audioDeviceThread:thread_];
+  if (!audio_device_->isInitialized()) {
+    if (audio_device_delegate_.lock() == nil) {
+      auto objcAudioDeviceDelegate = std::make_shared<ObjCAudioDeviceDelegate>(
+          rtc::scoped_refptr<ObjCAudioDeviceModule>(this), thread_);
+      audio_device_delegate_ = objcAudioDeviceDelegate;
     }
 
-    if (![audio_device_ initializeWithDelegate:audio_device_delegate_]) {
+    if (!audio_device_->initializeWithDelegate(audio_device_delegate_.lock())) {
       RTC_LOG_F(LS_WARNING) << "Failed to initialize audio device";
-      [audio_device_delegate_ resetAudioDeviceModule];
-      audio_device_delegate_ = nil;
+      audio_device_delegate_.lock()->resetAudioDeviceModule();
+      audio_device_delegate_.reset();
       return -1;
     }
   }
 
-  playout_parameters_.reset([audio_device_delegate_ preferredOutputSampleRate], 1);
+  playout_parameters_.reset(audio_device_delegate_.lock()->preferredOutputSampleRate(), 1);
   UpdateOutputAudioDeviceBuffer();
 
-  record_parameters_.reset([audio_device_delegate_ preferredInputSampleRate], 1);
+  record_parameters_.reset(audio_device_delegate_.lock()->preferredInputSampleRate(), 1);
   UpdateInputAudioDeviceBuffer();
 
   is_initialized_ = true;
@@ -111,16 +111,16 @@ int32_t ObjCAudioDeviceModule::Terminate() {
     return 0;
   }
 
-  if ([audio_device_ isInitialized]) {
-    if (![audio_device_ terminateDevice]) {
+  if (audio_device_->isInitialized()) {
+    if (!audio_device_->terminateDevice()) {
       RTC_LOG_F(LS_ERROR) << "Failed to terminate audio device";
       return -1;
     }
   }
 
-  if (audio_device_delegate_ != nil) {
-    [audio_device_delegate_ resetAudioDeviceModule];
-    audio_device_delegate_ = nil;
+  if (audio_device_delegate_.lock() != nil) {
+    audio_device_delegate_.lock()->resetAudioDeviceModule();
+    audio_device_delegate_.reset();
   }
 
   is_initialized_ = false;
@@ -135,7 +135,7 @@ int32_t ObjCAudioDeviceModule::Terminate() {
 bool ObjCAudioDeviceModule::Initialized() const {
   RTC_DLOG_F(LS_VERBOSE) << "";
   RTC_DCHECK_RUN_ON(&thread_checker_);
-  return is_initialized_ && [audio_device_ isInitialized];
+  return is_initialized_ && audio_device_->isInitialized();
 }
 
 int32_t ObjCAudioDeviceModule::PlayoutIsAvailable(bool* available) {
@@ -148,7 +148,7 @@ int32_t ObjCAudioDeviceModule::PlayoutIsAvailable(bool* available) {
 bool ObjCAudioDeviceModule::PlayoutIsInitialized() const {
   RTC_DLOG_F(LS_VERBOSE) << "";
   RTC_DCHECK_RUN_ON(&thread_checker_);
-  return Initialized() && is_playout_initialized_ && [audio_device_ isPlayoutInitialized];
+  return Initialized() && is_playout_initialized_ && audio_device_->isPlayoutInitialized();
 }
 
 int32_t ObjCAudioDeviceModule::InitPlayout() {
@@ -162,8 +162,8 @@ int32_t ObjCAudioDeviceModule::InitPlayout() {
   }
   RTC_DCHECK(!playing_.load());
 
-  if (![audio_device_ isPlayoutInitialized]) {
-    if (![audio_device_ initializePlayout]) {
+  if (!audio_device_->isPlayoutInitialized()) {
+    if (!audio_device_->initializePlayout()) {
       RTC_LOG_F(LS_ERROR) << "Failed to initialize audio device playout";
       return -1;
     }
@@ -181,7 +181,7 @@ int32_t ObjCAudioDeviceModule::InitPlayout() {
 bool ObjCAudioDeviceModule::Playing() const {
   RTC_DLOG_F(LS_VERBOSE) << "";
   RTC_DCHECK_RUN_ON(&thread_checker_);
-  return playing_.load() && [audio_device_ isPlaying];
+  return playing_.load() && audio_device_->isPlaying();
 }
 
 int32_t ObjCAudioDeviceModule::StartPlayout() {
@@ -198,7 +198,7 @@ int32_t ObjCAudioDeviceModule::StartPlayout() {
   if (playout_fine_audio_buffer_) {
     playout_fine_audio_buffer_->ResetPlayout();
   }
-  if (![audio_device_ startPlayout]) {
+  if (!audio_device_->startPlayout()) {
     RTC_LOG_F(LS_ERROR) << "Failed to start audio device playout";
     return -1;
   }
@@ -211,7 +211,7 @@ int32_t ObjCAudioDeviceModule::StopPlayout() {
   RTC_DLOG_F(LS_VERBOSE) << "";
   RTC_DCHECK_RUN_ON(&thread_checker_);
 
-  if (![audio_device_ stopPlayout]) {
+  if (!audio_device_->stopPlayout()) {
     RTC_LOG_F(LS_WARNING) << "Failed to stop playout";
     return -1;
   }
@@ -239,7 +239,7 @@ int32_t ObjCAudioDeviceModule::RecordingIsAvailable(bool* available) {
 bool ObjCAudioDeviceModule::RecordingIsInitialized() const {
   RTC_DLOG_F(LS_VERBOSE) << "";
   RTC_DCHECK_RUN_ON(&thread_checker_);
-  return Initialized() && is_recording_initialized_ && [audio_device_ isRecordingInitialized];
+  return Initialized() && is_recording_initialized_ && audio_device_->isRecordingInitialized();
 }
 
 int32_t ObjCAudioDeviceModule::InitRecording() {
@@ -253,8 +253,8 @@ int32_t ObjCAudioDeviceModule::InitRecording() {
   }
   RTC_DCHECK(!recording_.load());
 
-  if (![audio_device_ isRecordingInitialized]) {
-    if (![audio_device_ initializeRecording]) {
+  if (!audio_device_->isRecordingInitialized()) {
+    if (!audio_device_->initializeRecording()) {
       RTC_LOG_F(LS_ERROR) << "Failed to initialize audio device recording";
       return -1;
     }
@@ -272,7 +272,7 @@ int32_t ObjCAudioDeviceModule::InitRecording() {
 bool ObjCAudioDeviceModule::Recording() const {
   RTC_DLOG_F(LS_VERBOSE) << "";
   RTC_DCHECK_RUN_ON(&thread_checker_);
-  return recording_.load() && [audio_device_ isRecording];
+  return recording_.load() && audio_device_->isRecording();
 }
 
 int32_t ObjCAudioDeviceModule::StartRecording() {
@@ -290,7 +290,7 @@ int32_t ObjCAudioDeviceModule::StartRecording() {
     record_fine_audio_buffer_->ResetRecord();
   }
 
-  if (![audio_device_ startRecording]) {
+  if (!audio_device_->startRecording()) {
     RTC_LOG_F(LS_ERROR) << "Failed to start audio device recording";
     return -1;
   }
@@ -303,7 +303,7 @@ int32_t ObjCAudioDeviceModule::StopRecording() {
   RTC_DLOG_F(LS_VERBOSE) << "";
   RTC_DCHECK_RUN_ON(&thread_checker_);
 
-  if (![audio_device_ stopRecording]) {
+  if (!audio_device_->stopRecording()) {
     RTC_LOG_F(LS_WARNING) << "Failed to stop recording";
     return -1;
   }
@@ -404,7 +404,7 @@ OSStatus ObjCAudioDeviceModule::OnDeliverRecordedData(
     UInt32 num_frames,
     const AudioBufferList* io_data,
     void* render_context,
-    RTC_OBJC_TYPE(RTCAudioDeviceRenderRecordedDataBlock) render_block) {
+    RTCAudioDeviceRenderRecordedDataBlock render_block) {
   RTC_DCHECK_RUN_ON(&io_record_thread_checker_);
   OSStatus result = noErr;
   // Simply return if recording is not enabled.
@@ -510,7 +510,7 @@ void ObjCAudioDeviceModule::HandleAudioInputParametersChange() {
     UpdateInputAudioDeviceBuffer();
   }
 
-  UpdateAudioDelay(cached_recording_delay_ms_, [audio_device_ inputLatency]);
+  UpdateAudioDelay(cached_recording_delay_ms_, audio_device_->inputLatency());
 }
 
 void ObjCAudioDeviceModule::HandleAudioOutputParametersChange() {
@@ -521,7 +521,7 @@ void ObjCAudioDeviceModule::HandleAudioOutputParametersChange() {
     UpdateOutputAudioDeviceBuffer();
   }
 
-  UpdateAudioDelay(cached_playout_delay_ms_, [audio_device_ outputLatency]);
+  UpdateAudioDelay(cached_playout_delay_ms_, audio_device_->outputLatency());
 }
 
 #pragma mark - Not implemented/Not relevant methods from AudioDeviceModule

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 
+class RTCAudioBufferPrivate;
 /**
  * @brief Represents an audio buffer with multiple properties.
  */
@@ -16,6 +17,13 @@ class RTCAudioBuffer : public QObject
      * @brief Initializes a new instance of the RTCAudioBuffer class.
      */
     explicit RTCAudioBuffer(QObject *parent = nullptr);
+
+    /**
+     * @brief Initializes a new instance of the RTCAudioBuffer class.
+     * @param d The private implementation.
+     * @param parent The parent object.
+     */
+    explicit RTCAudioBuffer(RTCAudioBufferPrivate *d, QObject *parent = nullptr);
 
     /**
      * @brief Returns the number of channels.
@@ -42,10 +50,8 @@ class RTCAudioBuffer : public QObject
     uint32_t bands() const;
 
   private:
-    unsigned int channels_;
-    unsigned int frames_;
-    unsigned int framesPerBand_;
-    unsigned int bands_;
+    RTCAudioBufferPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(RTCAudioBuffer)
 };
 
 #endif // RTCAUDIOBUFFER_H

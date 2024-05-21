@@ -12,16 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "rtciodevice.h"
+#ifndef RTCH264PROFILELEVELID_H
+#define RTCH264PROFILELEVELID_H
 
-RTCIODevice::RTCIODevice(QObject *parent) : QObject{parent}
-{
-}
+#include <QString>
 
-RTCIODevice::RTCIODevice(RTCIODeviceType type, const QString deviceId, const QString name,
-                         QObject *parent)
+class RTCH264ProfileLevelId
 {
-    type_ = type;
-    deviceId_ = deviceId;
-    name_ = name;
-}
+  public:
+    static QString RTCLevel31ConstrainedHigh();
+    static QString RTCLevel31ConstrainedBaseline();
+    static QString RTCMaxSupportedH264ProfileLevelConstrainedHigh();
+    static QString RTCMaxSupportedH264ProfileLevelConstrainedBaseline();
+};
+
+#endif //RTCH264PROFILELEVELID_H

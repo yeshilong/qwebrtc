@@ -334,33 +334,35 @@ void PeerConnectionDelegateAdapter::OnRemoveTrack(rtc::scoped_refptr<RtpReceiver
 
 } // namespace webrtc
 
-RTCPeerConnectionPrivate::RTCPeerConnectionPrivate(
-    std::shared_ptr<RTCPeerConnectionFactory> factory,
-    std::shared_ptr<RTCConfiguration> configuration,
-    std::shared_ptr<RTCMediaConstraints> constraints,
-    std::shared_ptr<IRTCSSLCertificateVerifier> certificateVerifier,
-    std::shared_ptr<IRTCPeerConnectionDelegate> delegate)
+rtc::scoped_refptr<webrtc::PeerConnectionInterface> RTCPeerConnectionPrivate::nativePeerConnection()
+    const
 {
-    Q_ASSERT(factory.get());
+    return nativePeerConnection_;
+}
+RTCPeerConnectionPrivate::RTCPeerConnectionPrivate(RTCPeerConnectionFactory *factory,
+                                                   RTCConfiguration *configuration,
+                                                   RTCMediaConstraints *constraints,
+                                                   IRTCSSLCertificateVerifier *certificateVerifier,
+                                                   IRTCPeerConnectionDelegate *delegate)
+{
+    Q_ASSERT(factory);
     std::unique_ptr<webrtc::PeerConnectionDependencies> dependencies =
         std::make_unique<webrtc::PeerConnectionDependencies>(nullptr);
     if (certificateVerifier != nullptr)
     {
         dependencies->tls_cert_verifier =
-            webrtc::ObjCToNativeCertificateVerifier(certificateVerifier.get());
+            webrtc::ObjCToNativeCertificateVerifier(certificateVerifier);
     }
 }
-
 RTCPeerConnectionPrivate::RTCPeerConnectionPrivate(
-    std::shared_ptr<RTCPeerConnectionFactory> factory,
-    std::shared_ptr<RTCConfiguration> configuration,
-    std::shared_ptr<RTCMediaConstraints> constraints,
+    RTCPeerConnectionFactory *factory, RTCConfiguration *configuration,
+    RTCMediaConstraints *constraints,
     std::unique_ptr<webrtc::PeerConnectionDependencies> dependencies,
-    std::shared_ptr<IRTCPeerConnectionDelegate> delegate)
+    IRTCPeerConnectionDelegate *delegate)
 {
-    Q_ASSERT(factory.get());
-    Q_ASSERT(configuration.get());
-    Q_ASSERT(delegate.get());
+    Q_ASSERT(factory);
+    Q_ASSERT(configuration);
+    Q_ASSERT(delegate);
 
     std::unique_ptr<webrtc::PeerConnectionInterface::RTCConfiguration> config(
         configuration->d_ptr->createNativeConfiguration());
@@ -380,15 +382,9 @@ RTCPeerConnectionPrivate::RTCPeerConnectionPrivate(
     {
     }
     nativePeerConnection_ = result.MoveValue();
-    factory_ = factory.get();
+    factory_ = factory;
     localStreams_ = {};
-    delegate_ = delegate.get();
-}
-
-rtc::scoped_refptr<webrtc::PeerConnectionInterface> RTCPeerConnectionPrivate::nativePeerConnection()
-    const
-{
-    return nativePeerConnection_;
+    delegate_ = delegate;
 }
 
 RTCPeerConnection::RTCPeerConnection(QObject *parent) : QObject{parent}

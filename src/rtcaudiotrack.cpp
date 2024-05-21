@@ -8,7 +8,7 @@ RTCAudioTrackPrivate::RTCAudioTrackPrivate(RTCPeerConnectionFactory *factory,
           factory,
           factory->d_ptr->nativePeerConnectionFactory()->CreateAudioTrack(
               trackId.toStdString(),
-              ((RTCAudioSourcePrivate *)(source->d_ptr))->nativeAudioSource().get()),
+              static_cast<RTCAudioSourcePrivate *>(source->d_ptr)->nativeAudioSource().get()),
           RTCMediaStreamTrackType::RTCMediaStreamTrackTypeAudio)
 {
     Q_ASSERT(factory);

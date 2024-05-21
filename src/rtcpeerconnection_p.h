@@ -143,16 +143,14 @@ class IRTCSSLCertificateVerifier;
 class RTCPeerConnectionPrivate
 {
   public:
-    RTCPeerConnectionPrivate(std::shared_ptr<RTCPeerConnectionFactory> factory,
-                             std::shared_ptr<RTCConfiguration> configuration,
-                             std::shared_ptr<RTCMediaConstraints> constraints,
-                             std::shared_ptr<IRTCSSLCertificateVerifier> certificateVerifier,
-                             std::shared_ptr<IRTCPeerConnectionDelegate> delegate);
-    RTCPeerConnectionPrivate(std::shared_ptr<RTCPeerConnectionFactory> factory,
-                             std::shared_ptr<RTCConfiguration> configuration,
-                             std::shared_ptr<RTCMediaConstraints> constraints,
+    RTCPeerConnectionPrivate(RTCPeerConnectionFactory *factory, RTCConfiguration *configuration,
+                             RTCMediaConstraints *constraints,
+                             IRTCSSLCertificateVerifier *certificateVerifier,
+                             IRTCPeerConnectionDelegate *delegate);
+    RTCPeerConnectionPrivate(RTCPeerConnectionFactory *factory, RTCConfiguration *configuration,
+                             RTCMediaConstraints *constraints,
                              std::unique_ptr<webrtc::PeerConnectionDependencies> dependencies,
-                             std::shared_ptr<IRTCPeerConnectionDelegate> delegate);
+                             IRTCPeerConnectionDelegate *delegate);
 
     rtc::scoped_refptr<webrtc::PeerConnectionInterface> nativePeerConnection() const;
 

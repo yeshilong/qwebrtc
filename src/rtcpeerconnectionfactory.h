@@ -1,3 +1,17 @@
+// Copyright (C) 2024 Deltarion Systems
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #ifndef RTCPEERCONNECTIONFACTORY_H
 #define RTCPEERCONNECTIONFACTORY_H
 
@@ -16,6 +30,7 @@ class RTCVideoTrack;
 class RTCPeerConnectionFactoryOptions;
 class RTCAudioDeviceModule;
 class RTCRtpCapabilities;
+
 class IRTCPeerConnectionDelegate;
 class IRTCVideoDecoderFactory;
 class IRTCVideoEncoderFactory;
@@ -61,16 +76,15 @@ class RTCPeerConnectionFactory : public QObject
 
     /**
      * @brief Initialize object with bypass voice processing.
-     * @param bypassVoiceProcessing Bypass voice processing.
      * @param encoderFactory The encoder factory.
      * @param decoderFactory The decoder factory.
      * @param audioProcessingModule The audio processing module.
+     * @param bypassVoiceProcessing Bypass voice processing.
      */
-    explicit RTCPeerConnectionFactory(bool bypassVoiceProcessing,
-                                      IRTCVideoEncoderFactory *encoderFactory,
+    explicit RTCPeerConnectionFactory(IRTCVideoEncoderFactory *encoderFactory,
                                       IRTCVideoDecoderFactory *decoderFactory,
                                       IRTCAudioProcessingModule *audioProcessingModule,
-                                      QObject *parent = nullptr);
+                                      bool bypassVoiceProcessing, QObject *parent = nullptr);
 
     /**
      * @brief Get the audio device module for this factory.
@@ -83,14 +97,14 @@ class RTCPeerConnectionFactory : public QObject
      * @param mediaType The media type.
      * @return The RTP capabilities.
      */
-    RTCRtpCapabilities *rtpSenderCapabilitiesFor(RTCRtpMediaType *mediaType);
+    RTCRtpCapabilities *rtpSenderCapabilitiesFor(RTCRtpMediaType mediaType);
 
     /**
      * @brief Get the RTP receiver capabilities for a given media type.
      * @param mediaType The media type.
      * @return The RTP capabilities.
      */
-    RTCRtpCapabilities *rtpReceiverCapabilitiesFor(RTCRtpMediaType *mediaType);
+    RTCRtpCapabilities *rtpReceiverCapabilitiesFor(RTCRtpMediaType mediaType);
 
     /**
      * @brief Initialize an RTCAudioSource with constraints.
@@ -167,6 +181,8 @@ class RTCPeerConnectionFactory : public QObject
   private:
     RTCPeerConnectionFactoryPrivate *d_ptr;
     Q_DECLARE_PRIVATE(RTCPeerConnectionFactory)
+
+    bool hasStartedAecDump_ = false;
 
     friend class RTCMediaStreamPrivate;
     friend class RTCVideoTrackPrivate;

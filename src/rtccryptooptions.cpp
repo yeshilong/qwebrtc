@@ -4,6 +4,17 @@ RTCCryptoOptions::RTCCryptoOptions(QObject *parent) : QObject{parent}
 {
 }
 
+RTCCryptoOptions::RTCCryptoOptions(bool srtpEnableGcmCryptoSuites,
+                                   bool srtpEnableAes128Sha1_32CryptoCipher,
+                                   bool srtpEnableEncryptedRtpHeaderExtensions,
+                                   bool sframeRequireFrameEncryption)
+    : srtpEnableGcmCryptoSuites_{srtpEnableGcmCryptoSuites},
+      srtpEnableAes128Sha1_32CryptoCipher_{srtpEnableAes128Sha1_32CryptoCipher},
+      srtpEnableEncryptedRtpHeaderExtensions_{srtpEnableEncryptedRtpHeaderExtensions},
+      sframeRequireFrameEncryption_{sframeRequireFrameEncryption}
+{
+}
+
 bool RTCCryptoOptions::sframeRequireFrameEncryption() const
 {
     return sframeRequireFrameEncryption_;

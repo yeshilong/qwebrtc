@@ -61,14 +61,7 @@ class VideoRendererAdapter : public rtc::VideoSinkInterface<VideoFrame>
 class RTCVideoRendererAdapterPrivate
 {
   public:
-    RTCVideoRendererAdapterPrivate(IRTCVideoRenderer *videoRenderer)
-    {
-        Q_ASSERT(videoRenderer);
-
-        videoRenderer_ = videoRenderer;
-        adapter_ = std::make_unique<webrtc::VideoRendererAdapter>(
-            std::shared_ptr<RTCVideoRendererAdapter>(q_ptr));
-    }
+    RTCVideoRendererAdapterPrivate(IRTCVideoRenderer *videoRenderer);
     /**
       * @brief Get the native VideoSinkInterface surface exposed by this adapter.
       * 

@@ -2,6 +2,7 @@
 #define RTCAUDIOSOURCE_P_H
 
 #include "rtcmediasource_p.h"
+#include "rtcaudiosource.h"
 
 class RTCAudioSourcePrivate : public RTCMediaSourcePrivate
 {

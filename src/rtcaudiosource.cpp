@@ -20,6 +20,11 @@ RTCAudioSourcePrivate::RTCAudioSourcePrivate(
     RTC_DCHECK_NOTREACHED();
 }
 
+rtc::scoped_refptr<webrtc::AudioSourceInterface> RTCAudioSourcePrivate::nativeAudioSource()
+{
+    return nativeAudioSource_;
+}
+
 RTCAudioSource::RTCAudioSource(QObject *parent) : RTCMediaSource{parent}
 {
 }

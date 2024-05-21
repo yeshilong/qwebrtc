@@ -13,13 +13,13 @@
 
 #include <memory>
 
-#import "components/audio/RTCAudioDevice.h"
+#include "rtcaudiodevice.h"
 
 #include "modules/audio_device/audio_device_buffer.h"
 #include "modules/audio_device/include/audio_device.h"
 #include "rtc_base/thread.h"
 
-@class RTC_OBJC_TYPE(ObjCAudioDeviceDelegate);
+class ObjCAudioDeviceDelegate;
 
 namespace webrtc {
 
@@ -29,7 +29,7 @@ namespace objc_adm {
 
 class ObjCAudioDeviceModule : public AudioDeviceModule {
  public:
-  explicit ObjCAudioDeviceModule(id<RTC_OBJC_TYPE(RTCAudioDevice)> audio_device);
+  explicit ObjCAudioDeviceModule(std::shared_ptr<RTCAudioDevice> audio_device);
   ~ObjCAudioDeviceModule() override;
 
   // Retrieve the currently utilized audio layer
@@ -141,7 +141,7 @@ class ObjCAudioDeviceModule : public AudioDeviceModule {
                                  UInt32 num_frames,
                                  const AudioBufferList* io_data,
                                  void* render_context,
-                                 RTC_OBJC_TYPE(RTCAudioDeviceRenderRecordedDataBlock) render_block);
+                                 RTCAudioDeviceRenderRecordedDataBlock render_block);
 
   OSStatus OnGetPlayoutData(AudioUnitRenderActionFlags* flags,
                             const AudioTimeStamp* time_stamp,
@@ -208,7 +208,7 @@ class ObjCAudioDeviceModule : public AudioDeviceModule {
   void UpdateInputAudioDeviceBuffer();
 
  private:
-  id<RTC_OBJC_TYPE(RTCAudioDevice)> audio_device_;
+  std::shared_ptr<RTCAudioDevice> audio_device_;
 
   const std::unique_ptr<TaskQueueFactory> task_queue_factory_;
 
@@ -267,7 +267,7 @@ class ObjCAudioDeviceModule : public AudioDeviceModule {
   rtc::BufferT<int16_t> record_audio_buffer_;
 
   // Delegate object provided to RTCAudioDevice during initialization
-  RTC_OBJC_TYPE(ObjCAudioDeviceDelegate)* audio_device_delegate_;
+  std::weak_ptr<ObjCAudioDeviceDelegate> audio_device_delegate_;
 };
 
 }  // namespace objc_adm

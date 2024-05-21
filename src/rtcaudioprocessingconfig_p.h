@@ -12,16 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "rtciodevice.h"
+#ifndef RTCAUDIOPROCESSINGCONFIG_P_H
+#define RTCAUDIOPROCESSINGCONFIG_P_H
 
-RTCIODevice::RTCIODevice(QObject *parent) : QObject{parent}
-{
-}
+#include "rtcaudioprocessingconfig.h"
 
-RTCIODevice::RTCIODevice(RTCIODeviceType type, const QString deviceId, const QString name,
-                         QObject *parent)
+#include "modules/audio_processing/include/audio_processing.h"
+
+class RTCAudioProcessingConfigPrivate
 {
-    type_ = type;
-    deviceId_ = deviceId;
-    name_ = name;
-}
+  public:
+    RTCAudioProcessingConfigPrivate();
+    ~RTCAudioProcessingConfigPrivate();
+
+    webrtc::AudioProcessing::Config nativeAudioProcessingConfig() const;
+
+    webrtc::AudioProcessing::Config nativeAudioProcessingConfig_;
+};
+
+#endif //RTCAUDIOPROCESSINGCONFIG_P_H

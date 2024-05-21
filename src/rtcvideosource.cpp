@@ -70,12 +70,13 @@ RTCVideoSource::RTCVideoSource(RTCVideoSourcePrivate &d, QObject *parent)
 void RTCVideoSource::adaptOutputFormatToWidth(int width, int height, int fps)
 {
     Q_D(RTCMediaSource);
-    getObjCVideoSource(((RTCVideoSourcePrivate *)d)->nativeVideoSource_)
+    getObjCVideoSource(static_cast<RTCVideoSourcePrivate *>(d)->nativeVideoSource_)
         ->OnOutputFormatRequest(width, height, fps);
 }
 
 void RTCVideoSource::didCaptureVideoFrame(RTCVideoFrame *frame)
 {
     Q_D(RTCMediaSource);
-    getObjCVideoSource(((RTCVideoSourcePrivate *)d)->nativeVideoSource_)->OnCapturedFrame(frame);
+    getObjCVideoSource(static_cast<RTCVideoSourcePrivate *>(d)->nativeVideoSource_)
+        ->OnCapturedFrame(frame);
 }

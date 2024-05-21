@@ -11,8 +11,9 @@ void RTCFrameCryptorKeyProvider::init(QByteArray salt, int windowSize, bool shar
 {
     d_ptr = new RTCFrameCryptorKeyProviderPrivate();
     webrtc::KeyProviderOptions options;
-    options.ratchet_salt = std::vector<uint8_t>((const uint8_t *)salt.data(),
-                                                ((const uint8_t *)salt.data()) + salt.size());
+    options.ratchet_salt =
+        std::vector<uint8_t>(reinterpret_cast<const uint8_t *>(salt.data()),
+                             reinterpret_cast<const uint8_t *>(salt.data()) + salt.size());
     options.ratchet_window_size = windowSize;
     options.shared_key = sharedKeyMode;
     options.failure_tolerance = failureTolerance;
@@ -20,9 +21,10 @@ void RTCFrameCryptorKeyProvider::init(QByteArray salt, int windowSize, bool shar
     options.discard_frame_when_cryptor_not_ready = discardFrameWhenCryptorNotReady;
     if (uncryptedMagicBytes != nullptr)
     {
-        options.uncrypted_magic_bytes = std::vector<uint8_t>(
-            (const uint8_t *)uncryptedMagicBytes.data(),
-            ((const uint8_t *)uncryptedMagicBytes.data()) + uncryptedMagicBytes.size());
+        options.uncrypted_magic_bytes =
+            std::vector<uint8_t>(reinterpret_cast<const uint8_t *>(uncryptedMagicBytes.data()),
+                                 reinterpret_cast<const uint8_t *>(uncryptedMagicBytes.data()) +
+                                     uncryptedMagicBytes.size());
     }
     d_ptr->nativeKeyProvider_ = rtc::make_ref_counted<webrtc::DefaultKeyProviderImpl>(options);
 }
@@ -60,8 +62,8 @@ void RTCFrameCryptorKeyProvider::setSharedKey(QByteArray key, int index)
 {
     Q_D(RTCFrameCryptorKeyProvider);
     d->nativeKeyProvider_->SetSharedKey(
-        index, std::vector<uint8_t>((const uint8_t *)key.data(),
-                                    ((const uint8_t *)key.data()) + key.size()));
+        index, std::vector<uint8_t>(reinterpret_cast<const uint8_t *>(key.data()),
+                                    reinterpret_cast<const uint8_t *>(key.data()) + key.size()));
 }
 
 QByteArray RTCFrameCryptorKeyProvider::ratchetSharedKey(int index)
@@ -75,15 +77,16 @@ QByteArray RTCFrameCryptorKeyProvider::exportSharedKey(int index)
 {
     Q_D(RTCFrameCryptorKeyProvider);
     std::vector<uint8_t> nativeKey = d->nativeKeyProvider_->ExportSharedKey(index);
-    return QByteArray((const char *)nativeKey.data(), nativeKey.size());
+    return QByteArray(reinterpret_cast<const char *>(nativeKey.data()), nativeKey.size());
 }
 
 void RTCFrameCryptorKeyProvider::setKey(QByteArray key, int index, QString participantId)
 {
     Q_D(RTCFrameCryptorKeyProvider);
-    d->nativeKeyProvider_->SetKey(participantId.toStdString(), index,
-                                  std::vector<uint8_t>((const uint8_t *)key.data(),
-                                                       ((const uint8_t *)key.data()) + key.size()));
+    d->nativeKeyProvider_->SetKey(
+        participantId.toStdString(), index,
+        std::vector<uint8_t>(reinterpret_cast<const uint8_t *>(key.data()),
+                             reinterpret_cast<const uint8_t *>(key.data()) + key.size()));
 }
 
 QByteArray RTCFrameCryptorKeyProvider::ratchetKey(QString participantId, int index)
@@ -91,7 +94,7 @@ QByteArray RTCFrameCryptorKeyProvider::ratchetKey(QString participantId, int ind
     Q_D(RTCFrameCryptorKeyProvider);
     std::vector<uint8_t> nativeKey =
         d->nativeKeyProvider_->RatchetKey(participantId.toStdString(), index);
-    return QByteArray((const char *)nativeKey.data(), nativeKey.size());
+    return QByteArray(reinterpret_cast<const char *>(nativeKey.data()), nativeKey.size());
 }
 
 QByteArray RTCFrameCryptorKeyProvider::exportKey(QString participantId, int index)
@@ -99,12 +102,13 @@ QByteArray RTCFrameCryptorKeyProvider::exportKey(QString participantId, int inde
     Q_D(RTCFrameCryptorKeyProvider);
     std::vector<uint8_t> nativeKey =
         d->nativeKeyProvider_->ExportKey(participantId.toStdString(), index);
-    return QByteArray((const char *)nativeKey.data(), nativeKey.size());
+    return QByteArray(reinterpret_cast<const char *>(nativeKey.data()), nativeKey.size());
 }
 
 void RTCFrameCryptorKeyProvider::setSifTrailer(QByteArray trailer)
 {
     Q_D(RTCFrameCryptorKeyProvider);
-    d->nativeKeyProvider_->SetSifTrailer(std::vector<uint8_t>(
-        (const uint8_t *)trailer.data(), ((const uint8_t *)trailer.data()) + trailer.size()));
+    d->nativeKeyProvider_->SetSifTrailer(
+        std::vector<uint8_t>(reinterpret_cast<const uint8_t *>(trailer.data()),
+                             reinterpret_cast<const uint8_t *>(trailer.data()) + trailer.size()));
 }

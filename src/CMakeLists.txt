@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.14)
 
-enable_language(OBJC)
-enable_language(OBJCXX)
-
 set(QWEBRTC_SOURCES
     native/network_monitor_factory.cpp
     native/network_monitor_factory.h
+    native/objc_audio_device_module.h
+    native/objc_audio_device_module.cpp
     native/objc_desktop_capture.cpp
     native/objc_desktop_capture.h
     native/objc_desktop_media_list.cpp
@@ -27,12 +26,18 @@ set(QWEBRTC_SOURCES
     qwebrtc.cpp
     qwebrtc.h
     qwebrtcglobal.h
+    rtcaudiobuffer_p.h
     rtcaudiobuffer.cpp
     rtcaudiobuffer.h
+    rtcaudiocustomprocessingadapter_p.h
+    rtcaudiocustomprocessingadapter.cpp
+    rtcaudiocustomprocessingadapter.h
     rtcaudiocustomprocessingdelegate.h
     rtcaudiodevice.h
+    rtcaudiodevicemodule_p.h
     rtcaudiodevicemodule.cpp
     rtcaudiodevicemodule.h
+    rtcaudioprocessingconfig_p.h
     rtcaudioprocessingconfig.cpp
     rtcaudioprocessingconfig.h
     rtcaudioprocessingmodule.h
@@ -64,6 +69,7 @@ set(QWEBRTC_SOURCES
     rtcdatachannelconfiguration_p.h
     rtcdatachannelconfiguration.cpp
     rtcdatachannelconfiguration.h
+    rtcdefaultaudioprocessingmodule_p.h
     rtcdefaultaudioprocessingmodule.cpp
     rtcdefaultaudioprocessingmodule.h
     rtcdefaultvideodecoderfactory.cpp
@@ -100,6 +106,8 @@ set(QWEBRTC_SOURCES
     rtcframecryptorkeyprovider_p.h
     rtcframecryptorkeyprovider.cpp
     rtcframecryptorkeyprovider.h
+    rtch264profilelevelid.cpp
+    rtch264profilelevelid.h
     rtcicecandidate_p.h
     rtcicecandidate.cpp
     rtcicecandidate.h
@@ -274,8 +282,6 @@ if(OS_MACOS OR OS_IOS)
       native/darwin/audio_device_module.mm
       native/darwin/objc_audio_device_delegate.h
       native/darwin/objc_audio_device_delegate.mm
-      native/darwin/objc_audio_device_module.h
-      native/darwin/objc_audio_device_module.mm
       native/darwin/objc_audio_device.h
       native/darwin/objc_audio_device.mm)
   list(APPEND QWEBRTC_SOURCES ${QWEBRTC_MACOS_SOURCES})
@@ -627,5 +633,6 @@ elseif(OS_MACOS)
       Qt${QT_VERSION_MAJOR}::Multimedia
       Qt${QT_VERSION_MAJOR}::Concurrent
       WebRTC
-      "-framework CoreFoundation -framework AudioUnit -framework IOSurface")
+      "-framework CoreFoundation -framework AudioUnit -framework CoreAudio -framework AudioToolbox  -framework IOSurface"
+  )
 endif()

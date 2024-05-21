@@ -1,7 +1,22 @@
+// Copyright (C) 2024 Deltarion Systems
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #ifndef RTCLOGGING_H
 #define RTCLOGGING_H
 
 #include <QObject>
+#include <QString>
 
 #include "rtctypes.h"
 
@@ -18,7 +33,7 @@ class RTCLogging : public QObject
      * @param severity The severity.
      * @param logString The log string.
      */
-    static void rtcLogEx(RTCLoggingSeverity severity, const QString &logString);
+    static void rtcLogEx(RTCLoggingSeverity severity, const QString logString);
 
     /**
      * @brief Sets the minimum severity to be logged to console.
@@ -31,15 +46,15 @@ class RTCLogging : public QObject
      * @param filePath The file path.
      * @return The filename.
      */
-    static QString rtcFileName(const QString &filePath);
+    static QString rtcFileName(const QString filePath);
 };
 
 #define RTCLogString(format, ...)                                                                  \
-    QString("(%1:%2 %3): " format)                                                                 \
-        .arg(RTCLogging::rtcFileName(QString(__FILE__)))                                           \
-        .arg(__LINE__)                                                                             \
-        .arg(__FUNCTION__)                                                                         \
-        .arg(__VA_ARGS__)
+    QString("(%1:%2 %3): ")                                                                        \
+            .arg(RTCLogging::rtcFileName(__FILE__))                                                \
+            .arg(__LINE__)                                                                         \
+            .arg(__FUNCTION__) +                                                                   \
+        format
 
 #define RTCLogFormat(severity, format, ...)                                                        \
     do                                                                                             \
